@@ -24,7 +24,7 @@ System.out.println("saveUrl:"+saveUrl);
 
 //定义允许上传的文件扩展名
 HashMap<String, String> extMap = new HashMap<String, String>();
-extMap.put("image", "gif,jpg,jpeg,png,bmp");
+extMap.put("image", "gif,jpg,jpeg,png,bmp,doc,docx,xls,xlsx,ppt,htm,html,txt,zip,rar,gz,bz2");
 extMap.put("flash", "swf,flv");
 extMap.put("media", "swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
 extMap.put("file", "doc,docx,xls,xlsx,ppt,htm,html,txt,zip,rar,gz,bz2");
@@ -91,6 +91,7 @@ while (itr.hasNext()) {
 		}
 		//检查扩展名
 		String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+		System.out.println("fileExt:"+fileExt);
 		if(!Arrays.<String>asList(extMap.get(dirName).split(",")).contains(fileExt)){
 			out.println(getError("上传文件扩展名是不允许的扩展名。\n只允许" + extMap.get(dirName) + "格式。"));
 			return;

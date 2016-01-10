@@ -40,6 +40,7 @@
 			<li><a href="#">${menu.name }</a></li>
 			<li><a href="#">新闻管理</a></li>
 		</ul>
+		
 	</div>
 	<div class="formbody">
 		<div id="usual1" class="usual">
@@ -48,6 +49,7 @@
 					<li><a href="#tab1" class="selected">新闻添加</a></li>
 				</ul>
 			</div>
+  
 			<div id="tab1" class="tabson">
 				<ul class="forminfo">
 					<form action="" method="post" id="securityNewsForm">
@@ -55,7 +57,7 @@
 					<input type="hidden" id="menuId" name="menuId" value="${menu.id }"/>
 						<li><label>标题<b></b></label> <input type="text"
 							class="dfinput" id="title" name="securityNews.title"
-							placeholder="请输入通告标题" /></li>
+							placeholder="请输入标题" /></li>
 						<li><label>简略标题<b></b></label> <input type="text"
 							class="dfinput" id="litterTitle" name="securityNews.litterTitle"
 							placeholder="" /></li>
@@ -151,8 +153,25 @@
 				});
 			});
 		});
+		K('#fileBtn').click(function() {
+			
+			editor.loadPlugin('image', function() {
+				editor.plugin.imageDialog({
+					showRemote : false,
+					imageUrl : K('#indeximg').val(),
+					clickFn : function(url, title, width, height, border, align) {
+						K('#indeximg').val('<%=basePath %>'+url);
+						document.getElementById("indeximgShow").src='<%=basePath %>'+url;
+						editor.hideDialog();
+					}
+				});
+			});
+		});
+		
 		
 	});
+	
+	
 	
 	$(document)
 			.ready(
@@ -199,7 +218,7 @@
 																					},
 																					function(index) {
 																						parent.layer.close(index);
-																						window.location.href = '${ contextpath}/securitynews/list';
+																						window.location.href = '${ contextpath}/securitynews/list.htm?id=${menu.id }';
 																					});
 
 																} else {

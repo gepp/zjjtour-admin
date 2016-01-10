@@ -32,24 +32,24 @@
 		<span>位置：</span>
 		<ul class="placeul">
 			<li><a href="#">首页</a></li>
-			<li><a href="#">栏目管理</a></li>
+			<li><a href="#">标签管理</a></li>
 		</ul>
 	</div>
 	<div class="formbody">
 		<div id="usual1" class="usual">
 			<div class="itab">
 				<ul>
-					<li><a href="#tab1" class="selected">栏目新增</a></li>
+					<li><a href="#tab1" class="selected">标签新增</a></li>
 				</ul>
 			</div>
 			
 			<div id="tab1" class="tabson">
 				<ul class="forminfo">
 					<form action="" method="post" id="securityMenuForm">
-						<li><label>栏目名称<b></b></label> <input type="text"
+						<li><label>标签名称<b></b></label> <input type="text"
 							class="dfinput" id="name" name="securityMenu.name"
-							placeholder="请输入栏目名称" value="${ securityMenu.name}" /></li>
-						<li><label>栏目上级<b></b></label>
+							placeholder="请输入标签名称" value="${ securityMenu.name}" /></li>
+						<li><label>标签上级<b></b></label>
 							<div class="vocation">
 								<select name="securityMenu.parentId" class="select1">
 									<option value="0">无</option>
@@ -59,22 +59,6 @@
  								</select>
  							</div>
 						</li>
-						<li><label>栏目类型<b></b></label>
-						<div class="vocation">
-						<select name="securityMenu.columnType" class="select1">
-									<option value="0">空</option>
-									<option value="1">列表</option> 
-									<option value="2">详情</option> 
- 						</select>
-						</div>
-						</li>
-						<li><label>页面类型<b></b></label>
-						<div class="vocation">
-						<select name="securityMenu.pageType" class="select1">
-									<option value="0">类型1</option>
- 						</select>
-						</div>
-						</li>	
 						<li><label>排序号<b></b></label> <input type="text"
 							class="dfinput" id="orderlist" name="securityMenu.orderlist"
 							placeholder="请输入排序号" value="${ securityMenu.orderlist}" /></li>
@@ -89,7 +73,7 @@
 						<li><label>&nbsp;</label><input name="" type="submit"
 							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
 							type="button" class="btn" value="返回"
-							onclick="window.location='${ contextpath}/securitymenu/list'" /></li>
+							onclick="window.location='${ contextpath}/bq/listBq.htm'" /></li>
 					</form>
 				</ul>
 			</div>
@@ -120,7 +104,7 @@
 				// 提交表单之前，hold住表单，防止重复提交
 				me.holdSubmit();
 				$.ajax({
-					url : "${ contextpath}/securitymenu/addaction",
+					url : "${ contextpath}/bq/bqaddaction",
 					data : $(form).serialize(),
 					type : "POST",
 					success : function(data) {
@@ -130,7 +114,7 @@
 							parent.layer.alert('当前操作成功', {
 								closeBtn: 0
 							}, function(index){
-								window.location.href='${ contextpath}/securitymenu/list';
+								window.location.href='${ contextpath}/bq/listBq';
 								parent.layer.close(index);
 							});
 							

@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>新闻管理</title>
+<title>路线管理</title>
 <link href="${ contextpath }/res/css/style.css" rel="stylesheet"
 	type="text/css" />
 <link href="${ contextpath }/res/css/page.css" rel="stylesheet"
@@ -26,15 +26,14 @@
 		<span>位置：</span>
 		<ul class="placeul">
 			<li><a href="#">首页</a></li>
-			<li><a href="#">${menu.name }</a></li>
-			<li><a href="#">新闻管理</a></li>
+ 			<li><a href="#">路线管理</a></li>
 		</ul>
 	</div>
 	<div class="rightinfo">
-	<form method="post" action="${ contextpath}/securitynews/list.htm">
-		<input type="hidden" value="${menu.id }" name="id"/>
+	<form method="post" action="${ contextpath}/bq/listnews.htm">
+		<input type="hidden" value="${menu.id }" name="menuId"/>
 			<ul class="seachform" style="padding-top: 10px; padding-left: 15px">
-			<li><label>新闻标题</label><input type="text" name="title"
+			<li><label>标题</label><input type="text" name="title"
 					id="title" class="scinput1" placeholder="" value="${title}" style="width:300px"></li>
 						<li><label>是否审核</label>
 						<div class="vocation">
@@ -57,8 +56,8 @@
 		<br/>
 		 <div class="tools">
 			<ul class="toolbar">
-			<li class="click" onclick="add();" ><span><img src="${contextpath }/res/images/t01.png"></span>添加</li>
-	        <li onclick="deleteNews();" ><span><img src="${contextpath }/res/images/t03.png"></span>删除</li>
+			<li class="click" onclick="add();" ><span><img src="${contextpath }/res/images/t01.png"></span>添加线路</li>
+	        <li onclick="deleteNews();" ><span><img src="${contextpath }/res/images/t03.png"></span>删除线路</li>
 	        <li onclick="goback();" ><span><img src="${contextpath }/res/images/t04.png"></span>返回</li>
 			</ul>
 		</div>
@@ -110,13 +109,19 @@
 			$(".select1").uedSelect({
 				width : 100			  
 			});
-			table_init("${ contextpath}/securitynews","${ contextpath}/securitynews/list?");
+			table_init("${ contextpath}/bq/listnews","${ contextpath}/bq/listnews?");
 		});
 		function goback(){
-			window.location.href="${contextpath}/securitymenu/list.htm";
+			window.location.href="${contextpath}/bq/listBq.htm";
 		}
 		function add(){
- 			window.location.href="${contextpath}/securitynews/add.htm?menuId=${menu.id}";
+			layer.open({
+				type : 2,
+				title : '线路选择',
+				shadeClose : true,
+				area : [ '780px', '90%' ],
+				content : '${contextpath}/bq/bqselect.htm?bgId=${menu.id }' //iframe的url
+			});
 		}
 		function deleteNews(){
 			var del_ids="" ;

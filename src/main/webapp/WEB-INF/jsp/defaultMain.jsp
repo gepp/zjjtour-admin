@@ -47,10 +47,10 @@
     
     <div class="listtitle">系统环境</div>    
    	<ul class="newlist">
-    <li><i>操作系统</a></i>${osName }</li>
-    <li><i>java版本</a></i>${jdkVersion }</li>
-    <li><i>java目录</a></i>${jdkHome }</li>
-     <li><i>服务器版本</a></i><%= application.getServerInfo() %></li>
+    <li><i>操作系统</a></i>${osName }&nbsp;</li>
+    <li><i>java版本</a></i>${jdkVersion }&nbsp;</li>
+    <li><i>java目录</a></i>${jdkHome }&nbsp;</li>
+     <li><i>服务器版本</a></i><%= application.getServerInfo() %>&nbsp;</li>
     </ul>        
     </div>
      

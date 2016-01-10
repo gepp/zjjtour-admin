@@ -20,21 +20,14 @@
 <script type="text/javascript" src="${ contextpath }/res/js/select-ui.min.js"></script>
 
 </head>
-<body>
+<body style="min-width: 300px">
 
-	<div class="place">
-		<span>位置：</span>
-		<ul class="placeul">
-			<li><a href="#">首页</a></li>
-			<li><a href="#">${menu.name }</a></li>
-			<li><a href="#">新闻管理</a></li>
-		</ul>
-	</div>
+	 
 	<div class="rightinfo">
-	<form method="post" action="${ contextpath}/securitynews/list.htm">
-		<input type="hidden" value="${menu.id }" name="id"/>
+	<form method="post" action="${ contextpath}/bq/bqselect.htm">
+		<input type="hidden" value="${bgId }" name="bgId"/>
 			<ul class="seachform" style="padding-top: 10px; padding-left: 15px">
-			<li><label>新闻标题</label><input type="text" name="title"
+			<li><label>标题</label><input type="text" name="title"
 					id="title" class="scinput1" placeholder="" value="${title}" style="width:300px"></li>
 						<li><label>是否审核</label>
 						<div class="vocation">
@@ -48,6 +41,8 @@
 					<li>
 					<input name="" type="submit"
 						id="table_refresh" class="scbtn" value="查询" />
+					&nbsp;&nbsp;
+					<input name="" type="button"  class="scbtn" value="确定选择" onclick="submitCheck();" />
 					</li>
 					
 		
@@ -55,13 +50,7 @@
 		 
 	</form>
 		<br/>
-		 <div class="tools">
-			<ul class="toolbar">
-			<li class="click" onclick="add();" ><span><img src="${contextpath }/res/images/t01.png"></span>添加</li>
-	        <li onclick="deleteNews();" ><span><img src="${contextpath }/res/images/t03.png"></span>删除</li>
-	        <li onclick="goback();" ><span><img src="${contextpath }/res/images/t04.png"></span>返回</li>
-			</ul>
-		</div>
+	 
 		<div class="formtitle1">
 			<span>通知公告</span>
 		</div>
@@ -75,7 +64,6 @@
 					<th>是否审核</th>
 					<th>审核人</th>
 					<th>审核时间</th>
-					<th>操作</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -89,11 +77,7 @@
 						<td>${ item.reviewStatus=='0'?'未处理':(item.reviewStatus=='1'?'通过':'失败')}</td>
 						<td>${ item.reviewUserid}</td>
 						<td>${ item.reviewTime}</td>
-						<td><a
-							href="${ contextpath }/securitynews/modify.htm?id=${item.id}"
-							class="tablelink">编辑</a> <a
-							href="${ contextpath }/securitynews/view.htm?id=${item.id}"
-							class="tablelink">查看</a>
+						 
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -112,13 +96,8 @@
 			});
 			table_init("${ contextpath}/securitynews","${ contextpath}/securitynews/list?");
 		});
-		function goback(){
-			window.location.href="${contextpath}/securitymenu/list.htm";
-		}
-		function add(){
- 			window.location.href="${contextpath}/securitynews/add.htm?menuId=${menu.id}";
-		}
-		function deleteNews(){
+		 
+		function submitCheck(){
 			var del_ids="" ;
 			var count=0;
 			var checkbox = $("input[name='subBox']");
@@ -133,38 +112,39 @@
 			}
 			
 			else{
-				parent.layer.confirm('您确认删除您所选择的'+count+'条数据么？',function(index){
-					//ajax提交删除数据
-					jQuery.ajax({
-								type: "post", 
-								url:"${contextpath}/securitynews/delete", 
-								dataType: "json",
-								data:{action:'delete',ids:del_ids},
-								success: function (data) { 
-									parent.layer.close(index);
-									if(data.status=='success'){
-										parent.layer.alert('当前操作成功', {
-											closeBtn: 0
-										}, function(index){
-											parent.layer.close(index);
-											window.location.href="${contextpath}/securitynews/list.htm?id=${menu.id}";
-										});
-									}else{
+			
+			parent.layer.confirm('您确认添加您所选择的'+count+'条数据么？',function(index){
+				//ajax提交删除数据
+				jQuery.ajax({
+							type: "post", 
+							url:"${contextpath}/bq/submitCheck", 
+							dataType: "json",
+							data:{action:'delete',ids:del_ids,bqId:'${bgId}'},
+							success: function (data) { 
+								parent.layer.close(index);
+								if(data.status=='success'){
+									parent.layer.alert('当前操作成功', {
+										closeBtn: 0
+									}, function(index){
 										parent.layer.close(index);
-										parent.layer.alert(data.message, {
-											closeBtn: 0
-										}, function(index){
-											parent.layer.close(index);
-											window.location.href="${contextpath}/securitynews/list.htm?id=${menu.id}";
-										});
-									}
-									
-									 
-								} 
-						});
-				});
-			 
-			}
+										parent.location.reload();
+										 
+									});
+								}else{
+									parent.layer.close(index);
+									parent.layer.alert(data.message, {
+										closeBtn: 0
+									}, function(index){
+										parent.layer.close(index);
+										parent.location.reload();
+									});
+								}
+								
+								 
+							} 
+					});
+			});
+		}
 		}
 		
 </script>

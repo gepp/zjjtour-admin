@@ -45,8 +45,8 @@ public class LoginController extends BaseController {
     @Resource
     private ImageCaptchaService imageCaptchaService;
 
-    @Resource
-    EhCacheCacheManager ehCacheCacheManager;
+//    @Resource
+//    EhCacheCacheManager ehCacheCacheManager;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -69,12 +69,12 @@ public class LoginController extends BaseController {
         String username = getPara("username");
         String password = getPara("password");
         String rememberMe = getPara("rememberMe");
-        Integer failTime = (Integer) ehCacheCacheManager.getEhCache("metaCache").get(username + "failTime");
-
-        if (failTime == null) {
-            failTime = 0;
-            ehCacheCacheManager.getEhCache("metaCache").put(username + "failTime", 0, 60 * 30); // 30分钟过期设置
-        }
+//        Integer failTime = (Integer) ehCacheCacheManager.getEhCache("metaCache").get(username + "failTime");
+//
+//        if (failTime == null) {
+//            failTime = 0;
+//            ehCacheCacheManager.getEhCache("metaCache").put(username + "failTime", 0, 60 * 30); // 30分钟过期设置
+//        }
 
         String captcha = getPara("captcha");
         Boolean isResponseCorrect = imageCaptchaService.validateResponseForID(request.getSession().getId(), captcha);
@@ -87,16 +87,16 @@ public class LoginController extends BaseController {
         String flag = "T";
         String reason = "";
 
-        if (failTime > 3) {
-            flag = "F";
-            reason = "密码错误超过3次，请您半小时以后再登录！";
-        } else {
+//        if (failTime > 3) {
+//            flag = "F";
+//            reason = "密码错误超过3次，请您半小时以后再登录！";
+//        } else {
             if (isResponseCorrect) {
                 SecurityUser securityUser = securityUserService.login(username, password);
                 if (securityUser == null) {
                     flag = "F";
                     reason = "用户名或密码错误";
-                    ehCacheCacheManager.getEhCache("metaCache").put(username + "failTime", failTime + 1, 60 * 30); // 30分钟过期设置
+                   // ehCacheCacheManager.getEhCache("metaCache").put(username + "failTime", failTime + 1, 60 * 30); // 30分钟过期设置
                 } else {
                     if ("true".equals(rememberMe)) {
                         CookieUtil.addCookie(request, response, "username", username, 60 * 60);
@@ -110,7 +110,7 @@ public class LoginController extends BaseController {
                 flag = "F";
                 reason = "验证码错误";
             }
-        }
+//        }
         resultMap.put("flag", flag);
         resultMap.put("reason", reason);
         renderJson(response, resultMap);

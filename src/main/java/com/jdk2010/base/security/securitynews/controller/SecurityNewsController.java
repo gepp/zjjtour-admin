@@ -37,12 +37,12 @@ public class SecurityNewsController extends BaseController {
         SecurityMenu menu = securityMenuService.findById(id, SecurityMenu.class);
         setAttr("menu", menu);
         DbKit dbKit = new DbKit(
-                "select t.*,a.realname from security_news t left join security_user a on t.userid=a.id  where 1=1 ");
+                "select t.*,a.realname from security_news t left join security_user a on t.userid=a.id  where 1=1 and t.menu_id="+id+"");
         String searchSQL = "";
         String orderSQL = " order by t.ctime desc";
         String title = getPara("title");
         if (title != null && !"".equals(title)) {
-            searchSQL = searchSQL + " and t.title LIKE ':title'";
+            searchSQL = searchSQL + " and t.title LIKE :title";
             if (request.getMethod().equals("get")) {
                 title = StringUtil.transCharset(title, "ISO8859-1", "UTF-8");
             }
@@ -50,8 +50,8 @@ public class SecurityNewsController extends BaseController {
             dbKit.append(searchSQL);
             dbKit.put("title", "%" + title + "%");
         }
-
         dbKit.append(orderSQL);
+        System.out.println(dbKit.getSql());
         Page pageList = securityNewsService.queryForPageList(dbKit, getPage(), SecurityNews.class);
         setAttr("pageList", pageList);
         return "/com/jdk2010/base/security/securitynews/securitynews";

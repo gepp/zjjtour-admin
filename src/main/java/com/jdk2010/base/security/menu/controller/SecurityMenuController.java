@@ -29,12 +29,13 @@ public class SecurityMenuController extends BaseController {
 
     @RequestMapping("/list")
     public String list(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<Map<String, Object>> menuList = securityMenuService.getMenuListByParentIdColumn("0");
+    	//1 代表栏目 2代表标签
+        List<Map<String, Object>> menuList = securityMenuService.getMenuListByParentIdColumn("0","1");
         setAttr("menuList", menuList);
         return "/com/jdk2010/base/security/menu/menu";
     }
-
-     
+    
+    
 
     @RequestMapping("/add")
     public String add(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -44,6 +45,8 @@ public class SecurityMenuController extends BaseController {
         setAttr("firstMenuList", firstMenuList);
         return "/com/jdk2010/base/security/menu/menu_add";
     }
+    
+    
 
     @RequestMapping("/addaction")
     public void addaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -77,7 +80,7 @@ public class SecurityMenuController extends BaseController {
         renderJson(response, returnData);
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping("/bqdelete")
     public void delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String ids = getPara("ids");
         securityMenuService.deleteByIDS(ids, SecurityMenu.class);

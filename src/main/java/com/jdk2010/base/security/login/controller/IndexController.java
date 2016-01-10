@@ -18,7 +18,7 @@ import com.jdk2010.base.security.securityuser.model.SecurityUser;
 import com.jdk2010.base.security.securityuser.service.ISecurityUserService;
 import com.jdk2010.framework.controller.BaseController;
 import com.jdk2010.framework.util.CookieUtil;
-import com.jdk2010.framework.util.OsInfoUtil;
+//import com.jdk2010.framework.util.OsInfoUtil;
 
 @Controller
 @RequestMapping(value = "/")
@@ -84,9 +84,9 @@ public class IndexController extends BaseController {
             return REDIRECT+"/login.htm";
         }
         else{
-            setAttr("jdkVersion", OsInfoUtil.getJdkVersion());
-            setAttr("jdkHome", OsInfoUtil.getJdkHome());
-            setAttr("osName", OsInfoUtil.getOsName());
+//            setAttr("jdkVersion", OsInfoUtil.getJdkVersion());
+//            setAttr("jdkHome", OsInfoUtil.getJdkHome());
+//            setAttr("osName", OsInfoUtil.getOsName());
             List<SecurityNews> newsList=securityNewsService.getTop7News();
             setAttr("newsList", newsList);
             return "/defaultMain";
