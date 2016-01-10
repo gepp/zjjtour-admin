@@ -9,11 +9,49 @@ MySQL - 5.5.20 : Database - zjjtour
 /*!40101 SET SQL_MODE=''*/;
 
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`zjjtour` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 USE `zjjtour`;
+
+/*Table structure for table `bq_news` */
+
+DROP TABLE IF EXISTS `bq_news`;
+
+CREATE TABLE `bq_news` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `bq_id` int(11) DEFAULT NULL,
+  `news_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+/*Data for the table `bq_news` */
+
+insert  into `bq_news`(`id`,`bq_id`,`news_id`) values (2,1021,17),(4,1021,17),(5,1021,18),(6,1021,21),(7,1022,21),(8,1022,20),(9,1022,19),(10,1022,18),(11,1022,17);
+
+/*Table structure for table `security_bq` */
+
+DROP TABLE IF EXISTS `security_bq`;
+
+CREATE TABLE `security_bq` (
+  `id` int(32) unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `name` varchar(100) DEFAULT NULL COMMENT '菜单名称',
+  `code` varchar(50) DEFAULT NULL COMMENT '菜单编码',
+  `description` varchar(500) DEFAULT NULL COMMENT '菜单描述',
+  `orderlist` int(11) DEFAULT NULL COMMENT '排序号',
+  `img` varchar(200) DEFAULT NULL COMMENT '图片地址',
+  `url` varchar(150) DEFAULT NULL COMMENT '跳转url',
+  `parent_id` int(111) DEFAULT NULL COMMENT '父节点',
+  `type` int(50) DEFAULT NULL COMMENT '菜单类型',
+  `status` int(4) DEFAULT NULL COMMENT '状态',
+  `column_type` varchar(50) DEFAULT NULL,
+  `page_type` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1036 DEFAULT CHARSET=utf8;
+
+/*Data for the table `security_bq` */
 
 /*Table structure for table `security_menu` */
 
@@ -33,11 +71,11 @@ CREATE TABLE `security_menu` (
   `column_type` varchar(50) DEFAULT NULL,
   `page_type` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1019 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1036 DEFAULT CHARSET=utf8;
 
 /*Data for the table `security_menu` */
 
-insert  into `security_menu`(`id`,`name`,`code`,`description`,`orderlist`,`img`,`url`,`parent_id`,`type`,`status`,`column_type`,`page_type`) values (1,'系统管理',NULL,NULL,4,'/res/images/leftico04.png',NULL,0,0,1,NULL,NULL),(2,'部门管理',NULL,NULL,NULL,NULL,'/securityorganization/list.htm',1,0,1,NULL,NULL),(3,'用户管理',NULL,NULL,NULL,NULL,'/securityuser/list.htm',1,0,1,NULL,NULL),(4,'角色权限管理',NULL,NULL,NULL,NULL,'/securityrole/list.htm',1,0,1,NULL,NULL),(1009,'栏目管理',NULL,NULL,NULL,NULL,'/securitymenu/list.htm',1,0,1,NULL,NULL),(1010,'经典线路',NULL,NULL,1,'/res/images/leftico01.png',NULL,0,1,1,'1','0'),(1011,'全景张家界',NULL,NULL,2,'/res/images/leftico01.png',NULL,0,1,0,'2','0'),(1012,'绝美风光',NULL,NULL,3,'/res/images/leftico01.png',NULL,1011,1,0,'1','0'),(1013,'历史景观',NULL,NULL,4,NULL,NULL,1011,1,1,'0','0'),(1014,'文化艺术',NULL,NULL,5,NULL,NULL,1011,1,1,'0','0'),(1015,'户外休闲',NULL,NULL,6,'/res/images/leftico01.png',NULL,1011,1,0,'1','0'),(1016,'美食小吃',NULL,NULL,7,NULL,NULL,1011,1,1,'0','0'),(1017,'出行攻略',NULL,NULL,8,NULL,NULL,1011,1,1,'0','0'),(1018,'精品游记',NULL,NULL,9,NULL,NULL,1011,1,1,'0','0');
+insert  into `security_menu`(`id`,`name`,`code`,`description`,`orderlist`,`img`,`url`,`parent_id`,`type`,`status`,`column_type`,`page_type`) values (1,'系统管理',NULL,NULL,999,'/res/images/leftico04.png',NULL,0,0,1,NULL,NULL),(2,'部门管理',NULL,NULL,999,NULL,'/securityorganization/list.htm',1,0,1,NULL,NULL),(3,'用户管理',NULL,NULL,999,NULL,'/securityuser/list.htm',1,0,1,NULL,NULL),(4,'角色权限管理',NULL,NULL,999,NULL,'/securityrole/list.htm',1,0,1,NULL,NULL),(1009,'栏目管理',NULL,NULL,NULL,NULL,'/securitymenu/list.htm',1,0,1,NULL,NULL),(1010,'经典线路',NULL,NULL,1,'/res/images/leftico01.png',NULL,0,1,1,'1','0'),(1011,'全景张家界',NULL,NULL,2,'/res/images/leftico01.png',NULL,0,1,0,'2','0'),(1012,'绝美风光',NULL,NULL,3,'/res/images/leftico01.png',NULL,1011,1,0,'1','0'),(1013,'历史景观',NULL,NULL,4,NULL,NULL,1011,1,1,'0','0'),(1014,'文化艺术',NULL,NULL,5,NULL,NULL,1011,1,1,'0','0'),(1015,'户外休闲',NULL,NULL,6,'/res/images/leftico01.png',NULL,1011,1,0,'1','0'),(1016,'美食小吃',NULL,NULL,7,NULL,NULL,1011,1,1,'0','0'),(1017,'出行攻略',NULL,NULL,8,NULL,NULL,1011,1,1,'0','0'),(1018,'精品游记',NULL,NULL,9,NULL,NULL,1011,1,1,'0','0'),(1019,'标签管理',NULL,NULL,NULL,NULL,'/bq/listBq.htm',1,1,1,'0','0'),(1021,'行程天数',NULL,NULL,1,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1022,'1天',NULL,NULL,1,NULL,NULL,1021,2,1,'1',NULL),(1023,'2天',NULL,NULL,2,NULL,NULL,1021,2,1,'1',NULL),(1026,'所在地区',NULL,NULL,2,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1027,'长沙',NULL,NULL,2,'/res/images/leftico01.png',NULL,1026,2,1,'1',NULL),(1028,'凤凰',NULL,NULL,3,NULL,NULL,1026,2,1,'1',NULL),(1029,'其他',NULL,NULL,3,NULL,NULL,1026,2,1,'1',NULL),(1030,'旅游要素',NULL,NULL,3,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1031,'摄影',NULL,NULL,2,NULL,NULL,1030,2,1,'1',NULL),(1032,'人文',NULL,NULL,2,NULL,NULL,1030,2,1,'1',NULL),(1033,'美食',NULL,NULL,3,'/res/images/leftico01.png',NULL,1030,2,1,'1',NULL),(1034,'适合人群',NULL,NULL,4,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1035,'20岁以下',NULL,NULL,1,'/res/images/leftico01.png',NULL,1034,2,1,'1',NULL);
 
 /*Table structure for table `security_news` */
 
@@ -65,11 +103,11 @@ CREATE TABLE `security_news` (
   `review_userid` int(11) DEFAULT NULL,
   `review_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 /*Data for the table `security_news` */
 
-insert  into `security_news`(`id`,`title`,`litter_title`,`content`,`userid`,`status`,`ctime`,`smallimg`,`indeximg`,`url`,`orderlist`,`abstract_content`,`read_type`,`index_status`,`top_status`,`jump_type`,`menu_id`,`review_status`,`review_userid`,`review_time`) values (6,'123','123','123',1,0,'2016-01-07 17:18:55','123','123','12',123,NULL,'1',NULL,NULL,'1',NULL,'0',NULL,NULL),(7,'123','234','234',1,0,'2016-01-07 17:20:04','http://localhost:8081/zjjtour-admin/attached/image/20160107/20160107171954_125.jpg','http://localhost:8081/zjjtour-admin/attached/image/20160107/20160107171957_985.jpg','234',234,NULL,'1','1','1','1',NULL,'0',NULL,NULL);
+insert  into `security_news`(`id`,`title`,`litter_title`,`content`,`userid`,`status`,`ctime`,`smallimg`,`indeximg`,`url`,`orderlist`,`abstract_content`,`read_type`,`index_status`,`top_status`,`jump_type`,`menu_id`,`review_status`,`review_userid`,`review_time`) values (17,'123','213','123',1,0,'2016-01-10 20:19:41',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL),(18,'aaaa',NULL,'aaa',1,0,'2016-01-10 20:20:52',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL),(19,'阿德法','阿德法','阿德法',1,0,'2016-01-10 23:05:05',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL),(20,'阿斯蒂芬撒法',NULL,'萨芬',1,0,'2016-01-10 23:05:14',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL),(21,'自作主张',NULL,'自作主张',1,0,'2016-01-10 23:05:19',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL);
 
 /*Table structure for table `security_organization` */
 
@@ -188,5 +226,6 @@ CREATE TABLE `security_user_role` (
 insert  into `security_user_role`(`id`,`user_id`,`role_id`) values (25,11,'1');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
