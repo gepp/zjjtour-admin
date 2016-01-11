@@ -28,13 +28,13 @@
 function login(){
 	var username=$("#username").val();
 	var password=$("#password").val();
-	var captcha=$("#captcha").val();
+	//var captcha=$("#captcha").val();
 	var rememberMe=$("#rememberMe").prop("checked");
-	if(username==''||password==''||captcha==''){
+	if(username==''||password==''){
 		layer.alert('请填写用户名/密码/验证码！');
 	}
 	else{
-        var map={"username":username,"password":$.decode(password),"rememberMe":rememberMe,"captcha":captcha};
+        var map={"username":username,"password":$.decode(password),"rememberMe":rememberMe};
 		  $.ajax({
 		        url:"${contextpath}/doLogin.htm",
 		        type:"post",
@@ -44,8 +44,8 @@ function login(){
 		           if(data.flag=='T'){
 		        	   window.location.href="${contextpath}/main.htm";
 		           }else{
-		        	   $("#imgsrc").click();
-		        	   $("#captcha").val('');
+		        	 //  $("#imgsrc").click();
+		        	 //  $("#captcha").val('');
 		        	   layer.alert(data.reason);
 		           }
 		        }, 
@@ -82,12 +82,12 @@ if (top.location != self.location){
 					class="loginuser" value="" onclick="JavaScript:this.value=''" /></li>
 				<li><input name="password" id="password" type="password" class="loginpwd"
 					value="" onclick="JavaScript:this.value=''" /></li>
-				<li class="yzm">
+				<%-- <li class="yzm">
 				    <span><input name="" id="captcha" type="text" value="验证码" onclick="JavaScript:this.value=''"/></span>
 				    <cite>
 				    <img width="114" height="46" id="imgsrc" src="${contextpath}/captcha.htm?d='+new Date().getTime()" onclick="this.src='${contextpath}/captcha.htm?d='+new Date().getTime()"/>
 					</cite> 
-				</li>
+				</li> --%>
 				<li><input name="" type="button" class="loginbtn" value="登 录"
 					onclick="login();" /><label><input type="checkbox" value="rememberMe" id="rememberMe" name="rememberMe"  />记住密码</label></li>
 			</ul>

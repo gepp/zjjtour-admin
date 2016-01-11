@@ -18,6 +18,8 @@ import com.jdk2010.base.security.securityuser.model.SecurityUser;
 import com.jdk2010.base.security.securityuser.service.ISecurityUserService;
 import com.jdk2010.framework.controller.BaseController;
 import com.jdk2010.framework.util.CookieUtil;
+import com.jdk2010.framework.util.OsInfoUtil;
+
 //import com.jdk2010.framework.util.OsInfoUtil;
 
 @Controller
@@ -27,7 +29,7 @@ public class IndexController extends BaseController {
 
     @Resource
     ISecurityUserService securityUserService;
-    
+
     @Resource
     ISecurityNewsService securityNewsService;
 
@@ -68,8 +70,25 @@ public class IndexController extends BaseController {
             List<Map<String, Object>> list = (List<Map<String, Object>>) userMenuMap.get(obj);
             for (int i = 0; i < list.size(); i++) {
                 Map<String, Object> secondMap = (Map<String, Object>) list.get(i);
-                menuStr = menuStr + "<li><cite></cite><a href=\"" + contextpath + "" + secondMap.get("url")
-                        + "\" target=\"rightFrame\">" + secondMap.get("name") + "</a><i></i></li>";
+                System.out.println("secondMap:"+secondMap);
+                if (secondMap.get("type").equals("0")) {
+                    menuStr = menuStr + "<li><cite></cite><a href=\"" + contextpath + "" + secondMap.get("url")
+                            + "\" target=\"rightFrame\">" + secondMap.get("name") + "</a><i></i></li>";
+                } else if (secondMap.get("type").equals("1")) {
+                    if (secondMap.get("column_type").equals("1")) {
+                        menuStr = menuStr + "<li><cite></cite><a href=\"" + contextpath + "/securitynews/list.htm?id=" +secondMap.get("id") 
+                                + "\" target=\"rightFrame\">" + secondMap.get("name") + "</a><i></i></li>";
+
+                    } else if (secondMap.get("column_type").equals("2")) {
+                        menuStr = menuStr + "<li><cite></cite><a href=\"" + contextpath + "/securitynews/modifyDetail.htm?menuId=" +secondMap.get("id") 
+                                + "\" target=\"rightFrame\">" + secondMap.get("name") + "</a><i></i></li>";
+                        
+                    } else {
+                        menuStr = menuStr + "<li><cite></cite>" + secondMap.get("name") + "<i></i></li>";
+                        
+                    }
+
+                }
             }
             menuStr = menuStr + "</ul></dd>";
         }
@@ -80,18 +99,17 @@ public class IndexController extends BaseController {
     @RequestMapping("/defaultMain")
     public String defaultMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
         SecurityUser securityUser = getSessionAttr("securityUser");
-        if(securityUser==null){
-            return REDIRECT+"/login.htm";
-        }
-        else{
-//            setAttr("jdkVersion", OsInfoUtil.getJdkVersion());
-//            setAttr("jdkHome", OsInfoUtil.getJdkHome());
-//            setAttr("osName", OsInfoUtil.getOsName());
-            List<SecurityNews> newsList=securityNewsService.getTop7News();
+        if (securityUser == null) {
+            return REDIRECT + "/login.htm";
+        } else {
+            setAttr("jdkVersion", OsInfoUtil.getJdkVersion());
+            setAttr("jdkHome", OsInfoUtil.getJdkHome());
+            setAttr("osName", OsInfoUtil.getOsName());
+            List<SecurityNews> newsList = securityNewsService.getTop7News();
             setAttr("newsList", newsList);
             return "/defaultMain";
         }
-        
+
     }
 
     @RequestMapping("/footer")
@@ -103,7 +121,7 @@ public class IndexController extends BaseController {
     public String tech(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return "/tech";
     }
-    
+
     @RequestMapping("/passwordModify")
     public String passwordModify(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return "/com/jdk2010/base/security/securityuser/password_modify";

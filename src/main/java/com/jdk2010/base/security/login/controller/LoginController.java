@@ -1,7 +1,6 @@
 package com.jdk2010.base.security.login.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -20,10 +19,7 @@ import com.jdk2010.base.security.securityuser.model.SecurityUser;
 import com.jdk2010.base.security.securityuser.service.ISecurityUserService;
 import com.jdk2010.base.security.securityuserrole.service.ISecurityUserRoleService;
 import com.jdk2010.framework.controller.BaseController;
-import com.jdk2010.framework.dal.cache.support.ehcache.EhCacheCacheManager;
-import com.jdk2010.framework.dal.client.DalClient;
 import com.jdk2010.framework.util.CookieUtil;
-import com.jdk2010.framework.util.MD5Utils;
 import com.octo.captcha.service.image.ImageCaptchaService;
 
 @Controller
@@ -44,9 +40,6 @@ public class LoginController extends BaseController {
 
     @Resource
     private ImageCaptchaService imageCaptchaService;
-
-//    @Resource
-//    EhCacheCacheManager ehCacheCacheManager;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -69,15 +62,15 @@ public class LoginController extends BaseController {
         String username = getPara("username");
         String password = getPara("password");
         String rememberMe = getPara("rememberMe");
-//        Integer failTime = (Integer) ehCacheCacheManager.getEhCache("metaCache").get(username + "failTime");
-//
-//        if (failTime == null) {
-//            failTime = 0;
-//            ehCacheCacheManager.getEhCache("metaCache").put(username + "failTime", 0, 60 * 30); // 30分钟过期设置
-//        }
+        // Integer failTime = (Integer) ehCacheCacheManager.getEhCache("metaCache").get(username + "failTime");
+        //
+        // if (failTime == null) {
+        // failTime = 0;
+        // ehCacheCacheManager.getEhCache("metaCache").put(username + "failTime", 0, 60 * 30); // 30分钟过期设置
+        // }
 
         String captcha = getPara("captcha");
-        Boolean isResponseCorrect = imageCaptchaService.validateResponseForID(request.getSession().getId(), captcha);
+        // Boolean isResponseCorrect = imageCaptchaService.validateResponseForID(request.getSession().getId(), captcha);
         request.getSession().invalidate(); // 清空session
         if (request.getCookies() != null) {
             Cookie cookie = request.getCookies()[0]; // 获取cookie
@@ -87,30 +80,33 @@ public class LoginController extends BaseController {
         String flag = "T";
         String reason = "";
 
-//        if (failTime > 3) {
-//            flag = "F";
-//            reason = "密码错误超过3次，请您半小时以后再登录！";
-//        } else {
-            if (isResponseCorrect) {
-                SecurityUser securityUser = securityUserService.login(username, password);
-                if (securityUser == null) {
-                    flag = "F";
-                    reason = "用户名或密码错误";
-                   // ehCacheCacheManager.getEhCache("metaCache").put(username + "failTime", failTime + 1, 60 * 30); // 30分钟过期设置
-                } else {
-                    if ("true".equals(rememberMe)) {
-                        CookieUtil.addCookie(request, response, "username", username, 60 * 60);
-                        CookieUtil.addCookie(request, response, "md5Password", password, 60 * 60);
-                    }
-                    setSessionAttr("securityUser", securityUser);
-                    String menuStr = securityUserService.getUserMenuStr(securityUser);
-                    setSessionAttr("menuStr", menuStr);
-                }
-            } else {
-                flag = "F";
-                reason = "验证码错误";
+        // if (failTime > 3) {
+        // flag = "F";
+        // reason = "密码错误超过3次，请您半小时以后再登录！";
+        // } else {
+        // if (isResponseCorrect) {
+        SecurityUser securityUser = securityUserService.login(username, password);
+        if (securityUser == null) {
+            flag = "F";
+            reason = "用户名或密码错误";
+            // ehCacheCacheManager.getEhCache("metaCache").put(username + "failTime", failTime + 1, 60 * 30); //
+            // 30分钟过期设置
+        } else {
+            if ("true".equals(rememberMe)) {
+                CookieUtil.addCookie(request, response, "username", username, 60 * 60);
+                CookieUtil.addCookie(request, response, "md5Password", password, 60 * 60);
             }
-//        }
+            setSessionAttr("securityUser", securityUser);
+            String menuStr = securityUserService.getUserMenuStr(securityUser);
+            setSessionAttr("menuStr", menuStr);
+        }
+        // }
+
+        // else {
+        // flag = "F";
+        // reason = "验证码错误";
+        // }
+        // }
         resultMap.put("flag", flag);
         resultMap.put("reason", reason);
         renderJson(response, resultMap);

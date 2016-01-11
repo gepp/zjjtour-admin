@@ -82,9 +82,9 @@ public class SecurityNewsController extends BaseController {
         } else {
             securityNews.setTopStatus("0");
         }
-        String jumbType = getPara("jumbType");
+        String jumpType = getPara("jumpType");
 
-        if (jumbType != null) {
+        if (jumpType != null) {
             securityNews.setJumpType("1");
         } else {
             securityNews.setJumpType("0");
@@ -110,6 +110,26 @@ public class SecurityNewsController extends BaseController {
     @RequestMapping("/modifyaction")
     public void modifyaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
         SecurityNews securityNews = getModel(SecurityNews.class);
+        String indexStatus = getPara("indexStatus");
+        if (indexStatus != null) {
+            securityNews.setIndexStatus("1");
+        } else {
+            securityNews.setIndexStatus("0");
+        }
+
+        String topStatus = getPara("topStatus");
+        if (topStatus != null) {
+            securityNews.setTopStatus("1");
+        } else {
+            securityNews.setTopStatus("0");
+        }
+        String jumpType = getPara("jumpType");
+
+        if (jumpType != null) {
+            securityNews.setJumpType("1");
+        } else {
+            securityNews.setJumpType("0");
+        }
         securityNewsService.update(securityNews);
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
         renderJson(response, returnData);
@@ -130,5 +150,50 @@ public class SecurityNewsController extends BaseController {
         setAttr("securityNews", securityNews);
         return "/com/jdk2010/base/security/securitynews/securitynews_view";
     }
+    
+    @RequestMapping("/modifyDetail")
+    public String modifyDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String menuId=getPara("menuId");
+        SecurityMenu securityMenu = securityMenuService.findById(menuId, SecurityMenu.class);
+       
+        SecurityNews securityNews = securityNewsService.queryForObject("select * from security_news where menu_id="+menuId+"",SecurityNews.class);
+        setAttr("securityNews", securityNews);
+        setAttr("menuId", menuId);
+        return "/com/jdk2010/base/security/securitynews/securitynews_modifydetail";
+    }
+    
+    
+    @RequestMapping("/modifydetailaction")
+    public void modifydetailaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        SecurityNews securityNews = getModel(SecurityNews.class);
+        String indexStatus = getPara("indexStatus");
+        if (indexStatus != null) {
+            securityNews.setIndexStatus("1");
+        } else {
+            securityNews.setIndexStatus("0");
+        }
 
+        String topStatus = getPara("topStatus");
+        if (topStatus != null) {
+            securityNews.setTopStatus("1");
+        } else {
+            securityNews.setTopStatus("0");
+        }
+        String jumpType = getPara("jumpType");
+
+        if (jumpType != null) {
+            securityNews.setJumpType("1");
+        } else {
+            securityNews.setJumpType("0");
+        }
+        if(securityNews.getId()!=null){
+        securityNewsService.update(securityNews);
+        }else{
+          securityNewsService.save(securityNews);  
+        }
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        renderJson(response, returnData);
+    }
+
+  
 }

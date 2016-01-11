@@ -82,7 +82,7 @@
 						<div class="vocation">
 								<select name="securityMenu.status" class="select1">
 									<option value="0" <c:if test="${ securityMenu.status==0}">selected</c:if>>停用</option>
-									<option value="1" <c:if test="${ securityMenu.status==0}">selected</c:if>>启用</option>
+									<option value="1" <c:if test="${ securityMenu.status==1}">selected</c:if>>启用</option>
 								</select>
 							</div>
 						</li>

@@ -105,10 +105,9 @@
 								</textarea>
 						
 						</li>
+						<input type="hidden" value="${menuId }" name="securityNews.menuId" />
 						<li><label>&nbsp;</label><input name="" type="submit"
-							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
-							type="button" class="btn" value="返回"
-							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${securityNews.menuId }'" /></li>
+							class="btn" value=" 确定" /> &nbsp;&nbsp;</li>
 					</form>
 				</ul>
 			</div>
@@ -201,7 +200,7 @@
 												document.getElementById("content").value=editor.html();
 												$
 														.ajax({
-															url : "${ contextpath}/securitynews/modifyaction",
+															url : "${ contextpath}/securitynews/modifydetailaction",
 															data : $(form)
 																	.serialize(),
 															type : "post",
@@ -219,7 +218,7 @@
 																					},
 																					function(index) {
 																						parent.layer.close(index);
-																						window.location.href = '${ contextpath}/securitynews/list.htm?id=${securityNews.menuId }';
+																						window.location.reload();
 																					});
 																} else {
 																	sAlert('当前操作失败');

@@ -63,7 +63,7 @@
 			</ul>
 		</div>
 		<div class="formtitle1">
-			<span>通知公告</span>
+			<span>新闻</span>
 		</div>
 		<table class="tablelist">
 			<thead>
@@ -91,9 +91,7 @@
 						<td>${ item.reviewTime}</td>
 						<td><a
 							href="${ contextpath }/securitynews/modify.htm?id=${item.id}"
-							class="tablelink">编辑</a> <a
-							href="${ contextpath }/securitynews/view.htm?id=${item.id}"
-							class="tablelink">查看</a>
+							class="tablelink">编辑</a>  
 					</tr>
 				</c:forEach>
 			</tbody>

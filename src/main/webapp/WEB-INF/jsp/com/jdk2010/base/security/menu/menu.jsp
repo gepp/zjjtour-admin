@@ -69,8 +69,8 @@
 							class="tablelink">管理</a> 
 					    </c:if>
 						<c:if test="${item.column_type==2 }">
-						<a href="${contextpath }/securitymenu/modify.htm?id=${item.id}"
-							class="tablelink">查看详情</a> 
+						<a href="${contextpath }/securitynews/modifyDetail.htm?menuId=${item.id}"
+							class="tablelink">管理</a> 
 					    </c:if>		
 					
 							</td>

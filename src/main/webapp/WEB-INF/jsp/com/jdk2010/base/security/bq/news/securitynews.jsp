@@ -62,7 +62,7 @@
 			</ul>
 		</div>
 		<div class="formtitle1">
-			<span>通知公告</span>
+			<span>新闻</span>
 		</div>
 		<table class="tablelist">
 			<thead>
@@ -74,7 +74,6 @@
 					<th>是否审核</th>
 					<th>审核人</th>
 					<th>审核时间</th>
-					<th>操作</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -88,11 +87,7 @@
 						<td>${ item.reviewStatus=='0'?'未处理':(item.reviewStatus=='1'?'通过':'失败')}</td>
 						<td>${ item.reviewUserid}</td>
 						<td>${ item.reviewTime}</td>
-						<td><a
-							href="${ contextpath }/securitynews/modify.htm?id=${item.id}"
-							class="tablelink">编辑</a> <a
-							href="${ contextpath }/securitynews/view.htm?id=${item.id}"
-							class="tablelink">查看</a>
+					 
 					</tr>
 				</c:forEach>
 			</tbody>

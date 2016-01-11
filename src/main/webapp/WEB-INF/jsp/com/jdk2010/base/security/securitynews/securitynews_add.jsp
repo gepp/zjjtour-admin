@@ -80,7 +80,7 @@
 						<li><label>跳转URL<b></b></label> <input type="text"
 							class="dfinput" id="url" name="securityNews.url"
 							placeholder="" />
-							<input type="checkbox" name="jumbType"/>页内跳转
+							<input type="checkbox" name="jumpType"/>页内跳转
 							</li>
 						<li><label>排序<b></b></label> <input type="text"
 							class="dfinput" id="orderlist" name="securityNews.orderlist"
