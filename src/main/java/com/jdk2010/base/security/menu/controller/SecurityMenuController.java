@@ -80,10 +80,11 @@ public class SecurityMenuController extends BaseController {
         renderJson(response, returnData);
     }
 
-    @RequestMapping("/bqdelete")
+    @RequestMapping("/delete")
     public void delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String ids = getPara("ids");
         securityMenuService.deleteByIDS(ids, SecurityMenu.class);
+        dalClient.update("delete from security_menu where parent_id="+ids);
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
         renderJson(response, returnData);
     }

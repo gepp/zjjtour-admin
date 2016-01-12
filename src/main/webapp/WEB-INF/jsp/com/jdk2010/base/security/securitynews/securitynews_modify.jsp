@@ -97,7 +97,10 @@
 							</div>
 						
 						</li>
-						<li><label>通告内容<b></b></label> 
+						<li><label>内容摘要<b></b></label> <input type="text"
+							class="dfinput" id="abstractContent" name="securityNews.abstractContent"
+							placeholder="" value="${securityNews.abstractContent }" /></li>
+						<li><label>内容详情<b></b></label> 
 						<textarea id="content"
 								name="securityNews.content"
 								style="width: 700px; height: 250px; visibility: hidden;">

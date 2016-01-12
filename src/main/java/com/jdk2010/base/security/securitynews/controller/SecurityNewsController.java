@@ -16,6 +16,8 @@ import com.jdk2010.base.security.securitynews.service.ISecurityNewsService;
 import com.jdk2010.base.security.securityuser.model.SecurityUser;
 import com.jdk2010.framework.constant.Constants;
 import com.jdk2010.framework.controller.BaseController;
+import com.jdk2010.framework.dal.client.DalClient;
+import com.jdk2010.framework.util.DateUtil;
 import com.jdk2010.framework.util.DbKit;
 import com.jdk2010.framework.util.Page;
 import com.jdk2010.framework.util.ReturnData;
@@ -30,6 +32,9 @@ public class SecurityNewsController extends BaseController {
 
     @Resource
     ISecurityMenuService securityMenuService;
+    
+    @Resource
+    DalClient dalClient;
 
     @RequestMapping("/list")
     public String list(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -37,7 +42,7 @@ public class SecurityNewsController extends BaseController {
         SecurityMenu menu = securityMenuService.findById(id, SecurityMenu.class);
         setAttr("menu", menu);
         DbKit dbKit = new DbKit(
-                "select t.*,a.realname from security_news t left join security_user a on t.userid=a.id  where 1=1 and t.menu_id="+id+"");
+                "select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 and t.menu_id="+id+"");
         String searchSQL = "";
         String orderSQL = " order by t.ctime desc";
         String title = getPara("title");
@@ -50,7 +55,14 @@ public class SecurityNewsController extends BaseController {
             dbKit.append(searchSQL);
             dbKit.put("title", "%" + title + "%");
         }
+        String reviewStatus=getPara("reviewStatus");
+        if(reviewStatus!=null&&(reviewStatus.equals("1")||reviewStatus.equals("2"))){
+        	searchSQL = searchSQL + " and t.review_status ="+reviewStatus;
+        	dbKit.append(searchSQL);
+        	 setAttr("reviewStatus", reviewStatus);
+        }
         dbKit.append(orderSQL);
+        
         System.out.println(dbKit.getSql());
         Page pageList = securityNewsService.queryForPageList(dbKit, getPage(), SecurityNews.class);
         setAttr("pageList", pageList);
@@ -194,6 +206,34 @@ public class SecurityNewsController extends BaseController {
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
         renderJson(response, returnData);
     }
+    
+    
+    @RequestMapping("/updateStatus")
+    public void updateStatus(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String ids = getPara("ids");
+        String reason=getPara("reason");
+        String review_status=getPara("reviewStatus");
+        
+        SecurityUser securityUser=getSessionAttr("securityUser");
+        Integer review_userid=securityUser.getId();
+        String review_time=DateUtil.getNowTime();
+        
+        for(int i=0;i<ids.split(",").length;i++){
+        	dalClient.update("update security_news set review_userid="+review_userid+", review_status="+review_status+",review_reason='"+reason+"',review_time='"+review_time+"' where id="+ids.split(",")[i]);
+        }
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        renderJson(response, returnData);
+    }
 
+    @RequestMapping("/toCheck")
+    public String toCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String ids = getPara("ids");
+        String type=getPara("type");
+        setAttr("type", type);
+        setAttr("ids", ids);
+        setAttr("id", getPara("id"));
+        return "/com/jdk2010/base/security/securitynews/toCheck";
+    }
+    
   
 }

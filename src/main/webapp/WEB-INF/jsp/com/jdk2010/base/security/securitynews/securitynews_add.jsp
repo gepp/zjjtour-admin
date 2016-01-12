@@ -84,17 +84,20 @@
 							</li>
 						<li><label>排序<b></b></label> <input type="text"
 							class="dfinput" id="orderlist" name="securityNews.orderlist"
-							placeholder="" /></li>
+							placeholder="" value="1"/></li>
 						<li><label>阅读权限<b></b></label>
 						<div class="vocation">
 								<select name="securityNews.readType" class="select1">
 									<option value="1">会员</option>
-									<option value="0">全部</option>
+									<option value="0" selected>全部</option>
 								</select>
 							</div>
 						
 						</li>
-						<li><label>内容<b></b></label> <textarea id="content"
+						<li><label>内容摘要<b></b></label> <input type="text"
+							class="dfinput" id="abstractContent" name="securityNews.abstractContent"
+							placeholder="" /></li>
+						<li><label>内容详情<b></b></label> <textarea id="content"
 								name="securityNews.content"
 								style="width: 700px; height: 250px; visibility: hidden;"></textarea>
 						</li>
@@ -103,7 +106,7 @@
 						<li><label>&nbsp;</label><input name="" type="submit"
 							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
 							type="button" class="btn" value="返回"
-							onclick="window.location='${ contextpath}/securitynews/list'" /></li>
+							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${menu.id }'" /></li>
 					</form>
 				</ul>
 			</div>

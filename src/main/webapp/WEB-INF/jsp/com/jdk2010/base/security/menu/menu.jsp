@@ -33,8 +33,7 @@
  		<div class="tools">
 			<ul class="toolbar">
 			<li class="click" id="table_add"><span><img src="${contextpath }/res/images/t01.png"></span>添加</li>
-	        <li id="table_delete" ><span><img src="${contextpath }/res/images/t03.png"></span>删除</li>
-			</ul>
+ 			</ul>
 		</div>
 		<div class="formtitle1">
 			<span>栏目管理</span>
@@ -42,8 +41,7 @@
 		<table class="tablelist">
 			<thead>
 				<tr>
-					<th><input name="" type="checkbox" value="" id="checkAll" /></th>
-					<th>栏目名称</th>
+ 					<th>栏目名称</th>
  					<th>排序号</th>
 					<th>栏目类型</th>
 					<th>状态</th>
@@ -53,12 +51,14 @@
 			<tbody>
 				<c:forEach var="item" items="${menuList}" varStatus="idx">
 					<tr>
-						<td><input type="checkbox" name="subBox" value="${item.id}" /></td>
-						<td>${item.name }</td>
+ 						<td>${item.name }</td>
  						<td>${item.orderlist }</td>
 						<td>${item.column_type=='1'?'列表':(item.column_type=='2'?'详情':'无') }</td>
 						<td>${item.status==0?'停用':'启用' }</td>
 						<td>
+						<c:if test="${item.id!='1010' }">
+						<a href="#" class="tablelink" onclick="deleteMenu('${item.parent_id }','${item.id}')" >删除</a>
+						</c:if>
 						<c:if test="${item.type==1 }">
 						<a href="${contextpath }/securitymenu/modify.htm?id=${item.id}"
 							class="tablelink">编辑</a> 
@@ -88,6 +88,45 @@
 		$(document).ready(function(){
 			table_init("${contextpath}/securitymenu","${contextpath}/securitymenu/list?");
 		});
+		
+		
+		function deleteMenu(parentId, menuId) {
+			var message="";
+			if(parentId=='0'||parentId==''){
+				message='您确认删除您所选择的栏目,子栏目也将删除？';
+			}else{
+				message='您确认删除您所选择的栏目？';
+			}
+			parent.layer.confirm(message, function(index) {
+				jQuery.ajax({
+					type: "post", 
+					url: "${contextpath}/securitymenu/delete", 
+					dataType: "json",
+					data:{action:'delete',ids:menuId},
+					success: function (data) { 
+						parent.layer.close(index);
+						if(data.status=='success'){
+							parent.layer.alert('当前操作成功', {
+								closeBtn: 0
+							}, function(index){
+								parent.layer.close(index);
+								window.location.href='${contextpath}/securitymenu/list.htm';
+							});
+						}else{
+							parent.layer.close(index);
+							parent.layer.alert(data.message, {
+								closeBtn: 0
+							}, function(index){
+								parent.layer.close(index);
+								window.location.href='${contextpath}/securitymenu/list.htm';
+							});
+						}
+						
+						 
+					} 
+			});	
+			});
+		}
 	</script>
 
 </body>
