@@ -194,7 +194,7 @@
 				    title: '请输入您的审核意见',
 				    shadeClose: true,
 				    shade: 0.8,
-				    area: ['480px', '30%'],
+				    area: ['680px', '30%'],
 				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&type=1&id=${menu.id }' //iframe的url
 				}); 
 				
@@ -221,7 +221,7 @@
 				    title: '请输入您的审核意见',
 				    shadeClose: true,
 				    shade: 0.8,
-				    area: ['480px', '30%'],
+				    area: ['680px', '50%'],
 				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&type=2&id=${menu.id }' //iframe的url
 				}); 
 				
