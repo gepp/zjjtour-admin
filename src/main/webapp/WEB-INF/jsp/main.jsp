@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>后台管理系统</title>
+<title>张家界旅游官网后台管理系统</title>
 <link href="${contextpath }/res/css/style.css" rel="stylesheet"
 	type="text/css" />
 <script language="JavaScript" src="${contextpath }/res/js/jquery.js"></script>
