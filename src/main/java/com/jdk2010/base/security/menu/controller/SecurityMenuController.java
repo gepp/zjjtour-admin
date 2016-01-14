@@ -36,6 +36,25 @@ public class SecurityMenuController extends BaseController {
     }
     
     
+    @RequestMapping("/listSearch")
+    public String listSearch(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	//1 代表栏目 2代表标签
+        List<Map<String, Object>> menuList = securityMenuService.getMenuListByParentIdColumn("0","1");
+        setAttr("menuList", menuList);
+        return "/com/jdk2010/base/security/menu/menuSearch";
+    }
+    
+    @RequestMapping("/updateSearch")
+    public void updateSearch(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String id=getPara("id");
+        String canSearch=getPara("canSearch");
+        SecurityMenu securityMenu = securityMenuService.findById(id, SecurityMenu.class);
+        securityMenu.setCanSearch(canSearch);
+        securityMenuService.update(securityMenu);
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        renderJson(response, returnData);
+    }
+    
 
     @RequestMapping("/add")
     public String add(HttpServletRequest request, HttpServletResponse response) throws Exception {
