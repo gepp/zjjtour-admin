@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>通知公告</title>
+<title>会员</title>
 <link href="${ contextpath }/res/css/style.css" rel="stylesheet" type="text/css" />
 <link href="${ contextpath }/res/css/select.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="${ contextpath }/res/js/jquery.js"></script>
@@ -16,52 +16,62 @@
     <span>位置：</span>
     <ul class="placeul">
     <li><a href="#">首页</a></li>
-    <li><a href="#">通知公告</a></li>
+    <li><a href="#">会员</a></li>
     </ul>
 </div>
 <div class="formbody">
 <div id="usual1" class="usual"> 
     <div class="itab">
   	<ul> 
-    <li><a href="#tab1" class="selected">通知公告查看</a></li> 
+    <li><a href="#tab1" class="selected">会员查看</a></li> 
   	</ul>
 </div> 
 <div id="tab1" class="tabson">
   <ul class="forminfo">
-  <form action="" method="POST"  id="securityNewsForm">
+  <form action="" method="POST"  id="memberForm">
 									 
 					 			   <li><label>id<b></b></label>
  			     <div class="control-group">
-   			 		${ securityNews.id}
+   			 		${ member.id}
    				</div>
  			   </li>
- 				       			 			   <li><label>通告标题<b></b></label>
+ 				       			 			   <li><label>会员名称<b></b></label>
  			     <div class="control-group">
-   			 		${ securityNews.title}
+   			 		${ member.nickname}
    				</div>
  			   </li>
- 				       			 			   <li><label>通告内容<b></b></label>
+ 				       			 			   <li><label>邮箱<b></b></label>
  			     <div class="control-group">
-   			 		${ securityNews.content}
+   			 		${ member.email}
    				</div>
  			   </li>
- 				       			 			   <li><label>用户id<b></b></label>
+ 				       			 			   <li><label>手机<b></b></label>
  			     <div class="control-group">
-   			 		${ securityNews.userid}
+   			 		${ member.mobile}
    				</div>
  			   </li>
- 				       			 			   <li><label>是否启用<b></b></label>
+ 				       			 			   <li><label>真实姓名<b></b></label>
  			     <div class="control-group">
-   			 		${ securityNews.status}
+   			 		${ member.realname}
+   				</div>
+ 			   </li>
+ 				       			 			   <li><label>性别<b></b></label>
+ 			     <div class="control-group">
+   			 		${ member.sex}
+   				</div>
+ 			   </li>
+ 				       			 			   <li><label>启用标志<b></b></label>
+ 			     <div class="control-group">
+   			 		${ member.status}
    				</div>
  			   </li>
  				       			 			   <li><label>创建时间<b></b></label>
  			     <div class="control-group">
-   			 		${ securityNews.ctime}
+   			 		${ member.ctime}
    				</div>
  			   </li>
  				        			<li><label>&nbsp;</label>
-   			 <input name="" type="button" class="btn" value="返回" onclick="window.location='${ contextpath}/securitynews/list'"/></li>
+   			 <input name="" type="button" class="btn" value="返回" onclick="window.location='${ contextpath}/member/list'"/></li>
  	</form>
   </ul>
  </div>

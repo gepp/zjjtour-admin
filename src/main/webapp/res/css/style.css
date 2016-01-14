@@ -397,4 +397,11 @@ h2{font-weight:normal;}
 .tableEdit{border:solid 1px #cbcbcb; width:100%; clear:both;}
 .tableEdit th{background:url(../images/th.gif) repeat-x; height:34px; line-height:34px; border: dotted 1px #c7c7c7; text-indent:11px; text-align:left;}
 .tableEdit td{line-height:34px; text-indent:11px; border: dotted 1px #c7c7c7;}
-
+.cboxDisable {
+    display: inline-block;
+    vertical-align: middle;
+    width: 11px;
+    height: 11px;
+    border: 1px solid #ccc;
+    background: #d0d0d0;
+}

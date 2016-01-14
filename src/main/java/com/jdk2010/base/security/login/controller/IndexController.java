@@ -18,6 +18,7 @@ import com.jdk2010.base.security.securityuser.model.SecurityUser;
 import com.jdk2010.base.security.securityuser.service.ISecurityUserService;
 import com.jdk2010.framework.controller.BaseController;
 import com.jdk2010.framework.util.CookieUtil;
+import com.jdk2010.framework.util.DbKit;
 import com.jdk2010.framework.util.OsInfoUtil;
 
 //import com.jdk2010.framework.util.OsInfoUtil;
@@ -105,7 +106,13 @@ public class IndexController extends BaseController {
             setAttr("jdkVersion", OsInfoUtil.getJdkVersion());
             setAttr("jdkHome", OsInfoUtil.getJdkHome());
             setAttr("osName", OsInfoUtil.getOsName());
-            List<SecurityNews> newsList = securityNewsService.getTop7News();
+            
+            
+            DbKit dbKit = new DbKit( "select t.*,a.name as menuName from security_news t left join security_menu a on t.menu_id=a.id   where  t.review_status=0");
+            String searchSQL = "";
+            String orderSQL = " order by t.ctime desc limit 0,7";
+            dbKit.append(orderSQL);
+            List<SecurityNews> newsList=securityNewsService.queryForList(dbKit,SecurityNews.class);
             setAttr("newsList", newsList);
             return "/defaultMain";
         }

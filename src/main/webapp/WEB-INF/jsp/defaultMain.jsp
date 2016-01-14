@@ -26,37 +26,41 @@
     <div class="mainbox">
     
     <div class="mainleft">
-    
-     
-    <!--leftinfo end-->
-    
-    
     <div class="leftinfos">
     
    <div class="infoleft">
-    <div class="listtitle">常用工具<a href="#" class="more1">设置</a></div>
-    
-    <ul class="tooli">
-    <li><span><img src="${contextpath }/res/images/d01.png" /></span><p><a href="#">test</a></p></li>
-     
-    </ul>
-    
+    <div class="listtitle">待办事项-新闻发布<a href="${contextpath }/securitynews/listWaitShenhe.htm" class="more1">去处理</a></div>
+    <ul class="newlist">
+    <c:forEach var="new" items="${newsList }">
+    <li><a href="#">${new.title }</a><b>${new.ctime }</b></li>
+    </c:forEach>
+    </ul>   
     </div>
    
+   
     <div class="inforight">
-    
-    <div class="listtitle">系统环境</div>    
-   	<ul class="newlist">
-    <li><i>操作系统</a></i>${osName }&nbsp;</li>
-    <li><i>java版本</a></i>${jdkVersion }&nbsp;</li>
-    <li><i>java目录</a></i>${jdkHome }&nbsp;</li>
-     <li><i>服务器版本</a></i><%= application.getServerInfo() %>&nbsp;</li>
-    </ul>        
+    <div class="listtitle">待办事项-投诉回复<a href="${contextpath }/securitynews/listWaitShenhe.htm" class="more1">去处理</a></div>
+    <ul class="newlist">
+    <c:forEach var="new" items="${newsList }">
+    <li><a href="#" >${new.title }</a><b>${new.ctime }</b></li>
+    </c:forEach>
+    </ul>  
     </div>
      
     </div>
+       <div class="leftinfos">
     
-    
+   <div class="infoleft">
+    <div class="listtitle">待办事项-投诉意见审核<a href="${contextpath }/securitynews/listWaitShenhe.htm" class="more1">去处理</a></div>
+    <ul class="newlist">
+    <c:forEach var="new" items="${newsList }">
+    <li><a href="#">${new.title }</a><b>${new.ctime }</b></li>
+    </c:forEach>
+    </ul>   
+    </div>
+ 
+     
+    </div>
     </div>
     <!--mainleft end-->
      
@@ -64,7 +68,12 @@
      
     <div class="dflist1">
     <div class="listtitle">信息统计</div>    
-    
+    <ul class="newlist">
+    <li><i>操作系统</a></i>${osName }&nbsp;</li>
+    <li><i>java版本</a></i>${jdkVersion }&nbsp;</li>
+    <li><i>java目录</a></i>${jdkHome }&nbsp;</li>
+     <li><i>服务器版本</a></i><%= application.getServerInfo() %>&nbsp;</li>
+    </ul>       
     </div>
 
     </div>
