@@ -14,8 +14,7 @@
 	type="text/css" />
 <script type="text/javascript" src="${ contextpath }/res/js/jquery.js"></script>
 <script type="text/javascript" src="${ contextpath }/res/js/common.js"></script>
-<script type="text/javascript"
-	src="${ contextpath }/res/js/layer/layer.js"></script>
+ 
 <link href="${ contextpath }/res/css/select.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="${ contextpath }/res/js/select-ui.min.js"></script>
 
@@ -27,21 +26,20 @@
 		<ul class="placeul">
 			<li><a href="#">首页</a></li>
 			<li><a href="#">${menu.name }</a></li>
-			<li><a href="#">新闻管理</a></li>
 		</ul>
 	</div>
 	<div class="rightinfo">
 	<form method="post" action="${ contextpath}/securitynews/list.htm">
 		<input type="hidden" value="${menu.id }" name="id"/>
 			<ul class="seachform" style="padding-top: 10px; padding-left: 15px">
-			<li><label>新闻标题</label><input type="text" name="title"
+			<li><label>标题</label><input type="text" name="title"
 					id="title" class="scinput1" placeholder="" value="${title}" style="width:300px"></li>
 						<li><label>是否审核</label>
 						<div class="vocation">
-						 <select class="select1">
-						 <option >全部</option>
-						 <option >通过</option>
-						 <option >失败</option>
+						 <select class="select1" name="reviewStatus">
+						 <option value="0" <c:if test="${reviewStatus=='0'}">selected</c:if>>全部</option>
+						 <option value="1" <c:if test="${reviewStatus=='1'}">selected</c:if>>通过</option>
+						 <option value="2" <c:if test="${reviewStatus=='2'}">selected</c:if>>驳回</option>
 						 </select>
 						 </div>
 						 </li>
@@ -55,15 +53,21 @@
 		 
 	</form>
 		<br/>
+		 
 		 <div class="tools">
 			<ul class="toolbar">
+			<c:if test="${fabuFlag=='1' }">
 			<li class="click" onclick="add();" ><span><img src="${contextpath }/res/images/t01.png"></span>添加</li>
 	        <li onclick="deleteNews();" ><span><img src="${contextpath }/res/images/t03.png"></span>删除</li>
-	        <li onclick="goback();" ><span><img src="${contextpath }/res/images/t04.png"></span>返回</li>
-			</ul>
+	        </c:if>
+	        <c:if test="${shenheFlag=='1' }">
+	        <li class="click" onclick="accept();" ><span><img src="${contextpath }/res/images/t02.png"></span>审核</li>
+	        <li onclick="rollback();" ><span><img src="${contextpath }/res/images/t04.png"></span>驳回</li>
+	        </c:if>
+ 			</ul>
 		</div>
 		<div class="formtitle1">
-			<span>新闻</span>
+			<span>${menu.name }</span>
 		</div>
 		<table class="tablelist">
 			<thead>
@@ -86,12 +90,16 @@
 						<td>${ item.title}</td>
 						<td>${ item.realname}</td>
 						<td>${ item.ctime}</td>
-						<td>${ item.reviewStatus=='0'?'未处理':(item.reviewStatus=='1'?'通过':'失败')}</td>
-						<td>${ item.reviewUserid}</td>
+						<td>${ item.reviewStatus=='0'?'未处理':(item.reviewStatus=='1'?'通过':'驳回')}</td>
+						<td>${ item.reviewName}</td>
 						<td>${ item.reviewTime}</td>
-						<td><a
+						<td>
+						<c:if test="${fabuFlag=='1' }">
+						<a
 							href="${ contextpath }/securitynews/modify.htm?id=${item.id}"
 							class="tablelink">编辑</a>  
+						</c:if>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -164,6 +172,63 @@
 			 
 			}
 		}
+		
+		
+		function accept(){
+			var del_ids="" ;
+			var count=0;
+			var checkbox = $("input[name='subBox']");
+			checkbox.each(function() {
+				if (this.checked) {
+					del_ids += this.value+",";
+					count=count+1;
+				}
+			});
+			if(count==0){
+				sAlert('请选择要审核通过的数据！');
+			}
+			
+			else{
+				parent.layer.open({
+				    type: 2,
+				    title: '请输入您的审核意见',
+				    shadeClose: true,
+				    shade: 0.8,
+				    area: ['680px', '30%'],
+				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&type=1&id=${menu.id }' //iframe的url
+				}); 
+				
+			}
+		}
+		
+		function rollback(){
+			var del_ids="" ;
+			var count=0;
+			var checkbox = $("input[name='subBox']");
+			checkbox.each(function() {
+				if (this.checked) {
+					del_ids += this.value+",";
+					count=count+1;
+				}
+			});
+			if(count==0){
+				sAlert('请选择要驳回的数据！');
+			}
+			
+			else{
+				parent.layer.open({
+				    type: 2,
+				    title: '请输入您的审核意见',
+				    shadeClose: true,
+				    shade: 0.8,
+				    area: ['680px', '50%'],
+				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&type=2&id=${menu.id }' //iframe的url
+				}); 
+				
+			}
+				 
+		}
+		
 		
 </script>
 

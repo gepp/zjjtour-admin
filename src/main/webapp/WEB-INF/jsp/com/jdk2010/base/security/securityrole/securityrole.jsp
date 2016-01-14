@@ -29,8 +29,7 @@
 			<ul class="toolbar">
 			<li class="click" id="table_add"><span><img src="${contextpath }/res/images/t01.png" /></span>添加</li>
 	        <li id="table_delete" ><span><img src="${contextpath }/res/images/t03.png" /></span>删除</li>
-	        <li  id="table_refresh"><span><img src="${contextpath }/res/images/t04.png" /></span>查询</li>
-			</ul>
+ 			</ul>
 		</div>
 
 		<div class="formtitle1">

@@ -26,7 +26,7 @@
 		<span>位置：</span>
 		<ul class="placeul">
 			<li><a href="#">首页</a></li>
- 			<li><a href="#">路线管理</a></li>
+ 			<li><a href="#">标签管理</a></li>
 		</ul>
 	</div>
 	<div class="rightinfo">
@@ -37,13 +37,14 @@
 					id="title" class="scinput1" placeholder="" value="${title}" style="width:300px"></li>
 						<li><label>是否审核</label>
 						<div class="vocation">
-						 <select class="select1">
-						 <option >全部</option>
-						 <option >通过</option>
-						 <option >失败</option>
+						 <select class="select1" name="reviewStatus">
+						 <option value="0" <c:if test="${reviewStatus=='0'}">selected</c:if>>全部</option>
+						 <option value="1" <c:if test="${reviewStatus=='1'}">selected</c:if>>通过</option>
+						 <option value="2" <c:if test="${reviewStatus=='2'}">selected</c:if>>驳回</option>
 						 </select>
 						 </div>
 						 </li>
+						 
 					<li>
 					<input name="" type="submit"
 						id="table_refresh" class="scbtn" value="查询" />
@@ -58,11 +59,10 @@
 			<ul class="toolbar">
 			<li class="click" onclick="add();" ><span><img src="${contextpath }/res/images/t01.png"></span>添加线路</li>
 	        <li onclick="deleteNews();" ><span><img src="${contextpath }/res/images/t03.png"></span>删除线路</li>
-	        <li onclick="goback();" ><span><img src="${contextpath }/res/images/t04.png"></span>返回</li>
-			</ul>
+ 			</ul>
 		</div>
 		<div class="formtitle1">
-			<span>新闻</span>
+			<span>已选线路</span>
 		</div>
 		<table class="tablelist">
 			<thead>
@@ -137,9 +137,9 @@
 					//ajax提交删除数据
 					jQuery.ajax({
 								type: "post", 
-								url:"${contextpath}/securitynews/delete", 
+								url:"${contextpath}/bq/bqNewsdelete.htm?id=${menu.id }", 
 								dataType: "json",
-								data:{action:'delete',ids:del_ids},
+								data:{ids:del_ids},
 								success: function (data) { 
 									parent.layer.close(index);
 									if(data.status=='success'){
@@ -147,7 +147,7 @@
 											closeBtn: 0
 										}, function(index){
 											parent.layer.close(index);
-											window.location.href="${contextpath}/securitynews/list.htm?id=${menu.id}";
+											window.location.href="${contextpath}/bq/listnews.htm?menuId=${menu.id}";
 										});
 									}else{
 										parent.layer.close(index);
@@ -155,7 +155,7 @@
 											closeBtn: 0
 										}, function(index){
 											parent.layer.close(index);
-											window.location.href="${contextpath}/securitynews/list.htm?id=${menu.id}";
+											window.location.href="${contextpath}/bq/listnews.htm?menuId=${menu.id}";
 										});
 									}
 									

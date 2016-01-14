@@ -95,6 +95,18 @@ public class SecurityBqController extends BaseController {
         renderJson(response, returnData);
     }
 
+    @RequestMapping("/bqNewsdelete")
+    public void bqNewsdelete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String ids = getPara("ids");
+        String bq_id=getPara("id");
+        for(int i=0;i<ids.split(",").length;i++){
+        	dalClient.update("delete from bq_news where bq_id="+bq_id+" and news_id="+ids.split(",")[i]);
+        }
+        securityMenuService.deleteByIDS(ids, SecurityMenu.class);
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        renderJson(response, returnData);
+    }
+
      
 
     @RequestMapping("/bqselect")
@@ -115,6 +127,12 @@ public class SecurityBqController extends BaseController {
              dbKit.append(searchSQL);
              dbKit.put("title", "%" + title + "%");
          }
+         String reviewStatus=getPara("reviewStatus");
+         if(reviewStatus!=null&&(reviewStatus.equals("1")||reviewStatus.equals("2"))){
+         	searchSQL = searchSQL + " and t.review_status ="+reviewStatus;
+         	dbKit.append(searchSQL);
+         	 setAttr("reviewStatus", reviewStatus);
+         }
          dbKit.append(orderSQL);
          System.out.println(dbKit.getSql());
          Page pageList = securityNewsService.queryForPageList(dbKit, getPage(), SecurityNews.class);
@@ -127,10 +145,9 @@ public class SecurityBqController extends BaseController {
         String menuId = getPara("menuId");
         SecurityMenu menu = securityMenuService.findById(menuId, SecurityMenu.class);
         setAttr("menu", menu);
-        DbKit dbKit = new DbKit(
-                "select t.*,a.realname from security_news t ,security_user a where  t.userid=a.id  and  t.menu_id=1010 and  t.id in (select news_id from bq_news where bq_id="+menuId+")");
-        System.out.println("listnews.sql:"+dbKit.getSql());
-        String searchSQL = "";
+       String sql="select t.*,a.realname from security_news t ,security_user a where  t.userid=a.id  and  t.menu_id=1010 and  t.id in (select news_id from bq_news where bq_id="+menuId+")";
+       DbKit dbKit=new DbKit(sql);
+       String searchSQL = "";
         String orderSQL = " order by t.ctime desc";
         String title = getPara("title");
         if (title != null && !"".equals(title)) {

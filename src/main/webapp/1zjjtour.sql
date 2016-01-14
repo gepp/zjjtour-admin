@@ -25,11 +25,11 @@ CREATE TABLE `bq_news` (
   `bq_id` int(11) DEFAULT NULL,
   `news_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 /*Data for the table `bq_news` */
 
-insert  into `bq_news`(`id`,`bq_id`,`news_id`) values (7,1022,21),(8,1022,20),(9,1022,19),(10,1022,18),(11,1022,17),(14,1023,21),(15,1023,20),(16,1023,19),(17,1023,18),(18,1023,17),(20,1021,20),(21,1021,19),(22,1021,18),(23,1021,17),(24,1021,21),(29,1035,18);
+insert  into `bq_news`(`id`,`bq_id`,`news_id`) values (2,1021,17),(4,1021,17),(5,1021,18),(6,1021,21),(7,1022,21),(8,1022,20),(9,1022,19),(10,1022,18),(11,1022,17);
 
 /*Table structure for table `security_bq` */
 
@@ -49,7 +49,7 @@ CREATE TABLE `security_bq` (
   `column_type` varchar(50) DEFAULT NULL,
   `page_type` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1036 DEFAULT CHARSET=utf8;
 
 /*Data for the table `security_bq` */
 
@@ -75,7 +75,7 @@ CREATE TABLE `security_menu` (
 
 /*Data for the table `security_menu` */
 
-insert  into `security_menu`(`id`,`name`,`code`,`description`,`orderlist`,`img`,`url`,`parent_id`,`type`,`status`,`column_type`,`page_type`) values (1,'系统管理',NULL,NULL,999,'/res/images/leftico04.png',NULL,0,0,1,NULL,NULL),(2,'部门管理',NULL,NULL,999,NULL,'/securityorganization/list.htm',1,0,1,NULL,NULL),(3,'用户管理',NULL,NULL,999,NULL,'/securityuser/list.htm',1,0,1,NULL,NULL),(4,'角色权限管理',NULL,NULL,999,NULL,'/securityrole/list.htm',1,0,1,NULL,NULL),(1009,'栏目管理',NULL,NULL,NULL,NULL,'/securitymenu/list.htm',1,0,1,NULL,NULL),(1010,'线路管理',NULL,NULL,1,'/res/images/leftico01.png',NULL,0,1,1,'1','0'),(1011,'全景张家界',NULL,NULL,2,'/res/images/leftico01.png',NULL,0,1,0,'2','0'),(1012,'绝美风光',NULL,NULL,3,'/res/images/leftico01.png',NULL,1011,1,0,'1','0'),(1013,'历史景观',NULL,NULL,4,NULL,NULL,1011,1,1,'0','0'),(1014,'文化艺术',NULL,NULL,5,NULL,NULL,1011,1,1,'0','0'),(1015,'户外休闲',NULL,NULL,6,'/res/images/leftico01.png',NULL,1011,1,0,'1','0'),(1016,'美食小吃',NULL,NULL,7,NULL,NULL,1011,1,1,'0','0'),(1017,'出行攻略',NULL,NULL,8,NULL,NULL,1011,1,1,'0','0'),(1018,'精品游记',NULL,NULL,9,NULL,NULL,1011,1,1,'0','0'),(1019,'标签管理',NULL,NULL,NULL,NULL,'/bq/listBq.htm',1,0,1,'0','0'),(1021,'行程天数',NULL,NULL,1,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1022,'1天',NULL,NULL,1,NULL,NULL,1021,2,1,'1',NULL),(1023,'2天',NULL,NULL,2,NULL,NULL,1021,2,1,'1',NULL),(1026,'所在地区',NULL,NULL,2,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1028,'凤凰',NULL,NULL,3,NULL,NULL,1026,2,1,'1',NULL),(1029,'其他',NULL,NULL,3,NULL,NULL,1026,2,1,'1',NULL),(1030,'旅游要素',NULL,NULL,3,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1031,'摄影',NULL,NULL,2,NULL,NULL,1030,2,1,'1',NULL),(1032,'人文',NULL,NULL,2,NULL,NULL,1030,2,1,'1',NULL),(1033,'美食',NULL,NULL,3,'/res/images/leftico01.png',NULL,1030,2,1,'1',NULL),(1034,'适合人群',NULL,NULL,4,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1035,'20岁以下',NULL,NULL,1,'/res/images/leftico01.png',NULL,1034,2,1,'1',NULL);
+insert  into `security_menu`(`id`,`name`,`code`,`description`,`orderlist`,`img`,`url`,`parent_id`,`type`,`status`,`column_type`,`page_type`) values (1,'系统管理',NULL,NULL,999,'/res/images/leftico04.png',NULL,0,0,1,NULL,NULL),(2,'部门管理',NULL,NULL,999,NULL,'/securityorganization/list.htm',1,0,1,NULL,NULL),(3,'用户管理',NULL,NULL,999,NULL,'/securityuser/list.htm',1,0,1,NULL,NULL),(4,'角色权限管理',NULL,NULL,999,NULL,'/securityrole/list.htm',1,0,1,NULL,NULL),(1009,'栏目管理',NULL,NULL,NULL,NULL,'/securitymenu/list.htm',1,0,1,NULL,NULL),(1010,'经典线路',NULL,NULL,1,'/res/images/leftico01.png',NULL,0,1,1,'1','0'),(1011,'全景张家界',NULL,NULL,2,'/res/images/leftico01.png',NULL,0,1,0,'2','0'),(1012,'绝美风光',NULL,NULL,3,'/res/images/leftico01.png',NULL,1011,1,0,'1','0'),(1013,'历史景观',NULL,NULL,4,NULL,NULL,1011,1,1,'0','0'),(1014,'文化艺术',NULL,NULL,5,NULL,NULL,1011,1,1,'0','0'),(1015,'户外休闲',NULL,NULL,6,'/res/images/leftico01.png',NULL,1011,1,0,'1','0'),(1016,'美食小吃',NULL,NULL,7,NULL,NULL,1011,1,1,'0','0'),(1017,'出行攻略',NULL,NULL,8,NULL,NULL,1011,1,1,'0','0'),(1018,'精品游记',NULL,NULL,9,NULL,NULL,1011,1,1,'0','0'),(1019,'标签管理',NULL,NULL,NULL,NULL,'/bq/listBq.htm',1,1,1,'0','0'),(1021,'行程天数',NULL,NULL,1,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1022,'1天',NULL,NULL,1,NULL,NULL,1021,2,1,'1',NULL),(1023,'2天',NULL,NULL,2,NULL,NULL,1021,2,1,'1',NULL),(1026,'所在地区',NULL,NULL,2,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1027,'长沙',NULL,NULL,2,'/res/images/leftico01.png',NULL,1026,2,1,'1',NULL),(1028,'凤凰',NULL,NULL,3,NULL,NULL,1026,2,1,'1',NULL),(1029,'其他',NULL,NULL,3,NULL,NULL,1026,2,1,'1',NULL),(1030,'旅游要素',NULL,NULL,3,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1031,'摄影',NULL,NULL,2,NULL,NULL,1030,2,1,'1',NULL),(1032,'人文',NULL,NULL,2,NULL,NULL,1030,2,1,'1',NULL),(1033,'美食',NULL,NULL,3,'/res/images/leftico01.png',NULL,1030,2,1,'1',NULL),(1034,'适合人群',NULL,NULL,4,'/res/images/leftico01.png',NULL,0,2,1,'1',NULL),(1035,'20岁以下',NULL,NULL,1,'/res/images/leftico01.png',NULL,1034,2,1,'1',NULL);
 
 /*Table structure for table `security_news` */
 
@@ -102,13 +102,12 @@ CREATE TABLE `security_news` (
   `review_status` varchar(5) DEFAULT NULL COMMENT '0未处理 1通过 2 失败',
   `review_userid` int(11) DEFAULT NULL,
   `review_time` datetime DEFAULT NULL,
-  `review_reason` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 /*Data for the table `security_news` */
 
-insert  into `security_news`(`id`,`title`,`litter_title`,`content`,`userid`,`status`,`ctime`,`smallimg`,`indeximg`,`url`,`orderlist`,`abstract_content`,`read_type`,`index_status`,`top_status`,`jump_type`,`menu_id`,`review_status`,`review_userid`,`review_time`,`review_reason`) values (17,'123','213','123',1,0,'2016-01-10 20:19:41',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL,NULL),(18,'aaaa',NULL,'aaa',1,0,'2016-01-10 20:20:52',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL,NULL),(23,'啊啊方式','士大夫',NULL,12,0,'2016-01-12 22:54:28',NULL,NULL,NULL,NULL,NULL,'0','0','0','0',1012,'2',11,'2016-01-12 23:51:56','的萨芬大幅'),(25,'士大夫','123123','123',12,0,'2016-01-12 23:04:04','123','123','123213',NULL,NULL,'0','0','0','0',1012,'1',11,'2016-01-12 23:51:49','dsaf');
+insert  into `security_news`(`id`,`title`,`litter_title`,`content`,`userid`,`status`,`ctime`,`smallimg`,`indeximg`,`url`,`orderlist`,`abstract_content`,`read_type`,`index_status`,`top_status`,`jump_type`,`menu_id`,`review_status`,`review_userid`,`review_time`) values (17,'123','213','123',1,0,'2016-01-10 20:19:41',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL),(18,'aaaa',NULL,'aaa',1,0,'2016-01-10 20:20:52',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL),(19,'阿德法','阿德法','阿德法',1,0,'2016-01-10 23:05:05',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL),(20,'阿斯蒂芬撒法',NULL,'萨芬',1,0,'2016-01-10 23:05:14',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL),(21,'自作主张',NULL,'自作主张',1,0,'2016-01-10 23:05:19',NULL,NULL,NULL,NULL,NULL,'1','0','0','0',1010,'0',NULL,NULL);
 
 /*Table structure for table `security_organization` */
 
@@ -152,13 +151,12 @@ CREATE TABLE `security_role` (
   `name` varchar(100) DEFAULT NULL COMMENT '角色名称',
   `description` varchar(500) DEFAULT NULL COMMENT '角色描述',
   `status` int(10) DEFAULT NULL COMMENT '状态',
-  `type` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 /*Data for the table `security_role` */
 
-insert  into `security_role`(`id`,`code`,`name`,`description`,`status`,`type`) values (1,'system','系统管理员','系统管理员',1,'0'),(2,'123','全景张家界-审核','全景张家界-审核',1,'1'),(3,'234','全景张家界-发布','全景张家界-发布',1,'2');
+insert  into `security_role`(`id`,`code`,`name`,`description`,`status`) values (1,'system','系统管理员','系统管理员',1);
 
 /*Table structure for table `security_role_menu` */
 
@@ -169,11 +167,11 @@ CREATE TABLE `security_role_menu` (
   `role_id` int(50) DEFAULT NULL,
   `menu_id` int(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=utf8;
 
 /*Data for the table `security_role_menu` */
 
-insert  into `security_role_menu`(`id`,`role_id`,`menu_id`) values (1,1,3),(2,1,2),(3,1,1),(4,1,0),(5,1,5),(6,1,4),(14,2,0),(15,2,1017),(16,2,1016),(17,2,1018),(18,2,1013),(19,2,1011),(20,2,1012),(21,2,1015),(22,2,1014),(32,3,0),(33,3,1017),(34,3,1016),(35,3,1018),(36,3,1013),(37,3,1011),(38,3,1012),(39,3,1015),(40,3,1014);
+insert  into `security_role_menu`(`id`,`role_id`,`menu_id`) values (1,1,3),(2,1,2),(3,1,1),(4,1,0),(5,1,5),(6,1,4);
 
 /*Table structure for table `security_user` */
 
@@ -191,11 +189,11 @@ CREATE TABLE `security_user` (
   `ctime` datetime DEFAULT NULL COMMENT '创建时间',
   `organization_id` int(50) DEFAULT NULL COMMENT '组织id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 /*Data for the table `security_user` */
 
-insert  into `security_user`(`id`,`code`,`username`,`email`,`userpwd`,`phone`,`realname`,`status`,`ctime`,`organization_id`) values (1,NULL,'system','admin@163.com','c4ca4238a0b923820dcc509a6f75849b','18952028230','系统管理员',1,NULL,NULL),(11,NULL,'xiaoming','xiaoming@163.com','c4ca4238a0b923820dcc509a6f75849b',NULL,'小明',1,'2016-01-07 14:30:57',43),(12,NULL,'xiaofang','xiaofang@qq.com','c4ca4238a0b923820dcc509a6f75849b','18952028230','小芳',1,'2016-01-12 22:47:27',43);
+insert  into `security_user`(`id`,`code`,`username`,`email`,`userpwd`,`phone`,`realname`,`status`,`ctime`,`organization_id`) values (1,NULL,'system','admin@163.com','c4ca4238a0b923820dcc509a6f75849b','18952028230','系统管理员',1,NULL,NULL),(11,NULL,'xiaoming','xiaoming@163.com','c4ca4238a0b923820dcc509a6f75849b',NULL,'小明',1,'2016-01-07 14:30:57',43);
 
 /*Table structure for table `security_user_ext` */
 
@@ -221,11 +219,11 @@ CREATE TABLE `security_user_role` (
   `user_id` int(32) DEFAULT NULL,
   `role_id` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 /*Data for the table `security_user_role` */
 
-insert  into `security_user_role`(`id`,`user_id`,`role_id`) values (26,11,'2'),(28,12,'3');
+insert  into `security_user_role`(`id`,`user_id`,`role_id`) values (25,11,'1');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
