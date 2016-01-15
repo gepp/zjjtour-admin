@@ -97,10 +97,7 @@
 							</div>
 						
 						</li>
-						<li><label>内容摘要<b></b></label> <input type="text"
-							class="dfinput" id="abstractContent" name="securityNews.abstractContent"
-							placeholder="" value="${securityNews.abstractContent }" /></li>
-						<li><label>内容详情<b></b></label> 
+						<li><label>通告内容<b></b></label> 
 						<textarea id="content"
 								name="securityNews.content"
 								style="width: 700px; height: 250px; visibility: hidden;">
@@ -110,7 +107,9 @@
 						</li>
 						<input type="hidden" value="${menuId }" name="securityNews.menuId" />
 						<li><label>&nbsp;</label><input name="" type="submit"
-							class="btn" value=" 确定" /> &nbsp;&nbsp;</li>
+							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
+							type="button" class="btn" value="返回"
+							onclick="window.location.href = '${ contextpath}/securitymenu/list.htm';" /></li>
 					</form>
 				</ul>
 			</div>
