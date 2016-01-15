@@ -28,7 +28,7 @@ public class MemberComplainController extends BaseController{
 
     @RequestMapping("/list")
     public String  list(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        DbKit dbKit=new DbKit("select t.*,a.realname as replayName,b.realname as reviewName from member_complain t inner join security_user a on t.replay_userid=a.id   inner join security_user b on t.review_userid=b.id    where 1=1 ");
+        DbKit dbKit=new DbKit("select t.*,a.realname as replayName,b.realname as reviewName from member_complain t left join security_user a on t.replay_userid=a.id   left join security_user b on t.review_userid=b.id    where 1=1 ");
         String searchSQL="";
         String orderSQL="";
         String member_mobile=getPara("member_mobile");

@@ -273,7 +273,7 @@
 				title : '投诉详情',
 				shadeClose : true,
 				shade : 0.8,
-				area : [ '500px', '45%' ],
+				area : [ '680px', '60%' ],
 				content : '${contextpath}/membercomplain/memberComplainDetail.htm?id='+id
 			});
 			 

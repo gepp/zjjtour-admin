@@ -27,7 +27,7 @@
 
 	<table class="tableEdit">
 	<tr>
-		<td>审核意见</td>
+		<td style="width:100px">审核意见</td>
 		<td><textarea cols="60" rows="10" name="reviewReason"
 				id="reviewReason" style="padding: 5px;width:90%">
 				
@@ -37,7 +37,7 @@
 	</table>
 	<br />
 	<br />
-	<li style="position:fixed;left:20%"><label>&nbsp;</label><input name="" type="button" class="btn"
+	<li style="position:fixed;left:20%;bottom:10px""><label>&nbsp;</label><input name="" type="button" class="btn"
 		value=" 确定" onclick="check();" /> &nbsp;&nbsp; <input name=""
 		type="button" class="btn" value="关闭" onclick="closeAll();" /></li>
 </body>

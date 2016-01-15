@@ -17,9 +17,11 @@ import com.jdk2010.base.security.securitynews.service.ISecurityNewsService;
 import com.jdk2010.base.security.securityuser.model.SecurityUser;
 import com.jdk2010.base.security.securityuser.service.ISecurityUserService;
 import com.jdk2010.framework.controller.BaseController;
+import com.jdk2010.framework.dal.client.DalClient;
 import com.jdk2010.framework.util.CookieUtil;
 import com.jdk2010.framework.util.DbKit;
 import com.jdk2010.framework.util.OsInfoUtil;
+import com.jdk2010.member.membercomplain.model.MemberComplain;
 
 //import com.jdk2010.framework.util.OsInfoUtil;
 
@@ -33,6 +35,9 @@ public class IndexController extends BaseController {
 
     @Resource
     ISecurityNewsService securityNewsService;
+    
+    @Resource
+    DalClient dalClient;
 
     @RequestMapping("/")
     public String index(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -114,6 +119,15 @@ public class IndexController extends BaseController {
             dbKit.append(orderSQL);
             List<SecurityNews> newsList=securityNewsService.queryForList(dbKit,SecurityNews.class);
             setAttr("newsList", newsList);
+            
+             dbKit=new DbKit("select t.*,a.realname as replayName,b.realname as reviewName from member_complain t inner join security_user a on t.replay_userid=a.id   inner join security_user b on t.review_userid=b.id    where 1=1 and t.replay_status=0 order by t.complain_time desc limit 0,7");
+             List<MemberComplain> memberComplainReplayList=dalClient.queryForObjectList(dbKit,MemberComplain.class);
+             setAttr("memberComplainReplayList", memberComplainReplayList);
+            
+             dbKit=new DbKit("select t.*,a.realname as replayName,b.realname as reviewName from member_complain t inner join security_user a on t.replay_userid=a.id   inner join security_user b on t.review_userid=b.id    where 1=1 and t.replay_status=1 and t.review_status=0 order by t.complain_time desc limit 0,7");
+             List<MemberComplain> memberComplainReviewList=dalClient.queryForObjectList(dbKit,MemberComplain.class);
+             setAttr("memberComplainReviewList", memberComplainReviewList);
+             
             return "/defaultMain";
         }
 
