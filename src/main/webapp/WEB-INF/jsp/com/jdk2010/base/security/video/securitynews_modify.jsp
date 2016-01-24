@@ -68,6 +68,11 @@
 							<input type="button"   value="图片上传" id="indeximgBtn" class="btn"/>
 							<img id="indeximgShow" height="30" width="30" style="vertical-align:middle;"    src="${securityNews.indeximg }"/>
 							</li>
+						<li><label>上传视频<b></b></label> <input type="text"
+							class="dfinput" id="videoUrl" name="securityNews.videoUrl"
+							placeholder="" value="${securityNews.videoUrl }"/>
+							<input type="button"   value="视频上传" id="videoUrlBtn" class="btn"/>
+ 							</li>
 						<li><label><b>&nbsp;</b></label>
 						<input type="checkbox" name="indexStatus"
 						<c:if test="${securityNews.indexStatus==1 }">checked</c:if>
@@ -93,10 +98,10 @@
 							</div>
 						
 						</li>
-						<li><label>内容摘要<b></b></label> <input type="text"
+						<li><label>视频摘要<b></b></label> <input type="text"
 							class="dfinput" id="abstractContent" name="securityNews.abstractContent"
 							placeholder="" value="${securityNews.abstractContent }" /></li>
-						<li><label>内容详情<b></b></label> 
+						<li><label>视频详情<b></b></label> 
 						<textarea id="content"
 								name="securityNews.content"
 								style="width: 700px; height: 250px; visibility: hidden;">
@@ -104,10 +109,15 @@
 								</textarea>
 						
 						</li>
+						<li><label>调用代码<b></b></label> <textarea id="outJs"
+								name="securityNews.outJs" class="dfinput"
+								style="width: 700px; height: 250px;">${securityNews.outJs}</textarea>
+							<input type="checkbox" name="outStatus" <c:if test="${securityNews.outStatus==1 }">checked</c:if>/>外部调用
+						</li>
 						<li><label>&nbsp;</label><input name="" type="submit"
 							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
 							type="button" class="btn" value="返回"
-							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${securityNews.menuId }'" /></li>
+							onclick="window.location='${ contextpath}/securitynews/toViedoList'" /></li>
 					</form>
 				</ul>
 			</div>
@@ -139,6 +149,18 @@
 					clickFn : function(url, title, width, height, border, align) {
 						K('#smallimg').val('<%=basePath %>'+url);
 						document.getElementById("smallimgShow").src='<%=basePath %>'+url;
+						editor.hideDialog();
+					}
+				});
+			});
+		});
+		K('#videoUrlBtn').click(function() {
+			editor.loadPlugin('image', function() {
+				editor.plugin.imageDialog({
+					showRemote : false,
+					imageUrl : K('#videoUr').val(),
+					clickFn : function(url, title, width, height, border, align) {
+						K('#indeximg').val('<%=basePath %>'+url);
 						editor.hideDialog();
 					}
 				});
@@ -200,7 +222,7 @@
 												document.getElementById("content").value=editor.html();
 												$
 														.ajax({
-															url : "${ contextpath}/securitynews/modifyaction",
+															url : "${ contextpath}/securitynews/modifyVideoaction",
 															data : $(form)
 																	.serialize(),
 															type : "post",
@@ -218,7 +240,7 @@
 																					},
 																					function(index) {
 																						parent.layer.close(index);
-																						window.location.href = '${ contextpath}/securitynews/list.htm?id=${securityNews.menuId }';
+																						window.location.href = '${ contextpath}/securitynews/toViedoList.htm?id=${securityNews.menuId }';
 																					});
 																} else {
 																	sAlert('当前操作失败');

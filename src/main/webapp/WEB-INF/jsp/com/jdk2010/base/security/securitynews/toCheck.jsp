@@ -62,7 +62,10 @@
 					}, function(index){
 						if('${jumpType}'=='wait_check'){
 							parent.rightFrame.location.href='${contextpath}/securitynews/listWaitShenhe.htm}';
-						}else{
+						}if('${jumpType}'=='video_check'){
+							parent.rightFrame.location.href='${contextpath}/securitynews/toViedoList.htm}';
+						}
+					else{
 							parent.rightFrame.location.href='${contextpath}/securitynews/list.htm?id=${id}';
 						}
 						

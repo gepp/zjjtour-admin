@@ -66,7 +66,7 @@
      
     <div class="mainright">
      
-    <div class="dflist1">
+  <%--   <div class="dflist1">
     <div class="listtitle">信息统计</div>    
     <ul class="newlist">
     <li><i>操作系统</a></i>${osName }&nbsp;</li>
@@ -74,7 +74,7 @@
     <li><i>java目录</a></i>${jdkHome }&nbsp;</li>
      <li><i>服务器版本</a></i><%= application.getServerInfo() %>&nbsp;</li>
     </ul>       
-    </div>
+    </div> --%>
 
     </div>
     <!--mainright end--> 

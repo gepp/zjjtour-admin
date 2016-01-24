@@ -106,6 +106,7 @@ public class SecurityNewsController extends BaseController {
         securityNews.setCtime(new Date());
         securityNews.setStatus(0);
         securityNews.setReviewStatus("0");
+        securityNews.setNewsType("ARTICLE");
         securityNewsService.save(securityNews);
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
         renderJson(response, returnData);
@@ -116,6 +117,11 @@ public class SecurityNewsController extends BaseController {
         String id = getPara("id");
         SecurityNews securityNews = securityNewsService.findById(id, SecurityNews.class);
         setAttr("securityNews", securityNews);
+        
+        Integer menuId = securityNews.getMenuId();
+        SecurityMenu menu = securityMenuService.findById(menuId, SecurityMenu.class);
+        setAttr("menu", menu);
+        
         return "/com/jdk2010/base/security/securitynews/securitynews_modify";
     }
 
@@ -184,7 +190,7 @@ public class SecurityNewsController extends BaseController {
         } else {
             securityNews.setIndexStatus("0");
         }
-
+        securityNews.setNewsType("ARTICLE");
         String topStatus = getPara("topStatus");
         if (topStatus != null) {
             securityNews.setTopStatus("1");
@@ -219,8 +225,10 @@ public class SecurityNewsController extends BaseController {
         String review_time=DateUtil.getNowTime();
         
         for(int i=0;i<ids.split(",").length;i++){
+            if(!StringUtil.isBlank(ids.split(",")[i])){
             dalClient.update("update security_news set review_userid="+review_userid+", review_status="+review_status+",review_reason='"+reason+"',review_time='"+review_time+"' where id="+ids.split(",")[i]);
-        }
+            }
+            }
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
         renderJson(response, returnData);
     }
@@ -291,6 +299,128 @@ public class SecurityNewsController extends BaseController {
         return "/com/jdk2010/base/security/securitynews/securitynews";
     }
     
+    
+    @RequestMapping("/toViedoList")
+    public String toViedoList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+         
+        DbKit dbKit = new DbKit(
+                "select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 and t.news_type='VIDEO'");
+        String searchSQL = "";
+        String orderSQL = " order by t.ctime desc";
+        String title = getPara("title");
+        if (title != null && !"".equals(title)) {
+            searchSQL = searchSQL + " and t.title LIKE :title";
+            if (request.getMethod().equals("get")) {
+                title = StringUtil.transCharset(title, "ISO8859-1", "UTF-8");
+            }
+            setAttr("title", title);
+            dbKit.append(searchSQL);
+            dbKit.put("title", "%" + title + "%");
+        }
+        String reviewStatus=getPara("reviewStatus");
+        if(reviewStatus!=null&&(reviewStatus.equals("1")||reviewStatus.equals("2"))){
+            searchSQL = searchSQL + " and t.review_status ="+reviewStatus;
+            dbKit.append(searchSQL);
+             setAttr("reviewStatus", reviewStatus);
+        }
+        dbKit.append(orderSQL);
+        Page pageList = securityNewsService.queryForPageList(dbKit, getPage(), SecurityNews.class);
+        setAttr("pageList", pageList);
+        return "/com/jdk2010/base/security/video/securitynews";
+    }
+    
+    
+    @RequestMapping("/addVideo")
+    public String addVideo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return "/com/jdk2010/base/security/video/securitynews_add";
+    }
+
+    @RequestMapping("/addVideoaction")
+    public void addVideoaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        SecurityNews securityNews = getModel(SecurityNews.class);
+        SecurityUser user = getSessionAttr("securityUser");
+        String indexStatus = getPara("indexStatus");
+        if (indexStatus != null) {
+            securityNews.setIndexStatus("1");
+        } else {
+            securityNews.setIndexStatus("0");
+        }
+
+        String topStatus = getPara("topStatus");
+        if (topStatus != null) {
+            securityNews.setTopStatus("1");
+        } else {
+            securityNews.setTopStatus("0");
+        }
+        String jumpType = getPara("jumpType");
+
+        if (jumpType != null) {
+            securityNews.setJumpType("1");
+        } else {
+            securityNews.setJumpType("0");
+        }
+        
+        String outStatus = getPara("outStatus");
+        if (outStatus != null) {
+            securityNews.setOutStatus("1");
+        } else {
+            securityNews.setOutStatus("0");
+        }
+        securityNews.setMenuId(getParaToInt("menuId"));
+        securityNews.setUserid(user.getId());
+        securityNews.setCtime(new Date());
+        securityNews.setStatus(0);
+        securityNews.setReviewStatus("0");
+        securityNews.setNewsType("VIDEO");
+        securityNewsService.save(securityNews);
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        renderJson(response, returnData);
+    }
+    
+    
+    @RequestMapping("/modifyVideo")
+    public String modifyVideo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String id = getPara("id");
+        SecurityNews securityNews = securityNewsService.findById(id, SecurityNews.class);
+        setAttr("securityNews", securityNews);
+        
+        
+        return "/com/jdk2010/base/security/video/securitynews_modify";
+    }
+
+    @RequestMapping("/modifyVideoaction")
+    public void modifyVideoaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        SecurityNews securityNews = getModel(SecurityNews.class);
+        String indexStatus = getPara("indexStatus");
+        if (indexStatus != null) {
+            securityNews.setIndexStatus("1");
+        } else {
+            securityNews.setIndexStatus("0");
+        }
+
+        String topStatus = getPara("topStatus");
+        if (topStatus != null) {
+            securityNews.setTopStatus("1");
+        } else {
+            securityNews.setTopStatus("0");
+        }
+        String jumpType = getPara("jumpType");
+
+        if (jumpType != null) {
+            securityNews.setJumpType("1");
+        } else {
+            securityNews.setJumpType("0");
+        }
+        String outStatus = getPara("outStatus");
+        if (outStatus != null) {
+            securityNews.setOutStatus("1");
+        } else {
+            securityNews.setOutStatus("0");
+        }
+        securityNewsService.update(securityNews);
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        renderJson(response, returnData);
+    }
     
   
 }
