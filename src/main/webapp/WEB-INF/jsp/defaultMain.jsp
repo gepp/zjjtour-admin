@@ -53,8 +53,8 @@
    <div class="infoleft">
     <div class="listtitle">待办-投诉意见审核<a href="${contextpath }/membercomplain/list.htm" class="more1">去处理</a></div>
     <ul class="newlist">
-    <c:forEach var="new" items="${memberComplainReviewList }">
-    <li><a href="#" >${new.complainTitle }</a><b>${new.complainTime }</b></li>
+    <c:forEach var="item" items="${memberComplainReviewList }">
+    <li><a href="#" >${item.complainTitle }</a><b>${item.complainTime }</b></li>
     </c:forEach>
     </ul>   
     </div>
