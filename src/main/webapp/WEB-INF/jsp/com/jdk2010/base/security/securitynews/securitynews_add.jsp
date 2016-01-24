@@ -38,17 +38,12 @@
 		<ul class="placeul">
 			<li><a href="#">首页</a></li>
 			<li><a href="#">${menu.name }</a></li>
-			<li><a href="#">新闻管理</a></li>
+					<li><a href="#">新增</a></li>
 		</ul>
 		
 	</div>
 	<div class="formbody">
 		<div id="usual1" class="usual">
-			<div class="itab">
-				<ul>
-					<li><a href="#tab1" class="selected">新闻添加</a></li>
-				</ul>
-			</div>
   
 			<div id="tab1" class="tabson">
 				<ul class="forminfo">

@@ -16,12 +16,17 @@ import com.jdk2010.base.security.securitynews.model.SecurityNews;
 import com.jdk2010.base.security.securitynews.service.ISecurityNewsService;
 import com.jdk2010.base.security.securityuser.model.SecurityUser;
 import com.jdk2010.base.security.securityuser.service.ISecurityUserService;
+import com.jdk2010.framework.constant.Constants;
 import com.jdk2010.framework.controller.BaseController;
 import com.jdk2010.framework.dal.client.DalClient;
 import com.jdk2010.framework.util.CookieUtil;
 import com.jdk2010.framework.util.DbKit;
 import com.jdk2010.framework.util.OsInfoUtil;
+import com.jdk2010.framework.util.Page;
+import com.jdk2010.framework.util.ReturnData;
 import com.jdk2010.member.membercomplain.model.MemberComplain;
+import com.jdk2010.system.systemadv.model.SystemAdv;
+import com.jdk2010.system.systemadv.service.ISystemAdvService;
 
 //import com.jdk2010.framework.util.OsInfoUtil;
 
@@ -35,9 +40,12 @@ public class IndexController extends BaseController {
 
     @Resource
     ISecurityNewsService securityNewsService;
-    
+
     @Resource
     DalClient dalClient;
+    
+    @Resource
+    ISystemAdvService systemAdvService;
 
     @RequestMapping("/")
     public String index(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -76,22 +84,24 @@ public class IndexController extends BaseController {
             List<Map<String, Object>> list = (List<Map<String, Object>>) userMenuMap.get(obj);
             for (int i = 0; i < list.size(); i++) {
                 Map<String, Object> secondMap = (Map<String, Object>) list.get(i);
-                System.out.println("secondMap:"+secondMap);
+                System.out.println("secondMap:" + secondMap);
                 if (secondMap.get("type").equals("0")) {
                     menuStr = menuStr + "<li><cite></cite><a href=\"" + contextpath + "" + secondMap.get("url")
                             + "\" target=\"rightFrame\">" + secondMap.get("name") + "</a><i></i></li>";
                 } else if (secondMap.get("type").equals("1")) {
                     if (secondMap.get("column_type").equals("1")) {
-                        menuStr = menuStr + "<li><cite></cite><a href=\"" + contextpath + "/securitynews/list.htm?id=" +secondMap.get("id") 
-                                + "\" target=\"rightFrame\">" + secondMap.get("name") + "</a><i></i></li>";
+                        menuStr = menuStr + "<li><cite></cite><a href=\"" + contextpath + "/securitynews/list.htm?id="
+                                + secondMap.get("id") + "\" target=\"rightFrame\">" + secondMap.get("name")
+                                + "</a><i></i></li>";
 
                     } else if (secondMap.get("column_type").equals("2")) {
-                        menuStr = menuStr + "<li><cite></cite><a href=\"" + contextpath + "/securitynews/modifyDetail.htm?menuId=" +secondMap.get("id") 
+                        menuStr = menuStr + "<li><cite></cite><a href=\"" + contextpath
+                                + "/securitynews/modifyDetail.htm?menuId=" + secondMap.get("id")
                                 + "\" target=\"rightFrame\">" + secondMap.get("name") + "</a><i></i></li>";
-                        
+
                     } else {
                         menuStr = menuStr + "<li><cite></cite>" + secondMap.get("name") + "<i></i></li>";
-                        
+
                     }
 
                 }
@@ -111,23 +121,25 @@ public class IndexController extends BaseController {
             setAttr("jdkVersion", OsInfoUtil.getJdkVersion());
             setAttr("jdkHome", OsInfoUtil.getJdkHome());
             setAttr("osName", OsInfoUtil.getOsName());
-            
-            
-            DbKit dbKit = new DbKit( "select t.*,a.name as menuName from security_news t left join security_menu a on t.menu_id=a.id   where  t.review_status=0");
+
+            DbKit dbKit = new DbKit(
+                    "select t.*,a.name as menuName from security_news t left join security_menu a on t.menu_id=a.id   where  t.review_status=0");
             String searchSQL = "";
             String orderSQL = " order by t.ctime desc limit 0,7";
             dbKit.append(orderSQL);
-            List<SecurityNews> newsList=securityNewsService.queryForList(dbKit,SecurityNews.class);
+            List<SecurityNews> newsList = securityNewsService.queryForList(dbKit, SecurityNews.class);
             setAttr("newsList", newsList);
-            
-             dbKit=new DbKit("select t.*,a.realname as replayName,b.realname as reviewName from member_complain t inner join security_user a on t.replay_userid=a.id   inner join security_user b on t.review_userid=b.id    where 1=1 and t.replay_status=0 order by t.complain_time desc limit 0,7");
-             List<MemberComplain> memberComplainReplayList=dalClient.queryForObjectList(dbKit,MemberComplain.class);
-             setAttr("memberComplainReplayList", memberComplainReplayList);
-            
-             dbKit=new DbKit("select t.*,a.realname as replayName,b.realname as reviewName from member_complain t inner join security_user a on t.replay_userid=a.id   inner join security_user b on t.review_userid=b.id    where 1=1 and t.replay_status=1 and t.review_status=0 order by t.complain_time desc limit 0,7");
-             List<MemberComplain> memberComplainReviewList=dalClient.queryForObjectList(dbKit,MemberComplain.class);
-             setAttr("memberComplainReviewList", memberComplainReviewList);
-             
+
+            dbKit = new DbKit(
+                    "select t.*,a.realname as replayName,b.realname as reviewName from member_complain t inner join security_user a on t.replay_userid=a.id   inner join security_user b on t.review_userid=b.id    where 1=1 and t.replay_status=0 order by t.complain_time desc limit 0,7");
+            List<MemberComplain> memberComplainReplayList = dalClient.queryForObjectList(dbKit, MemberComplain.class);
+            setAttr("memberComplainReplayList", memberComplainReplayList);
+
+            dbKit = new DbKit(
+                    "select t.*,a.realname as replayName,b.realname as reviewName from member_complain t inner join security_user a on t.replay_userid=a.id   inner join security_user b on t.review_userid=b.id    where 1=1 and t.replay_status=1 and t.review_status=0 order by t.complain_time desc limit 0,7");
+            List<MemberComplain> memberComplainReviewList = dalClient.queryForObjectList(dbKit, MemberComplain.class);
+            setAttr("memberComplainReviewList", memberComplainReviewList);
+
             return "/defaultMain";
         }
 
@@ -147,5 +159,40 @@ public class IndexController extends BaseController {
     public String passwordModify(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return "/com/jdk2010/base/security/securityuser/password_modify";
     }
+
+    @RequestMapping("/toIndexSetting")
+    public String toIndexSetting(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> indexsettingMap = dalClient.queryForObject("select * from system_indexsetting ");
+        setAttr("indexsettingMap", indexsettingMap);
+        DbKit dbKit = new DbKit("select * from system_adv  where 1=1 order by orderlist asc");
+        String orderSQL = "";
+        dbKit.append(orderSQL);
+        Page pageList = systemAdvService.queryForPageList(dbKit, getPage(), SystemAdv.class);
+        setAttr("pageList", pageList);
+        return "/com/jdk2010/system/indexSetting";
+    }
+
+    @RequestMapping("/indexSettingModify")
+    public String indexSettingModify(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Integer id = getParaToInt("id");
+        Map<String, Object> indexsettingMap = dalClient.queryForObject("select * from system_indexsetting  where id="
+                + id);
+        setAttr("indexsettingMap", indexsettingMap);
+        return "/com/jdk2010/system/indexSetting_modify";
+    }
+
+    @RequestMapping("/indexSettingSaving")
+    public void indexSettingSaving(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Integer id = getParaToInt("id");
+        String title = getPara("title");
+        String style_type = getPara("style_type");
+        String sql = "update system_indexsetting set title='" + title + "',style_type='" + style_type + "' where id="
+                + id;
+        dalClient.update(sql);
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        renderJson(response, returnData);
+    }
+    
+ 
 
 }
