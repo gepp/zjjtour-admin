@@ -71,7 +71,7 @@
 						<li><label>&nbsp;</label><input name="" type="submit"
 							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
 							type="button" class="btn" value="返回"
-							onclick="window.location='${ contextpath}/systemadv/list'" /></li>
+							onclick="window.location='${ contextpath}/toIndexSetting.htm'" /></li>
 					</form>
 				</ul>
  </div>

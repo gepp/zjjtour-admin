@@ -83,7 +83,8 @@
 						<td><input type="checkbox" name="subBox" value="${item.id}" /></td>
 						<td>${ item.title}</td>
 						<td>${ item.jumpUrl}</td>
-						<td><img src="${ item.imgUrl}" height="30" width="30"/></td>
+						<td><img src="${ item.imgUrl}" height="30" width="30" onclick="seePicture('${item.id}')" alt="点击查看大图" /></td>
+						<div id="${item.id}" style="display:none"><img src="${item.imgUrl}"></div>
 
 						<td>${ item.orderlist}</td>
 						<td>${ item.status==1?'启用':'停用'}</td>
@@ -155,6 +156,18 @@
 			});
 		 
 		}
+	}
+	
+	function seePicture(id){
+		layer.open({
+		    type: 1,
+		    title: false,
+		    closeBtn: 0,
+		    area: $('#'+id).width(),
+		    skin: 'layui-layer-nobg', //没有背景色
+		    shadeClose: true,
+		    content: $('#'+id)
+		});
 	}
 </script>
 

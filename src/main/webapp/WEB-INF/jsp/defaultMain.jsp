@@ -31,8 +31,8 @@
    <div class="infoleft">
     <div class="listtitle">待办-新闻发布<a href="${contextpath }/securitynews/listWaitShenhe.htm" class="more1">去处理</a></div>
     <ul class="newlist">
-    <c:forEach var="new" items="${newsList }">
-    <li><a href="#">${new.title }</a><b>${new.ctime }</b></li>
+    <c:forEach var="item" items="${newsList }">
+    <li><a href="#">${item.title }</a><b>${item.ctime }</b></li>
     </c:forEach>
     </ul>   
     </div>
@@ -41,8 +41,8 @@
     <div class="inforight">
     <div class="listtitle">待办-投诉回复<a href="${contextpath }/membercomplain/list.htm" class="more1">去处理</a></div>
     <ul class="newlist">
-    <c:forEach var="new" items="${memberComplainReplayList }">
-    <li><a href="#" >${new.complainTitle }</a><b>${new.complainTime }</b></li>
+    <c:forEach var="item" items="${memberComplainReplayList }">
+    <li><a href="#" >${item.complainTitle }</a><b>${item.complainTime }</b></li>
     </c:forEach>
     </ul>  
     </div>
@@ -53,8 +53,8 @@
    <div class="infoleft">
     <div class="listtitle">待办-投诉意见审核<a href="${contextpath }/membercomplain/list.htm" class="more1">去处理</a></div>
     <ul class="newlist">
-    <c:forEach var="new" items="${memberComplainReviewList }">
-    <li><a href="#" >${new.complainTitle }</a><b>${new.complainTime }</b></li>
+    <c:forEach var="item" items="${memberComplainReviewList }">
+    <li><a href="#" >${item.complainTitle }</a><b>${item.complainTime }</b></li>
     </c:forEach>
     </ul>   
     </div>
