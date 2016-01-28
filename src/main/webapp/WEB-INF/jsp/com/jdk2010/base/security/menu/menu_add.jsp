@@ -26,7 +26,15 @@
 		type="text/css" />
 	<script type="text/javascript"
 		src="${ contextpath }/res/js/select-ui.min.js"></script>
+<link rel="stylesheet" href="${ contextpath }/res/js/kindeditor-4.1.7/themes/default/default.css" />
+<script src="${ contextpath }/res/js/kindeditor-4.1.7/kindeditor.js"></script>
+<script src="${ contextpath }/res/js/kindeditor-4.1.7/lang/zh_CN.js"></script>
 </head>
+<%
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ request.getContextPath();
+%>
 <body>
 	<div class="place">
 		<span>位置：</span>
@@ -49,6 +57,19 @@
 						<li><label>栏目名称<b></b></label> <input type="text"
 							class="dfinput" id="name" name="securityMenu.name"
 							placeholder="请输入栏目名称" value="${ securityMenu.name}" /></li>
+						<li><label>缩略图<b></b></label> <input type="text"
+							class="dfinput" id="smallimg" name="securityMenu.img"
+							placeholder="" />
+							<input type="button" id="smallimgBtn" value="图片上传" onclick="" class="btn"/>
+							<img id="smallimgShow" height="30" width="30" style="vertical-align:middle;"   src="${contextpath }/res/images/d05.png"/>
+							</li>
+						<li><label>栏目描述<b></b></label> 
+						<textarea cols="60" rows="20" name="securityMenu.description"
+							id="description" style="padding: 5px;" class="dfinput">
+						${securityMenu.description }
+						</textarea>
+						</li>
+				  
 						<li><label>栏目上级<b></b></label>
 							<div class="vocation">
 								<select name="securityMenu.parentId" class="select1">
@@ -99,6 +120,25 @@
 </html>
 <script type="text/javascript">
 	$('.tablelist tbody tr:odd').addClass('odd');
+	$("#description").html("");
+	KindEditor.ready(function(K) {
+		var editor = K.editor({
+			allowFileManager : true
+		});
+		K('#smallimgBtn').click(function() {
+			editor.loadPlugin('image', function() {
+				editor.plugin.imageDialog({
+					showRemote : false,
+					imageUrl : K('#smallimg').val(),
+					clickFn : function(url, title, width, height, border, align) {
+						K('#smallimg').val('<%=basePath %>'+url);
+						document.getElementById("smallimgShow").src='<%=basePath %>'+url;
+						editor.hideDialog();
+					}
+				});
+			});
+		});
+	});
 </script>
 
 
