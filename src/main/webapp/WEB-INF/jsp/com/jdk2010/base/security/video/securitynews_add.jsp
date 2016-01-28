@@ -165,9 +165,9 @@
 			editor.loadPlugin('image', function() {
 				editor.plugin.imageDialog({
 					showRemote : false,
-					imageUrl : K('#videoUr').val(),
+					imageUrl : K('#videoUrl').val(),
 					clickFn : function(url, title, width, height, border, align) {
-						K('#indeximg').val('<%=basePath %>'+url);
+						K('#videoUrl').val('<%=basePath %>'+url);
 						editor.hideDialog();
 					}
 				});

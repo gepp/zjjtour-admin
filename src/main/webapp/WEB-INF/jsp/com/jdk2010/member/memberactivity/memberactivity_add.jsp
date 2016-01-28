@@ -107,10 +107,12 @@
 						<li><label>排序<b></b></label> <input type="text"
 							class="dfinput" id="orderlist" name="memberActivity.orderlist"
 							placeholder="请输入排序" value="${ memberActivity.orderlist}" /></li>
-						<li><label>摘要<b></b></label> <input type="text"
-							class="dfinput" id="abstractContent"
-							name="memberActivity.abstractContent" placeholder="请输入摘要"
-							value="${ memberActivity.abstractContent}" /></li>
+						<li><label>摘要<b></b></label> 
+						<textarea cols="60" rows="20" name="memberActivity.abstractContent"
+							id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput">
+							</textarea>
+						
+						</li>
 						<li><label><b>&nbsp;</b></label>
 						<input type="checkbox" name="indexStatus"
 						<c:if test="${memberActivity.indexStatus==1 }">checked</c:if>
@@ -153,6 +155,7 @@
 </html>
 <script type="text/javascript">
 	$('.tablelist tbody tr:odd').addClass('odd');
+	$("#abstractContent").html("");
 	</script>
 
 

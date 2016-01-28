@@ -89,9 +89,12 @@
 							</div>
 						
 						</li>
-						<li><label>内容摘要<b></b></label> <input type="text"
-							class="dfinput" id="abstractContent" name="securityNews.abstractContent"
-							placeholder="" /></li>
+						<li><label>内容摘要<b></b></label> 
+							<textarea cols="60" rows="20" name="securityNews.abstractContent"
+							id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput">
+							</textarea>
+							
+							</li>
 						<li><label>内容详情<b></b></label> <textarea id="content"
 								name="securityNews.content"
 								style="width: 700px; height: 250px; visibility: hidden;"></textarea>
@@ -111,6 +114,7 @@
 </html>
 <script type="text/javascript">
 	$('.tablelist tbody tr:odd').addClass('odd');
+	$("#abstractContent").html("");
 </script>
 
 

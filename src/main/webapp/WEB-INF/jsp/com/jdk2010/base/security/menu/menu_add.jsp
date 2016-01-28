@@ -65,7 +65,7 @@
 							</li>
 						<li><label>栏目描述<b></b></label> 
 						<textarea cols="60" rows="20" name="securityMenu.description"
-							id="description" style="padding: 5px;" class="dfinput">
+							id="description" style="padding: 1px;height:100px;line-height:16px" class="dfinput">
 						${securityMenu.description }
 						</textarea>
 						</li>

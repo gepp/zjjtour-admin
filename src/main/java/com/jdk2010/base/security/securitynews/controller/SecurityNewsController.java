@@ -372,6 +372,7 @@ public class SecurityNewsController extends BaseController {
         securityNews.setStatus(0);
         securityNews.setReviewStatus("0");
         securityNews.setNewsType("VIDEO");
+        securityNews.setMenuId(1054);
         securityNewsService.save(securityNews);
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
         renderJson(response, returnData);
