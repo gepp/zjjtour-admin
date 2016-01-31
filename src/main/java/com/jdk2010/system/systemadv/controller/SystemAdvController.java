@@ -41,6 +41,12 @@ public class SystemAdvController extends BaseController {
     @RequestMapping("/addaction")
     public void addaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
         SystemAdv systemAdv = getModel(SystemAdv.class);
+        String showFlag = getPara("showFlag");
+        if (showFlag != null) {
+        	systemAdv.setShowFlag("1");
+        } else {
+        	systemAdv.setShowFlag("0");
+        }
         systemAdvService.save(systemAdv);
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
         renderJson(response, returnData);
@@ -57,7 +63,14 @@ public class SystemAdvController extends BaseController {
     @RequestMapping("/modifyaction")
     public void modifyaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
         SystemAdv systemAdv = getModel(SystemAdv.class);
+        String showFlag = getPara("showFlag");
+        if (showFlag != null) {
+        	systemAdv.setShowFlag("1");
+        } else {
+        	systemAdv.setShowFlag("0");
+        }
         systemAdvService.update(systemAdv);
+        
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
         renderJson(response, returnData);
     }

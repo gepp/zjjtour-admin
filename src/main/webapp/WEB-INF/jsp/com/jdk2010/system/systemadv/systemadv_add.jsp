@@ -54,6 +54,12 @@
 						<li><label>标题<b></b></label> <input type="text"
 							class="dfinput" id="title" name="systemAdv.title"
 							placeholder="请输入标题" /></li>
+						<li><label>简介<b></b></label> 
+							<textarea cols="60" rows="20" name="systemAdv.abstractContent"
+							id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput">
+							</textarea>
+							<input type="checkbox" name="showFlag"/>标题与简介是否显示 
+							</li>
 						<li><label>跳转地址<b></b></label> <input type="text"
 							class="dfinput" id="jumpUrl" name="systemAdv.jumpUrl"
 							placeholder="请输入跳转地址" /></li>
@@ -93,6 +99,7 @@
 
 
 <script type="text/javascript">
+$("#abstractContent").html("");
 KindEditor.ready(function(K) {
 	var editor = K.editor({
 		allowFileManager : true

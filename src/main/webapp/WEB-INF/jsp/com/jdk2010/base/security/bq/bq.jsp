@@ -75,6 +75,7 @@
 	</div>
 	<script type="text/javascript">
 		$('.tablelist tbody tr:odd').addClass('odd');
+		table_init("${ contextpath}/securitynews","${ contextpath}/securitynews/list?");
 		function add(){
  			window.location.href="${contextpath}/bq/bqadd.htm";
 		}
