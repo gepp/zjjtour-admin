@@ -61,7 +61,7 @@
 							class="tablelink">编辑</a> 
 							&nbsp;&nbsp;
 						<a href="${contextpath }/bq/listnews.htm?menuId=${item.id}"
-							class="tablelink">线路管理</a> 
+							class="tablelink">新闻管理</a> 
 					
 							</td>
 					</tr>

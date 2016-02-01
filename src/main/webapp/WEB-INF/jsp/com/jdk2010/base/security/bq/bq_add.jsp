@@ -59,6 +59,17 @@
  								</select>
  							</div>
 						</li>
+						<li><label>绑定栏目<b></b></label>
+							<div class="vocation">
+								<select name="securityMenu.bannerId" class="select1">
+									<option value="0">无</option>
+									<c:forEach var="item" items="${menuList }">
+										<option value="${item.id }">${item.name }</option>
+									</c:forEach>
+ 								</select>
+ 							</div>
+						</li>
+						
 						<li><label>排序号<b></b></label> <input type="text"
 							class="dfinput" id="orderlist" name="securityMenu.orderlist"
 							placeholder="请输入排序号" value="${ securityMenu.orderlist}" /></li>

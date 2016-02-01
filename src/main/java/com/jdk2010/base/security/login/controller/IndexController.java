@@ -79,12 +79,11 @@ public class IndexController extends BaseController {
         Map<Object, Object> userMenuMap = securityUserService.getUserMenu(securityUser);
         for (Object obj : userMenuMap.keySet()) {
             Map<String, Object> parentMap = (Map<String, Object>) obj;
-            menuStr = menuStr + "<dd><div class=\"title\"><span><img src=\"" + contextpath + parentMap.get("img")
+            menuStr = menuStr + "<dd><div class=\"title\"><span><img src=\"" + contextpath + "/res/images/leftico01.png"
                     + "\" /></span>" + parentMap.get("name") + "</div><ul class=\"menuson\">";
             List<Map<String, Object>> list = (List<Map<String, Object>>) userMenuMap.get(obj);
             for (int i = 0; i < list.size(); i++) {
                 Map<String, Object> secondMap = (Map<String, Object>) list.get(i);
-                System.out.println("secondMap:" + secondMap);
                 if (secondMap.get("type").equals("0")) {
                     menuStr = menuStr + "<li><cite></cite><a href=\"" + contextpath + "" + secondMap.get("url")
                             + "\" target=\"rightFrame\">" + secondMap.get("name") + "</a><i></i></li>";

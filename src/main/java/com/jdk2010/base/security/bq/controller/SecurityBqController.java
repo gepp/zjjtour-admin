@@ -51,6 +51,10 @@ public class SecurityBqController extends BaseController {
         List<SecurityMenu> firstMenuList = dalClient.queryForObjectList(
                 "select * from security_menu where type='2' and parent_id='0' and status=1 ", SecurityMenu.class);
         setAttr("firstMenuList", firstMenuList);
+        
+        List<Map<String, Object>> menuList = securityMenuService.getMenuListByParentIdColumn("0","1");
+        setAttr("menuList", menuList);
+        
         return "/com/jdk2010/base/security/bq/bq_add";
     }
     
@@ -75,6 +79,10 @@ public class SecurityBqController extends BaseController {
         List<SecurityMenu> firstMenuList = dalClient.queryForObjectList(
                 "select * from security_menu where type='2' and parent_id='0' and status=1 and id!="+id, SecurityMenu.class);
         setAttr("firstMenuList", firstMenuList);
+        
+        List<Map<String, Object>> menuList = securityMenuService.getMenuListByParentIdColumn("0","1");
+        setAttr("menuList", menuList);
+        
         setAttr("securityMenu", securityMenu);
         return "/com/jdk2010/base/security/bq/bq_modify";
     }

@@ -45,7 +45,7 @@
 	<div class="formbody">
 		<div id="usual1" class="usual">
   
-			<div id="tab1" class="tabson">
+			<div id="tab1" class="tabson" style="">
 				<ul class="forminfo">
 					<form action="" method="post" id="securityNewsForm">
 					
@@ -93,13 +93,21 @@
 							<textarea cols="60" rows="20" name="securityNews.abstractContent"
 							id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput">
 							</textarea>
-							
 							</li>
+						
 						<li><label>内容详情<b></b></label> <textarea id="content"
 								name="securityNews.content"
 								style="width: 700px; height: 250px; visibility: hidden;"></textarea>
 						</li>
- 
+						<li><label>&nbsp;<b></b></label> 
+						<input type="checkbox" name="maodianStatus" onclick="isShowMaodian();"/>是否启用锚点
+						</li>
+						<li style="display:none" id="showMaodian"><label>&nbsp;<b></b></label> 
+						<input name=""
+							type="button" class="btn" value="添加锚点" onclick="addMaodian()" />
+						</li>
+ 						<div id="maodianDiv">
+ 						</div>
 
 						<li><label>&nbsp;</label><input name="" type="submit"
 							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
@@ -115,7 +123,17 @@
 <script type="text/javascript">
 	$('.tablelist tbody tr:odd').addClass('odd');
 	$("#abstractContent").html("");
-</script>
+	function isShowMaodian(){
+		 var checkbox = $("input[name='maodianStatus']");
+		  
+		 if($("input[name='maodianStatus']").prop("checked")){
+			 $("#showMaodian").css("display","");
+			 
+		 }else{
+			 $("#showMaodian").css("display","none");
+		 }
+	}
+	</script>
 
 
 <script type="text/javascript">
@@ -233,4 +251,16 @@
 										});
 
 					});
+	function addMaodian(){
+		var str="<li><label>锚点内容<b></b></label> <textarea id=\"content\" name=\"content\" style=\"width: 700px; height: 250px; visibility: hidden;\"></textarea></li>";
+		$("body").height();
+		$("#maodianDiv").append(str);
+		resizeHeight();
+	}
+	function resizeHeight(){
+		  var parentHeight=$('#rightFrame', parent.document).height();	 
+		  var newHeight=parentHeight+350;
+		  //alert(newHeight);
+		  $('#rightFrame', parent.document).height((newHeight));
+	}
 </script>

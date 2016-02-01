@@ -59,6 +59,17 @@
  								</select>
  							</div>
 						</li>
+						
+						<li><label>绑定栏目<b></b></label>
+							<div class="vocation">
+								<select name="securityMenu.bannerId" class="select1">
+									<option value="0">无</option>
+									<c:forEach var="item" items="${menuList }">
+										<option value="${item.id }" <c:if test="${securityMenu.bannerId==item.id}">selected</c:if>>${item.name }</option>
+									</c:forEach>
+ 								</select>
+ 							</div>
+						</li>
 						 
 						 
 						<li><label>排序号<b></b></label> <input type="text"
