@@ -175,7 +175,8 @@
 		$("#incId").val(newId);
 		resizeHeight();
 		KindEditor.create('textarea[id="'+textAreaId+'"]', {
-			allowFileManager : true
+			allowFileManager : true,
+			afterBlur:function(){this.sync();}
 		});
 		
 	}
@@ -270,22 +271,14 @@
 											},
 											valid : function(form) {
 											  
-												var maodianContents = document.getElementsByName("maodianContent");
-												for(var i=0;i<maodianContents.length;i++){
-													console.log(maodianContents[i]);
-												}
-												console.log(maodianContents);
 												 
-												
-												return false;
 												var me = this;
 												// 提交表单之前，hold住表单，防止重复提交
 												document.getElementById("content").value=editor.html();
 												$
 														.ajax({
 															url : "${ contextpath}/securitynews/modifyaction",
-															data : $("form")
-																	.serialize(),
+															data : $(form).serialize(),
 															type : "post",
 															success : function(
 																	data) {

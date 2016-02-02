@@ -264,7 +264,8 @@
 		$("#incId").val(newId);
 		resizeHeight();
 		KindEditor.create('textarea[id="'+textAreaId+'"]', {
-			allowFileManager : true
+			allowFileManager : true,
+			afterBlur:function(){this.sync();}
 		});
 		
 	}
