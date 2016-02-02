@@ -1,6 +1,8 @@
 package com.jdk2010.base.security.securitynews.controller;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -101,13 +103,33 @@ public class SecurityNewsController extends BaseController {
         } else {
             securityNews.setJumpType("0");
         }
+        String maodianStatus = getPara("maodianStatus");
+
+        if (maodianStatus != null) {
+            securityNews.setMaodianStatus("1");
+        } else {
+            securityNews.setMaodianStatus("0");
+        }
         securityNews.setMenuId(getParaToInt("menuId"));
         securityNews.setUserid(user.getId());
         securityNews.setCtime(new Date());
         securityNews.setStatus(0);
         securityNews.setReviewStatus("0");
         securityNews.setNewsType("ARTICLE");
-        securityNewsService.save(securityNews);
+       Integer news_id= securityNewsService.save(securityNews);
+        
+        String[] maodianName=getParaValues("maodianName");
+        String[] maodianContent=getParaValues("maodianContent");
+        if(maodianName!=null&&maodianContent!=null){
+        for(int i=0;i<maodianName.length;i++){
+            String maodianNameInsert=maodianName[i];
+            String maodianContentInsert=maodianContent[i];
+            if(StringUtil.isNotBlank(maodianNameInsert)&&StringUtil.isNotBlank(maodianContentInsert)){
+                String sql="insert into news_maodian (news_id,orderlist,maodian_name,maodian_content) values("+news_id+","+(i+1)+",'"+maodianNameInsert+"','"+maodianContentInsert+"')";
+                dalClient.update(sql);
+            }
+        }
+        }
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
         renderJson(response, returnData);
     }
@@ -121,7 +143,8 @@ public class SecurityNewsController extends BaseController {
         Integer menuId = securityNews.getMenuId();
         SecurityMenu menu = securityMenuService.findById(menuId, SecurityMenu.class);
         setAttr("menu", menu);
-        
+        List<Map<String,Object>> maodianList=dalClient.queryForObjectList("select * from news_maodian where news_id ="+id +" order by orderlist asc");
+        setAttr("maodianList", maodianList);
         return "/com/jdk2010/base/security/securitynews/securitynews_modify";
     }
 
@@ -148,7 +171,29 @@ public class SecurityNewsController extends BaseController {
         } else {
             securityNews.setJumpType("0");
         }
+        
+        String maodianStatus = getPara("maodianStatus");
+        if (maodianStatus != null) {
+            securityNews.setMaodianStatus("1");
+        } else {
+            securityNews.setMaodianStatus("0");
+        }
         securityNewsService.update(securityNews);
+        
+        String[] maodianName=getParaValues("maodianName");
+        String[] maodianContent=getParaValues("maodianContent");
+        if(maodianName!=null&&maodianContent!=null){
+        dalClient.update("delete from news_maodian where news_id="+securityNews.getId());
+            for(int i=0;i<maodianName.length;i++){
+                String maodianNameInsert=maodianName[i];
+                String maodianContentInsert=maodianContent[i];
+                if(StringUtil.isNotBlank(maodianNameInsert)&&StringUtil.isNotBlank(maodianContentInsert)){
+                    String sql="insert into news_maodian (news_id,orderlist,maodian_name,maodian_content) values("+securityNews.getId()+","+(i+1)+",'"+maodianNameInsert+"','"+maodianContentInsert+"')";
+                    dalClient.update(sql);
+                }
+            }
+        }
+        
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
         renderJson(response, returnData);
     }

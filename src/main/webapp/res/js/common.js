@@ -19,7 +19,11 @@ function closeChild(){
 	parent.layer.close(index);
 }
 function table_init(action_base_url,action_query_url){
+	
+	 
 	//action_base_url是action的url action_query_url是查询的URL
+	
+	
 	  $("#checkAll").click(function() {
  		    $('input[name="subBox"]').prop("checked",$("#checkAll").prop("checked"));
 		  });

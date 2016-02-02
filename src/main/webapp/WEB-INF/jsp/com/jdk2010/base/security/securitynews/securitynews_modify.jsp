@@ -2,6 +2,7 @@
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.tag.mytag.com" prefix="page"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -67,7 +68,7 @@
 							placeholder="" value="${securityNews.indeximg }" />
 							<input type="button"   value="图片上传" id="indeximgBtn" class="btn"/>
 							<img id="indeximgShow" height="30" width="30" style="vertical-align:middle;"    src="${securityNews.indeximg }"/>
-							</li>
+						</li>
 						<li><label><b>&nbsp;</b></label>
 						<input type="checkbox" name="indexStatus"
 						<c:if test="${securityNews.indexStatus==1 }">checked</c:if>
@@ -108,6 +109,38 @@
 								</textarea>
 						
 						</li>
+						
+						
+						<li><label>&nbsp;<b></b></label> 
+						<input type="checkbox" <c:if test="${securityNews.maodianStatus==1 }">checked</c:if> name="maodianStatus" onclick="isShowMaodian();"/>是否启用锚点
+						</li>
+						<li style="<c:if test="${securityNews.maodianStatus==0 }">display:none</c:if>" id="showMaodian"><label>&nbsp;<b></b></label> 
+						<input name=""
+							type="button" class="btn" value="添加锚点" onclick="addMaodian()" />
+						</li>
+						
+						<div id="maodianDiv">
+							<c:forEach var="maodian" items="${maodianList }" varStatus="status">
+							<div id="div${status.index + 1 }">
+								<li><label>锚点名称<b></b></label><input type="text" class="dfinput"  name="maodianName"  value="${maodian.maodian_name }"/>&nbsp;&nbsp;
+									<input name="" type="button" class="btn" value="删除" onclick="deleteMaodian('div${status.index + 1 }')" />
+								</li>
+								<li><label>锚点内容<b></b></label> 
+									<textarea id="textArea${status.index + 1}" name="maodianContent" style="width: 700px; height: 250px; visibility: hidden;">
+									${maodian.maodian_content }
+									</textarea>
+								</li>
+							</div>
+							
+							<script type="text/javascript">
+							KindEditor.create('textarea[id="textArea${status.index + 1}"]', {
+								allowFileManager : true
+							});
+							</script>
+							</c:forEach>
+						</div>
+						<input type="hidden"  value="${fn:length(maodianList)}" id="incId" name="incId"/>
+						
 						<li><label>&nbsp;</label><input name="" type="submit"
 							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
 							type="button" class="btn" value="返回"
@@ -122,6 +155,38 @@
 <script type="text/javascript">
 	$('.tablelist tbody tr:odd').addClass('odd');
 	$("#abstractContent").html("${securityNews.abstractContent }");
+	function isShowMaodian(){
+		 var checkbox = $("input[name='maodianStatus']");
+		 if($("input[name='maodianStatus']").prop("checked")){
+			 $("#showMaodian").css("display","");
+			 
+		 }else{
+			 $("#showMaodian").css("display","none");
+		 }
+	}
+	function addMaodian(){
+		var incId=$("#incId").val();
+		var newId=parseInt(incId)+1;
+		var textAreaId="textArea"+newId;
+		var divId="div"+newId;
+		var str="<div id=\""+divId+"\"><li><label>锚点名称<b></b></label> <input type=\"text\" class=\"dfinput\"  name=\"maodianName\"  value=\"\"/>&nbsp;&nbsp;<input name=\"\" type=\"button\" class=\"btn\" value=\"删除\" onclick=\"deleteMaodian('"+divId+"')\" /></li><li><label>锚点内容<b></b></label> <textarea id=\""+textAreaId+"\" name=\"maodianContent\" style=\"width: 700px; height: 250px; visibility: hidden;\"></textarea></li></div>";
+		$("body").height();
+		$("#maodianDiv").append(str);
+		$("#incId").val(newId);
+		resizeHeight();
+		KindEditor.create('textarea[id="'+textAreaId+'"]', {
+			allowFileManager : true
+		});
+		
+	}
+	
+	function resizeHeight(){
+		  var parentHeight=$('#rightFrame', parent.document).height();	 
+		  var newHeight=parentHeight+350;
+		  //alert(newHeight);
+		  $('#rightFrame', parent.document).height((newHeight));
+	}
+	
 	</script>
 
 
@@ -132,6 +197,10 @@
 			allowFileManager : true
 		});
 	});
+	function deleteMaodian(id){
+		$("#"+id).remove();
+	}
+	
 	KindEditor.ready(function(K) {
 		var editor = K.editor({
 			allowFileManager : true
@@ -200,13 +269,22 @@
 												'securityNews.title' : 'required;'
 											},
 											valid : function(form) {
+											  
+												var maodianContents = document.getElementsByName("maodianContent");
+												for(var i=0;i<maodianContents.length;i++){
+													console.log(maodianContents[i]);
+												}
+												console.log(maodianContents);
+												 
+												
+												return false;
 												var me = this;
 												// 提交表单之前，hold住表单，防止重复提交
 												document.getElementById("content").value=editor.html();
 												$
 														.ajax({
 															url : "${ contextpath}/securitynews/modifyaction",
-															data : $(form)
+															data : $("form")
 																	.serialize(),
 															type : "post",
 															success : function(

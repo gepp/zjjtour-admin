@@ -113,6 +113,7 @@
 							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
 							type="button" class="btn" value="返回"
 							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${menu.id }'" /></li>
+						<input type="hidden"  value="0" id="incId" name="incId"/>
 					</form>
 				</ul>
 			</div>
@@ -238,6 +239,7 @@
 																					},
 																					function(index) {
 																						parent.layer.close(index);
+																						
 																						window.location.href = '${ contextpath}/securitynews/list.htm?id=${menu.id }';
 																					});
 
@@ -252,10 +254,23 @@
 
 					});
 	function addMaodian(){
-		var str="<li><label>锚点内容<b></b></label> <textarea id=\"content\" name=\"content\" style=\"width: 700px; height: 250px; visibility: hidden;\"></textarea></li>";
+		var incId=$("#incId").val();
+		var newId=parseInt(incId)+1;
+		var textAreaId="textArea"+newId;
+		var divId="div"+newId;
+		var str="<div id=\""+divId+"\"><li><label>锚点名称<b></b></label> <input type=\"text\" class=\"dfinput\"  name=\"maodianName\"  value=\"\"/>&nbsp;&nbsp;<input name=\"\" type=\"button\" class=\"btn\" value=\"删除\" onclick=\"deleteMaodian('"+divId+"')\" /></li><li><label>锚点内容<b></b></label> <textarea id=\""+textAreaId+"\" name=\"maodianContent\" style=\"width: 700px; height: 250px; visibility: hidden;\"></textarea></li></div>";
 		$("body").height();
 		$("#maodianDiv").append(str);
+		$("#incId").val(newId);
 		resizeHeight();
+		KindEditor.create('textarea[id="'+textAreaId+'"]', {
+			allowFileManager : true
+		});
+		
+	}
+	
+	function deleteMaodian(id){
+		$("#"+id).remove();
 	}
 	function resizeHeight(){
 		  var parentHeight=$('#rightFrame', parent.document).height();	 

@@ -103,9 +103,10 @@
 						<td>${ item.reviewTime}</td>
 						<td>
 						<c:if test="${fabuFlag=='1' }">
-						<a
-							href="${ contextpath }/securitynews/modify.htm?id=${item.id}"
+						<a href="${ contextpath }/securitynews/modify.htm?id=${item.id}"
 							class="tablelink">编辑</a>  
+						<a href="javascript:void(0)" onclick="deleteNew('${item.id}');"
+							class="tablelink">删除</a>  
 						</c:if>
 						</td>
 					</tr>
@@ -124,8 +125,11 @@
 			$(".select1").uedSelect({
 				width : 100			  
 			});
-			table_init("${ contextpath}/securitynews","${ contextpath}/securitynews/list?");
+			table_init("${ contextpath}/securitynews","${contextpath}/securitynews/list?");
 		});
+		function deleteNew(){
+			
+		}
 		function goback(){
 			window.location.href="${contextpath}/securitymenu/list.htm";
 		}

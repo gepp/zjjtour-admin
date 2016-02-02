@@ -91,14 +91,15 @@
 <script type="text/javascript">
 	//注意：下面的代码是放在和iframe同一个页面调用,放在iframe下面
 	$("#rightFrame").load(function() {
-		var mainheight = $(this).contents().find("html").height();
+		var mainheight = $("#rightFrame").contents().find("html").height();
+		$("#rightFrame").removeAttr("height");
  		if (mainheight < 600) { //如果需要最小高度，就有了if判断，
-			$(this).attr("height", 600); //如果高度小于600，则把iframe高度改为600
+			$("#rightFrame").height(600); //如果高度小于600，则把iframe高度改为600
 		} else {
-			$(this).attr("height", mainheight); //如果高度大于或者等于600时，则iframe高度等于嵌进来html的高度
+			$("#rightFrame").height(mainheight); //如果高度大于或者等于600时，则iframe高度等于嵌进来html的高度
 		}
 		var mainwidth = $(this).contents().find("html").width();
-		$(this).attr("width", mainwidth);
+		$("#rightFrame").attr("width", mainwidth);
 	});
  
 </script>
