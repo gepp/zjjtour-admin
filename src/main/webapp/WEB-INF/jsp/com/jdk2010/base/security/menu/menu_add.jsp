@@ -131,8 +131,8 @@
 					showRemote : false,
 					imageUrl : K('#smallimg').val(),
 					clickFn : function(url, title, width, height, border, align) {
-						K('#smallimg').val('<%=basePath %>'+url);
-						document.getElementById("smallimgShow").src='<%=basePath %>'+url;
+						K('#smallimg').val(url);
+						document.getElementById("smallimgShow").src=url;
 						editor.hideDialog();
 					}
 				});

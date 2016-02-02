@@ -120,7 +120,7 @@ public class SecurityBqController extends BaseController {
     @RequestMapping("/bqselect")
     public String bqselect(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	 DbKit dbKit = new DbKit(
-                 "select t.*,a.realname from security_news t left join security_user a on t.userid=a.id  where 1=1 and t.menu_id=1010");
+                 "select t.*,a.realname from security_news t left join security_user a on t.userid=a.id  where 1=1 ");
          String searchSQL = "";
          String bgId=getPara("bgId");
          setAttr("bgId", bgId);
@@ -153,7 +153,7 @@ public class SecurityBqController extends BaseController {
         String menuId = getPara("menuId");
         SecurityMenu menu = securityMenuService.findById(menuId, SecurityMenu.class);
         setAttr("menu", menu);
-       String sql="select t.*,a.realname from security_news t ,security_user a where  t.userid=a.id  and  t.menu_id=1010 and  t.id in (select news_id from bq_news where bq_id="+menuId+")";
+       String sql="select t.*,a.realname from security_news t ,security_user a where  t.userid=a.id  and t.id in (select news_id from bq_news where bq_id="+menuId+")";
        DbKit dbKit=new DbKit(sql);
        String searchSQL = "";
         String orderSQL = " order by t.ctime desc";

@@ -109,7 +109,7 @@ while (itr.hasNext()) {
 
 		JSONObject obj = new JSONObject();
 		obj.put("error", 0);
-		obj.put("url", saveUrl + newFileName);
+		obj.put("url", request.getContextPath()+saveUrl + newFileName);
 		out.println(obj.toJSONString());
 	}
 }

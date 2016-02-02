@@ -114,7 +114,7 @@
 				type : 2,
 				title : '线路选择',
 				shadeClose : true,
-				area : [ '780px', '90%' ],
+				area : [ '90%', '80%' ],
 				content : '${contextpath}/bq/bqselect.htm?bgId=${menu.id }' //iframe的url
 			});
 		}

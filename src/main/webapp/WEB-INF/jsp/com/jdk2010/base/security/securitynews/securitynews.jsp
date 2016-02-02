@@ -127,8 +127,37 @@
 			});
 			table_init("${ contextpath}/securitynews","${contextpath}/securitynews/list?");
 		});
-		function deleteNew(){
-			
+		function deleteNew(del_ids){
+			parent.layer.confirm('您确认删除您所选择的数据么？',function(index){
+				//ajax提交删除数据
+				jQuery.ajax({
+							type: "post", 
+							url:"${contextpath}/securitynews/delete", 
+							dataType: "json",
+							data:{action:'delete',ids:del_ids},
+							success: function (data) { 
+								parent.layer.close(index);
+								if(data.status=='success'){
+									parent.layer.alert('当前操作成功', {
+										closeBtn: 0
+									}, function(index){
+										parent.layer.close(index);
+										window.location.href="${contextpath}/securitynews/list.htm?id=${menu.id}";
+									});
+								}else{
+									parent.layer.close(index);
+									parent.layer.alert(data.message, {
+										closeBtn: 0
+									}, function(index){
+										parent.layer.close(index);
+										window.location.href="${contextpath}/securitynews/list.htm?id=${menu.id}";
+									});
+								}
+								
+								 
+							} 
+					});
+			});
 		}
 		function goback(){
 			window.location.href="${contextpath}/securitymenu/list.htm";

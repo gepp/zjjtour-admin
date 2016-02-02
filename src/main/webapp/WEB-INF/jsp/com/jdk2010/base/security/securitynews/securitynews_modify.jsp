@@ -109,6 +109,12 @@
 								</textarea>
 						
 						</li>
+						<li><label>全景控件url<b></b></label>
+						 <input type="text"
+							class="dfinput" id="quanjingUrl" name="securityNews.quanjingUrl"
+							placeholder="" value="${ securityNews.quanjingUrl}"/>
+						
+						</li>
 						
 						
 						<li><label>&nbsp;<b></b></label> 
@@ -134,7 +140,9 @@
 							
 							<script type="text/javascript">
 							KindEditor.create('textarea[id="textArea${status.index + 1}"]', {
-								allowFileManager : true
+								allowFileManager : true,
+								afterBlur:function(){this.sync();}
+								
 							});
 							</script>
 							</c:forEach>
@@ -212,8 +220,8 @@
 					showRemote : false,
 					imageUrl : K('#smallimg').val(),
 					clickFn : function(url, title, width, height, border, align) {
-						K('#smallimg').val('<%=basePath %>'+url);
-						document.getElementById("smallimgShow").src='<%=basePath %>'+url;
+						K('#smallimg').val(url);
+						document.getElementById("smallimgShow").src=url;
 						editor.hideDialog();
 					}
 				});
@@ -225,8 +233,8 @@
 					showRemote : false,
 					imageUrl : K('#indeximg').val(),
 					clickFn : function(url, title, width, height, border, align) {
-						K('#indeximg').val('<%=basePath %>'+url);
-						document.getElementById("indeximgShow").src='<%=basePath %>'+url;
+						K('#indeximg').val(url);
+						document.getElementById("indeximgShow").src=url;
 						editor.hideDialog();
 					}
 				});
@@ -239,8 +247,8 @@
 					showRemote : false,
 					imageUrl : K('#indeximg').val(),
 					clickFn : function(url, title, width, height, border, align) {
-						K('#indeximg').val('<%=basePath %>'+url);
-						document.getElementById("indeximgShow").src='<%=basePath %>'+url;
+						K('#indeximg').val(url);
+						document.getElementById("indeximgShow").src=url;
 						editor.hideDialog();
 					}
 				});
@@ -270,7 +278,6 @@
 												'securityNews.title' : 'required;'
 											},
 											valid : function(form) {
-											  
 												 
 												var me = this;
 												// 提交表单之前，hold住表单，防止重复提交

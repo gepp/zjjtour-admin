@@ -182,8 +182,8 @@ KindEditor.ready(function(K) {
 				showRemote : false,
 				imageUrl : K('#smallimg').val(),
 				clickFn : function(url, title, width, height, border, align) {
-					K('#smallimg').val('<%=basePath %>'+url);
-					document.getElementById("smallimgShow").src='<%=basePath %>'+url;
+					K('#smallimg').val(url);
+					document.getElementById("smallimgShow").src=url;
 					editor.hideDialog();
 				}
 			});
@@ -195,8 +195,8 @@ KindEditor.ready(function(K) {
 				showRemote : false,
 				imageUrl : K('#indeximg').val(),
 				clickFn : function(url, title, width, height, border, align) {
-					K('#indeximg').val('<%=basePath %>'+url);
-					document.getElementById("indeximgShow").src='<%=basePath %>'+url;
+					K('#indeximg').val(url);
+					document.getElementById("indeximgShow").src=url;
 					editor.hideDialog();
 				}
 			});
@@ -209,8 +209,8 @@ KindEditor.ready(function(K) {
 				showRemote : false,
 				imageUrl : K('#indeximg').val(),
 				clickFn : function(url, title, width, height, border, align) {
-					K('#indeximg').val('<%=basePath %>'+url);
-					document.getElementById("indeximgShow").src='<%=basePath %>'+url;
+					K('#indeximg').val(url);
+					document.getElementById("indeximgShow").src=url;
 					editor.hideDialog();
 				}
 			});

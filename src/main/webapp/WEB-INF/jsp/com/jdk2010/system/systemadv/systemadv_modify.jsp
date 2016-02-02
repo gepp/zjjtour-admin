@@ -103,8 +103,8 @@
 					showRemote : false,
 					imageUrl : K('#imgUrl').val(),
 					clickFn : function(url, title, width, height, border, align) {
-						K('#imgUrl').val('<%=basePath %>'+url);
-						document.getElementById("indeximgShow").src='<%=basePath %>'+url;
+						K('#imgUrl').val(url);
+						document.getElementById("indeximgShow").src=url;
 						editor.hideDialog();
 					}
 				});
