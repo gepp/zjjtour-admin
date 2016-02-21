@@ -130,7 +130,14 @@
 			<tbody>
 				<c:forEach items="${pageList.list}" var="item">
 					<tr>
-						<td><input type="checkbox" name="subBox" value="${item.id}" /></td>
+						<td>
+						<c:if test="${item.reviewStatus==1 }">
+						<span class="cboxDisable"></span>
+						</c:if>
+						<c:if test="${item.reviewStatus!=1 }">
+						<input type="checkbox" name="subBox" value="${item.id}" />
+						</c:if>
+						</td>
 						
 						<td><a class="tablelink" href="#" onclick="memberComplainDetail('${item.id}')">${ item.complainTitle}</a></td>
 						

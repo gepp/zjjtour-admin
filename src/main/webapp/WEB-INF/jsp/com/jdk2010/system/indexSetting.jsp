@@ -32,6 +32,14 @@
 		<div class="formtitle1">
 			<span>首页设置</span>
 		</div>
+			 <div class="tools">
+			<ul class="toolbar">
+				<li class="click" onclick="staticHtml();"><span><img
+						src="${ contextpath }/res/images/t01.png" /></span>首页静态化</li>
+				 
+		 
+			</ul>
+		</div>
 		<table class="tablelist">
 			<thead>
 				<tr>
@@ -167,6 +175,37 @@
 		    skin: 'layui-layer-nobg', //没有背景色
 		    shadeClose: true,
 		    content: $('#'+id)
+		});
+	}
+	function staticHtml(){
+		parent.layer.confirm('您确认初始化首页？',function(index){
+			//ajax提交删除数据
+			jQuery.ajax({
+						type: "post", 
+						url:"${contextpath}/genIndex.htm", 
+						dataType: "json",
+						success: function (data) { 
+							parent.layer.close(index);
+							if(data.status=='success'){
+								parent.layer.alert('首页初始化成功,请刷新首页', {
+									closeBtn: 0
+								}, function(index){
+									parent.layer.close(index);
+									window.location.href="${contextpath}/toIndexSetting";
+								});
+							}else{
+								parent.layer.close(index);
+								parent.layer.alert(data.message, {
+									closeBtn: 0
+								}, function(index){
+									parent.layer.close(index);
+									window.location.href="${contextpath}/toIndexSetting";
+								});
+							}
+							
+							 
+						} 
+				});
 		});
 	}
 </script>

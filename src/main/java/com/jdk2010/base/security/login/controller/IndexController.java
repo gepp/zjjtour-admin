@@ -1,9 +1,14 @@
 package com.jdk2010.base.security.login.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.jdk2010.base.security.securitynews.model.SecurityNews;
 import com.jdk2010.base.security.securitynews.service.ISecurityNewsService;
@@ -21,6 +28,7 @@ import com.jdk2010.framework.controller.BaseController;
 import com.jdk2010.framework.dal.client.DalClient;
 import com.jdk2010.framework.util.CookieUtil;
 import com.jdk2010.framework.util.DbKit;
+import com.jdk2010.framework.util.FileUtil;
 import com.jdk2010.framework.util.OsInfoUtil;
 import com.jdk2010.framework.util.Page;
 import com.jdk2010.framework.util.ReturnData;
@@ -192,6 +200,48 @@ public class IndexController extends BaseController {
         renderJson(response, returnData);
     }
     
- 
+    @RequestMapping("/genIndex")
+    public void genIndex(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	//9静态生成首页
+		InputStream in = null;
+	    BufferedReader reader = null;
+	    String url="http://localhost:8080/zjjtour/dtIndex.htm";
+	    try
+	    {
+	      in = new URL(url).openStream();
+	      reader = new BufferedReader(
+	        new InputStreamReader(in,"utf-8"));
+	      StringBuilder sb = new StringBuilder();
+	      sb.append("<%@ page language=\"java\" contentType=\"text/html; charset=utf-8\" pageEncoding=\"utf-8\"%>");
+	      String line;
+	      while ((line = reader.readLine()) != null)
+	      {
+	        sb.append(line);
+	      }
+	      String path="";
+	      WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();  
+	      ServletContext servletContext = webApplicationContext.getServletContext();  
+	      
+	      String serverInfo=servletContext.getServerInfo();
+	     System.out.println(" servletContext.getContextPath();"+ servletContext.getRealPath("/"));
+	     System.out.println(OsInfoUtil.getOsName());
+ 	      if(OsInfoUtil.getOsName().indexOf("Win")>-1){
+	    	   path="E:\\coding\\项目\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\zjjtour\\WEB-INF\\jsp\\index.jsp";
+	      }else{
+	    	  path="/usr/local/tomcat/apache-tomcat-7.0.62/webapps/ROOT/WEB-INF/jspindex.jsp";
+	      }
+	     
+		 FileUtil.write(path,sb.toString());
+	    } catch (Exception e) {
+	      e.printStackTrace();
+	    } finally {
+	    	
+	    }
+    	
+    	
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        renderJson(response, returnData);
+    }
+    
 
 }

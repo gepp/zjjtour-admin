@@ -468,5 +468,23 @@ public class SecurityNewsController extends BaseController {
         renderJson(response, returnData);
     }
     
+    @RequestMapping("/toChengxin")
+    public String toChengxin(HttpServletRequest request, HttpServletResponse response) throws Exception {
+         
+        SecurityNews securityNews = securityNewsService.queryForObject("select * from security_news where  menu_id=1080",SecurityNews.class);
+        setAttr("securityNews", securityNews);
+        
+        return "/com/jdk2010/base/security/securitynews/chengxin_modify";
+    }
+
+    @RequestMapping("/chengxinmodifyaction")
+    public void chengxinmodifyaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        SecurityNews securityNews = getModel(SecurityNews.class);
+        
+        securityNewsService.update(securityNews);
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        renderJson(response, returnData);
+    }
+    
   
 }
