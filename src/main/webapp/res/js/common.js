@@ -1,3 +1,5 @@
+var systemurl="http://localhost:8080/zjjtour/";
+
 function sAlert(msg){
 	parent.layer.alert(msg
 	);

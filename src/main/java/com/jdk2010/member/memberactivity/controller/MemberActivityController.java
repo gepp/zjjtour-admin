@@ -35,6 +35,8 @@ public class MemberActivityController extends BaseController {
 
     @RequestMapping("/list")
     public String list(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	 Map<String, Object> indexsettingMap = dalClient.queryForObject("select * from system_indexsetting ");
+         setAttr("indexsettingMap", indexsettingMap);
         DbKit dbKit = new DbKit("select * from member_activity  where 1=1 ");
         String searchSQL = "";
         String orderSQL = "";

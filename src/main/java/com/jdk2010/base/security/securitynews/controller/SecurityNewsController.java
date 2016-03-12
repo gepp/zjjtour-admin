@@ -40,7 +40,11 @@ public class SecurityNewsController extends BaseController {
 
     @RequestMapping("/list")
     public String list(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	 Map<String, Object> indexsettingMap = dalClient.queryForObject("select * from system_indexsetting ");
+         setAttr("indexsettingMap", indexsettingMap);
         String id = getPara("id");
+        Integer parentId=dalClient.queryColumn("select parent_id from security_menu where id ='"+getPara("id")+"'", "parent_id");
+        setAttr("parentId", parentId);
         SecurityMenu menu = securityMenuService.findById(id, SecurityMenu.class);
         setAttr("menu", menu);
         DbKit dbKit = new DbKit(
@@ -287,6 +291,8 @@ public class SecurityNewsController extends BaseController {
         setAttr("id", getPara("id"));
         String jumpType=getPara("jumpType");
         setAttr("jumpType", jumpType);
+        Integer parentId=dalClient.queryColumn("select parent_id from security_menu where id ='"+getPara("id")+"'", "parent_id");
+       setAttr("parentId", parentId);
         return "/com/jdk2010/base/security/securitynews/toCheck";
     }
     

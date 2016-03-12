@@ -48,10 +48,10 @@
 							name="id" placeholder="请输入id"
 							value="${ indexsettingMap.id}" />
 						 
-						<li><label>网站名称<b></b></label> <input type="text"
+						<li ><label style="width:140px">网站名称<b></b></label> <input type="text"
 							class="dfinput" id="title" name="title"
 							placeholder="请输入网站名称" value="${indexsettingMap.title}" /></li>
-						<li><label>首页样式<b></b></label>
+						<li><label  style="width:140px">首页样式<b></b></label>
 							<div class="vocation">
 								<select name="style_type" class="select1">
 									<option value="模板2" <c:if test="${indexsettingMap.style_type=='模板2' }">selected</c:if>>模板2</option>
@@ -59,6 +59,17 @@
 								</select>
 							</div>
 						</li>
+						<li><label  style="width:140px">是否公示投诉管理<b></b></label>
+						<div class="vocation">
+								<select name="show_tousu" class="select1">
+									<option value="1" <c:if test="${indexsettingMap.show_tousu=='1' }">selected</c:if>>公示</option>
+									<option value="0" <c:if test="${indexsettingMap.show_tousu=='0' }">selected</c:if>>不公示</option>
+								</select>
+							</div>
+						</li>
+						<li ><label style="width:140px">前台访问地址<b></b></label> <input type="text"
+							class="dfinput" id="index_url" name="index_url"
+							placeholder="请输入前台访问地址" value="${indexsettingMap.index_url}" /></li>
 						<li><label>&nbsp;</label><input name="" type="submit"
 							class="btn" value="确定" /> &nbsp;&nbsp; <input name=""
 							type="button" class="btn" value="返回"

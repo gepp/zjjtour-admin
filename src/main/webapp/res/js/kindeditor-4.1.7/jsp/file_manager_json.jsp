@@ -1,3 +1,4 @@
+<%@page import="com.jdk2010.util.QiniuUtil"%>
 <%@page import="com.alibaba.fastjson.JSONObject"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*,java.io.*" %>
@@ -105,6 +106,7 @@ result.put("total_count", fileList.size());
 result.put("file_list", fileList);
 
 response.setContentType("application/json; charset=UTF-8");
+System.out.println("aaaa:"+result.toJSONString());
 out.println(result.toJSONString());
 %>
 <%!

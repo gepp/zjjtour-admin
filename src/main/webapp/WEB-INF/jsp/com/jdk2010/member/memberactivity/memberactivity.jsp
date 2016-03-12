@@ -37,16 +37,16 @@
 		<form method="post" action="${ contextpath}/memberactivity/list"
 			class="form-horizontal">
 			<ul class="seachform" style="padding-top: 10px; padding-left: 15px">
-				<li><label>标题</label><input type="text"
+				<li><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标题</label><input type="text"
 					name="title" id="title" class="scinput1"
 					placeholder="" value="${title}"></li>
 				<li><label>活动状态</label>
 					  <div class="vocation">
 						 <select class="select1" name="activity_status">
 							<option value="" <c:if test="${activity_status==''}">selected</c:if>>全部</option>
-							<option value="0" <c:if test="${activity_status=='1'}">selected</c:if>>未开始</option>
-							<option value="1" <c:if test="${activity_status=='2'}">selected</c:if>>进行中</option>
-							<option value="2" <c:if test="${activity_status=='3'}">selected</c:if>>已结束</option>
+							<option value="0" <c:if test="${activity_status=='0'}">selected</c:if>>未开始</option>
+							<option value="1" <c:if test="${activity_status=='1'}">selected</c:if>>进行中</option>
+							<option value="2" <c:if test="${activity_status=='2'}">selected</c:if>>已结束</option>
 					      </select>
 					   </div>
 				</li>
@@ -70,20 +70,20 @@
 					</li>
 				</ul>
 				<ul class="seachform" style="padding-top: 10px; padding-left: 15px">
-				<li><label>活动起始时间起</label>
+				<li><label>起始时间起</label>
 				<input type="text"
 					name="start_time_start" id="start_time_start" class="scinput1"
 					placeholder="请输入活动起始时间" value="${start_time_start}" onfocus="WdatePicker({isShowWeek:true})">
-				&nbsp;至&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 至&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 				<input type="text"
 					name="start_time_end" id="start_time_end" class="scinput1"
 					placeholder="请输入截止时间" value="${start_time_end}" onfocus="WdatePicker({isShowWeek:true})">
 				</li>
-				<li><label>活动截止时间起</label>
+				<li><label>截止时间起</label>
 				<input type="text"
 					name="end_time_start" id="end_time_start" class="scinput1"
 					placeholder="请输入活动截止时间起" value="${end_time_start}" onfocus="WdatePicker({isShowWeek:true})">
-				&nbsp;至&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<input type="text"
 					name="end_time_end" id="end_time_end" class="scinput1"
 					placeholder="请输入截止时间止" value="${end_time_end}" onfocus="WdatePicker({isShowWeek:true})">
@@ -161,6 +161,9 @@
 							class="tablelink">编辑</a>&nbsp;&nbsp;<a
 							href="#" onclick="seeDetail('${item.id}')"
 							class="tablelink">查看明细</a>
+							&nbsp;&nbsp;<a
+							href="#"  onclick="preview('${item.id}');"
+							class="tablelink">预览</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -253,6 +256,11 @@
 			    area : [ '500px', '60%' ],
 			    content: '${contextpath}/memberactivity/memberList.htm?id='+id //iframe的url
 			}); 
+		}
+
+		function preview(id){
+			var detailUrl='${indexsettingMap.index_url}activityDetail.htm?id='+id;
+			parent.window.open(detailUrl,'_blank');
 		}
 </script>
 

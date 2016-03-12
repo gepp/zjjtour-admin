@@ -38,13 +38,13 @@
 		<form method="post" action="${ contextpath}/membercomplain/list"
 			class="form-horizontal">
 			<ul class="seachform" style="padding-top: 10px; padding-left: 15px">
-				<li><label>会员手机</label><input type="text" name="member_mobile"
+				<li><label>&nbsp;&nbsp;&nbsp;会员手机</label><input type="text" name="member_mobile"
 					id="member_mobile" class="scinput1" placeholder="请输入会员手机"
 					value="${member_mobile}"></li>
 				<li><label>会员姓名</label><input type="text" name="member_name"
 					id="member_name" class="scinput1" placeholder="请输入会员姓名"
 					value="${member_name}"></li>
-					<li><label>回复状态</label>
+					<li><label>&nbsp;&nbsp;&nbsp;&nbsp;回复状态</label>
 						<div class="vocation">
 						 <select class="select1" name="replay_status">
 						 <option value="" <c:if test="${replay_status==''}">selected</c:if>>全部</option>
@@ -71,7 +71,7 @@
 				<input type="text"
 					name="complain_time_start" id="complain_time_start" class="scinput1"
 					placeholder="请输入开始时间" value="${complain_time_start}" onfocus="WdatePicker({isShowWeek:true})">
-					&nbsp;至&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="text"
 					name="complain_time_end" id="complain_time_end" class="scinput1"
 					placeholder="请输入截止时间" value="${complain_time_end}" onfocus="WdatePicker({isShowWeek:true})">
@@ -81,7 +81,7 @@
 				<input type="text"
 					name="review_time_start" id="review_time_start" class="scinput1"
 					placeholder="请输入起始时间" value="${review_time_start}" onfocus="WdatePicker({isShowWeek:true})">
-					&nbsp;至&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<input type="text"
 					name="review_time_end" id="review_time_end" class="scinput1"
 					placeholder="请输入截止时间" value="${review_time_end}" onfocus="WdatePicker({isShowWeek:true})">
@@ -139,19 +139,28 @@
 						</c:if>
 						</td>
 						
-						<td><a class="tablelink" href="#" onclick="memberComplainDetail('${item.id}')">${ item.complainTitle}</a></td>
+						<td><a class="tablelink" href="#" onclick="memberComplainDetail('${item.id}')">
+						<c:choose>
+						<c:when test="${fn:length(item.complainTitle)>10}">
+							${fn:substring(item.complainTitle, 0, 10)}...
+						</c:when>
+						<c:otherwise>
+						${ item.complainTitle}
+						 </c:otherwise>
+						 </c:choose>
+						</a></td>
 						
 						<td>${ item.memberName}</td>
 						
 						<td>${ item.memberMobile}</td>
-						
-						<td>${ item.complainTime}</td>
+						<fmt:formatDate value="${item.complainTime }" pattern="yyyy-MM-dd HH:mm" var="complainTime"/>
+						<td>${complainTime}</td>
 
 						<td>${ item.replayStatus==0?'未处理':'已回复'}</td>
 
 						<td>${ item.replayName}</td>
-
-						<td>${ item.replayTime}</td>
+						<fmt:formatDate value="${item.replayTime }" pattern="yyyy-MM-dd HH:mm" var="replayTime"/>
+						<td>${ replayTime}</td>
 
 						<td>${ item.reviewStatus=='0'?'未处理':(item.reviewStatus=='1'?'通过':'驳回')}</td>
 
@@ -160,7 +169,7 @@
 						<td>${ item.reviewTime}</td>
 
 						<td><a
-							href="#" class="tablelink" onclick="memberComplainReviewDetail('${item.id}');">查看</a>
+							href="#" class="tablelink" onclick="memberComplainReviewDetail('${item.id}');">审核详情</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -178,7 +187,7 @@
 		$('.tablelist tbody tr:odd').addClass('odd');
 		$(document).ready(function(){
 			$(".select1").uedSelect({
-				width : 100			  
+				width : 150			  
 			});
 			table_init("${ contextpath}/membercomplain","${ contextpath}/membercomplain/list?");
 		});

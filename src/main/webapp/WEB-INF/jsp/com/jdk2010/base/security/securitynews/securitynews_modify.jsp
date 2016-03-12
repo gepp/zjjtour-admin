@@ -54,6 +54,9 @@
 						<li><label>标题<b></b></label> <input type="text"
 							class="dfinput" id="title" name="securityNews.title"
 							placeholder="请输入标题" value="${ securityNews.title}" /></li>
+						<li><label>seo关键字<b></b></label> <input type="text"
+							class="dfinput" id="keywords" name="securityNews.keywords" value="${securityNews.keywords }"
+							placeholder="请输入关键字" /></li>
 						<li><label>简略标题<b></b></label> <input type="text"
 							class="dfinput" id="litterTitle" name="securityNews.litterTitle"
 							placeholder="" value="${securityNews.litterTitle }" /></li>

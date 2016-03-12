@@ -32,6 +32,9 @@ import com.jdk2010.framework.util.FileUtil;
 import com.jdk2010.framework.util.OsInfoUtil;
 import com.jdk2010.framework.util.Page;
 import com.jdk2010.framework.util.ReturnData;
+import com.jdk2010.framework.util.StringUtil;
+import com.jdk2010.member.memberactivity.model.MemberActivity;
+import com.jdk2010.member.memberactivity.service.IMemberActivityService;
 import com.jdk2010.member.membercomplain.model.MemberComplain;
 import com.jdk2010.system.systemadv.model.SystemAdv;
 import com.jdk2010.system.systemadv.service.ISystemAdvService;
@@ -43,6 +46,9 @@ import com.jdk2010.system.systemadv.service.ISystemAdvService;
 public class IndexController extends BaseController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Resource
+    IMemberActivityService memberActivityService;
+    
     @Resource
     ISecurityUserService securityUserService;
 
@@ -176,8 +182,16 @@ public class IndexController extends BaseController {
         dbKit.append(orderSQL);
         Page pageList = systemAdvService.queryForPageList(dbKit, getPage(), SystemAdv.class);
         setAttr("pageList", pageList);
+        
+        List<SecurityNews> rightNewsList=dalClient.queryForObjectList("select * from security_news where id in (select key_id from setting where type=1) ",SecurityNews.class);
+        setAttr("rightNewsList", rightNewsList);
+        
+        List<MemberActivity> rightActivityList=dalClient.queryForObjectList("select * from member_activity where id in (select key_id from setting where type=2) ",MemberActivity.class);
+        setAttr("rightActivityList", rightActivityList);
         return "/com/jdk2010/system/indexSetting";
     }
+    
+    
 
     @RequestMapping("/indexSettingModify")
     public String indexSettingModify(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -193,7 +207,9 @@ public class IndexController extends BaseController {
         Integer id = getParaToInt("id");
         String title = getPara("title");
         String style_type = getPara("style_type");
-        String sql = "update system_indexsetting set title='" + title + "',style_type='" + style_type + "' where id="
+        String show_tousu=getPara("show_tousu");
+        String index_url=getPara("index_url");
+        String sql = "update system_indexsetting set title='" + title + "',style_type='" + style_type + "' ,show_tousu="+show_tousu+",index_url='"+index_url+"' where id="
                 + id;
         dalClient.update(sql);
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
@@ -239,6 +255,131 @@ public class IndexController extends BaseController {
 	    }
     	
     	
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        renderJson(response, returnData);
+    }
+    
+    @RequestMapping("/bqselect")
+    public String bqselect(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	 DbKit dbKit = new DbKit(
+                 "select t.*,a.realname from security_news t left join security_user a on t.userid=a.id  where 1=1 ");
+         String searchSQL = "";
+         String bgId=getPara("bgId");
+         setAttr("bgId", bgId);
+         String orderSQL = " order by t.ctime desc";
+         String title = getPara("title");
+         if (title != null && !"".equals(title)) {
+             searchSQL = searchSQL + " and t.title LIKE :title";
+             if (request.getMethod().equals("get")) {
+                 title = StringUtil.transCharset(title, "ISO8859-1", "UTF-8");
+             }
+             setAttr("title", title);
+             dbKit.append(searchSQL);
+             dbKit.put("title", "%" + title + "%");
+         }
+         String reviewStatus=getPara("reviewStatus");
+         if(reviewStatus!=null&&(reviewStatus.equals("1")||reviewStatus.equals("2"))){
+         	searchSQL = searchSQL + " and t.review_status ="+reviewStatus;
+         	dbKit.append(searchSQL);
+         	 setAttr("reviewStatus", reviewStatus);
+         }
+         dbKit.append(orderSQL);
+         System.out.println(dbKit.getSql());
+         Page pageList = securityNewsService.queryForPageList(dbKit, getPage(), SecurityNews.class);
+         setAttr("pageList", pageList);
+        return "/com/jdk2010/system/othersetting/newsselect";
+    }
+    
+    
+    @RequestMapping("/activitylist")
+    public String list(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	 Map<String, Object> indexsettingMap = dalClient.queryForObject("select * from system_indexsetting ");
+         setAttr("indexsettingMap", indexsettingMap);
+        DbKit dbKit = new DbKit("select * from member_activity  where 1=1 ");
+        String searchSQL = "";
+        String orderSQL = "";
+        String title = getPara("title");
+        if (title != null && !"".equals(title)) {
+            searchSQL = searchSQL + " and  title LIKE '%" + title + "%'";
+            setAttr("title", title);
+            dbKit.append(searchSQL);
+        }
+
+        String activity_status = getPara("activity_status");
+        if (activity_status != null && !"".equals(activity_status)) {
+            searchSQL = searchSQL + " and  activity_status ="+activity_status ;
+            setAttr("activity_status", activity_status);
+            dbKit.append(searchSQL);
+        }
+
+        String status = getPara("status");
+        if (status != null && !"".equals(status)) {
+            searchSQL = searchSQL + " and  status =" + status;
+            setAttr("status", status);
+            dbKit.append(searchSQL);
+        }
+
+        String review_status = getPara("review_status");
+        if (review_status != null && !"".equals(review_status)) {
+            searchSQL = searchSQL + " and  review_status =" + review_status;
+            setAttr("review_status", review_status);
+            dbKit.append(searchSQL);
+        }
+
+        String start_time_start = getPara("start_time_start");
+        if (start_time_start != null && !"".equals(start_time_start)) {
+            searchSQL = searchSQL + " and  start_time >='"+start_time_start+"'";
+            setAttr("start_time_start", start_time_start);
+            dbKit.append(searchSQL);
+        }
+        
+        String start_time_end= getPara("start_time_end");
+        if (start_time_end != null && !"".equals(start_time_end)) {
+            searchSQL = searchSQL + " and  start_time <='"+start_time_end+"'";
+            setAttr("start_time_end", start_time_end);
+            dbKit.append(searchSQL);
+        }
+
+        String end_time_start = getPara("end_time_start");
+        if (end_time_start != null && !"".equals(end_time_start)) {
+            searchSQL = searchSQL + " and  end_time >='"+end_time_start+"'";
+            setAttr("end_time_start", end_time_start);
+            dbKit.append(searchSQL);
+        }
+        
+        String end_time_end= getPara("end_time_end");
+        if (end_time_end != null && !"".equals(end_time_end)) {
+            searchSQL = end_time_end + " and  end_time <='"+end_time_end+"'";
+            setAttr("end_time_end", end_time_end);
+            dbKit.append(searchSQL);
+        }
+
+        dbKit.append(orderSQL);
+        Page pageList = memberActivityService.queryForPageList(dbKit, getPage(), MemberActivity.class);
+        setAttr("pageList", pageList);
+        return "/com/jdk2010/system/othersetting/activityselect";
+    }
+    
+    
+    
+    @RequestMapping("/submitCheck")
+    public void submitCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String ids = getPara("ids");
+        String type=getPara("type");
+        for(int i=0;i<ids.split(",").length;i++){
+        	dalClient.update("delete from  setting where type="+type+" and  key_id="+ids.split(",")[i]+"");
+        	dalClient.update("insert into setting(type,key_id) values("+type+","+ids.split(",")[i]+")");
+        }
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        renderJson(response, returnData);
+    }
+    
+    
+    @RequestMapping("/deleteNewOne")
+    public void deleteNewOne(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Integer id = getParaToInt("id");
+        String type=getPara("type");
+        dalClient.update("delete from setting where  type='"+type+"' and key_id="+id);
         ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
         renderJson(response, returnData);
     }

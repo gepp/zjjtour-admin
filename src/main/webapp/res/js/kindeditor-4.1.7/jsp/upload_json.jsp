@@ -1,3 +1,4 @@
+<%@page import="com.jdk2010.util.QiniuUtil"%>
 <%@page import="com.alibaba.fastjson.JSONObject"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*,java.io.*" %>
@@ -6,14 +7,7 @@
 <%@ page import="org.apache.commons.fileupload.disk.*" %>
 <%@ page import="org.apache.commons.fileupload.servlet.*" %>
 <%
-/**
- * KindEditor JSP
- * 
- * 本JSP程序是演示程序，建议不要直接在实际项目中使用。
- * 如果您确定直接使用本程序，使用之前请仔细确认相关安全设置。
- * 
- */
-
+ 
 //文件保存目录路径
 String savePath = pageContext.getServletContext().getRealPath("/") + "attached/";
 System.out.println("savePath:"+savePath);
@@ -110,6 +104,9 @@ while (itr.hasNext()) {
 		JSONObject obj = new JSONObject();
 		obj.put("error", 0);
 		obj.put("url", request.getContextPath()+saveUrl + newFileName);
+		String kineditorfileName=savePath+newFileName;
+		String newName=QiniuUtil.upload(kineditorfileName);
+		obj.put("url", newName);
 		out.println(obj.toJSONString());
 	}
 }

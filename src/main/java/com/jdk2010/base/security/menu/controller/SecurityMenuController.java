@@ -102,10 +102,17 @@ public class SecurityMenuController extends BaseController {
     @RequestMapping("/delete")
     public void delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String ids = getPara("ids");
-        securityMenuService.deleteByIDS(ids, SecurityMenu.class);
-        dalClient.update("delete from security_menu where parent_id="+ids);
-        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
-        renderJson(response, returnData);
+        ReturnData returnData = null;
+        
+        List<SecurityMenu> menuList=dalClient.queryForObjectList("select * from security_menu where parent_id="+ids,SecurityMenu.class);
+        if(menuList.size()>0){
+        	returnData=new ReturnData(Constants.ERROR, "请先删除子栏目再删除本栏目！");
+        }else{
+        	securityMenuService.deleteByIDS(ids, SecurityMenu.class);
+        	dalClient.update("delete from security_menu where parent_id="+ids);
+        	returnData=new ReturnData(Constants.SUCCESS, "操作成功");
+        }
+         renderJson(response, returnData);
     }
 
     @RequestMapping("/view")

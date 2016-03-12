@@ -37,9 +37,13 @@
 	</table>
 	<br />
 	<br />
-	<li style="position:fixed;left:20%;bottom:10px"><label>&nbsp;</label><input name="" type="button" class="btn"
-		value=" 确定" onclick="check();" /> &nbsp;&nbsp; <input name=""
-		type="button" class="btn" value="关闭" onclick="closeAll();" /></li>
+	<li style="position:fixed;left:5%;bottom:10px"><label>&nbsp;</label><input name="" type="button" class="btn"
+		value=" 确定" onclick="check();" />
+		 
+		 &nbsp;&nbsp; <input name=""
+		type="button" class="btn" value="关闭" onclick="closeAll();" />
+		 
+		</li>
 </body>
 </html>
 <script type="text/javascript">
@@ -80,9 +84,26 @@
 
 			}
 		});
-		
-		
-		
+	
 	}
+	
+	function preview(){
+		 
+		var url="http://localhost:8080/zjjtour/";
+		if('${parentId}'=='1011'){
+			url=url+'quanjingDetail.htm?id=${ids}';
+		}
+		else if('${parentId}'=='1010'){
+			url=url+'changyouDetail.htm?id=${ids}';
+		}
+		else if('${parentId}'=='1058'){
+			url=url+'xiuxianDetail.htm?id=${ids}';
+		}
+		else if('${parentId}'=='1037'){
+			url=url+'tingwenDetail.htm?id=${ids}';
+		}
+		parent.window.open(url,'_blank');
+	}
+		
 </script>
 

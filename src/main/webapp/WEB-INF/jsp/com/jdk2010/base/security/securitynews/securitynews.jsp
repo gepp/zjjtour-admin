@@ -61,7 +61,7 @@
 	        <li onclick="deleteNews();" ><span><img src="${contextpath }/res/images/t03.png"></span>删除</li>
 	        </c:if>
 	        <c:if test="${shenheFlag=='1' }">
-	        <li class="click" onclick="accept();" ><span><img src="${contextpath }/res/images/t02.png"></span>审核</li>
+	        <%-- <li class="click" onclick="accept();" ><span><img src="${contextpath }/res/images/t02.png"></span>审核</li> --%>
 	        <li onclick="rollback();" ><span><img src="${contextpath }/res/images/t04.png"></span>驳回</li>
 	        </c:if>
  			</ul>
@@ -102,12 +102,19 @@
 						<td>${ item.reviewName}</td>
 						<td>${ item.reviewTime}</td>
 						<td>
+						<c:if test="${shenheFlag=='1' }">
+							<c:if test="${item.reviewStatus=='0' }">
+							<a href="#" class="tablelink"  onclick="acceptOne('${item.id}');">审核</a>  
+							</c:if>
+						</c:if>
+						
 						<c:if test="${fabuFlag=='1' }">
 						<a href="${ contextpath }/securitynews/modify.htm?id=${item.id}"
 							class="tablelink">编辑</a>  
 						<a href="javascript:void(0)" onclick="deleteNew('${item.id}');"
 							class="tablelink">删除</a>  
 						</c:if>
+						<a href="#" class="tablelink"  onclick="preview('${item.id}');">预览</a>  
 						</td>
 					</tr>
 				</c:forEach>
@@ -242,6 +249,19 @@
 			}
 		}
 		
+		function acceptOne(id){
+			 
+				parent.layer.open({
+				    type: 2,
+				    title: '请输入您的审核意见',
+				    shadeClose: true,
+				    shade: 0.8,
+				    area : [ '500px', '45%' ],
+				    content: '${contextpath}/securitynews/toCheck.htm?ids='+id+'&type=1&id=${menu.id }' //iframe的url
+				}); 
+				
+		}
+		
 		function rollback(){
 			var del_ids="" ;
 			var count=0;
@@ -268,6 +288,24 @@
 				
 			}
 				 
+		}
+		
+		function preview(id){
+			 
+			var detailUrl='${indexsettingMap.index_url}';
+			if('${parentId}'=='1011'){
+				detailUrl=detailUrl+'quanjingDetail.htm?id='+id;
+			}
+			else if('${parentId}'=='1010'){
+				detailUrl=detailUrl+'changyouDetail.htm?id='+id;
+			}
+			else if('${parentId}'=='1058'){
+				detailUrl=detailUrl+'xiuxianDetail.htm?id='+id;
+			}
+			else if('${parentId}'=='1037'){
+				detailUrl=detailUrl+'tingwenDetail.htm?id='+id;
+			}
+			parent.window.open(detailUrl,'_blank');
 		}
 		
 		
