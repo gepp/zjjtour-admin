@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -31,8 +32,18 @@
    <div class="infoleft">
     <div class="listtitle">待办-新闻发布<a href="${contextpath }/securitynews/listWaitShenhe.htm" class="more1">去处理</a></div>
     <ul class="newlist">
+    
     <c:forEach var="item" items="${newsList }">
-    <li><a href="#">${item.title }</a><b>${item.ctime }</b></li>
+    
+    <li><a href="#">
+     	<c:if test="${fn:length(item.title)>20}">
+    	${fn:substring(item.title,0,20)}...
+    	</c:if>
+    	 <c:if test="${fn:length(item.title)<=20}">
+   			 ${item.title }
+    		</c:if>
+    <fmt:formatDate value="${item.ctime }" pattern="yyyy-MM-dd" var="ctime"/>
+    </a><b>${ctime }</b></li>
     </c:forEach>
     </ul>   
     </div>
@@ -42,7 +53,15 @@
     <div class="listtitle">待办-投诉回复<a href="${contextpath }/membercomplain/list.htm" class="more1">去处理</a></div>
     <ul class="newlist">
     <c:forEach var="item" items="${memberComplainReplayList }">
-    <li><a href="#" >${item.complainTitle }</a><b>${item.complainTime }</b></li>
+    <li><a href="#">
+     	<c:if test="${fn:length(item.complainTitle)>20}">
+    	${fn:substring(item.complainTitle,0,20)}...
+    	</c:if>
+    	 <c:if test="${fn:length(item.complainTitle)<=20}">
+   			 ${item.complainTitle }
+    		</c:if>
+    <fmt:formatDate value="${item.ctime }" pattern="yyyy-MM-dd" var="complainTime"/>
+    </a><b>${complainTime }</b></li>
     </c:forEach>
     </ul>  
     </div>
@@ -54,7 +73,15 @@
     <div class="listtitle">待办-投诉意见审核<a href="${contextpath }/membercomplain/list.htm" class="more1">去处理</a></div>
     <ul class="newlist">
     <c:forEach var="item" items="${memberComplainReviewList }">
-    <li><a href="#" >${item.complainTitle }</a><b>${item.complainTime }</b></li>
+    <li><a href="#" >
+   	<c:if test="${fn:length(item.complainTitle)>20}">
+   	${fn:substring(item.complainTitle,0,20)}...
+   	</c:if>
+   	 <c:if test="${fn:length(item.complainTitle)<=20}">
+    ${item.complainTitle }
+    </c:if>
+    <fmt:formatDate value="${item.complainTime }" pattern="yyyy-MM-dd" var="complainTime"/>
+    </a><b>${complainTime }</b></li>
     </c:forEach>
     </ul>   
     </div>
