@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>新闻管理</title>
+<title>内容管理</title>
 <link href="${ contextpath }/res/css/style.css" rel="stylesheet"
 	type="text/css" />
 <link href="${ contextpath }/res/css/page.css" rel="stylesheet"
@@ -26,6 +26,7 @@
 	<div class="rightinfo">
 	<form method="post" action="${ contextpath}/bq/bqselect.htm">
 		<input type="hidden" value="${bgId }" name="bgId"/>
+		<input type="hidden" value="${bannerId }" name="bannerId"/>
 			<ul class="seachform" style="padding-top: 10px; padding-left: 15px">
 			<li><label>标题</label><input type="text" name="title"
 					id="title" class="scinput1" placeholder="" value="${title}" style="width:300px"></li>
@@ -52,7 +53,7 @@
 		<br/>
 	 
 		<div class="formtitle1">
-			<span>通知公告</span>
+			<span>内容管理</span>
 		</div>
 		<table class="tablelist">
 			<thead>
@@ -82,7 +83,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		<page:page href="${contextpath}/securitynews/list.htm?title=${title}&menuId=${menu.id }"
+		<page:page href="${contextpath}/bq/bqselect.htm?title=${title}&menuId=${menu.id }&bgId=${bgId }&bannerId=${bannerId }"
 			data="pageList" />
 
 	</div>

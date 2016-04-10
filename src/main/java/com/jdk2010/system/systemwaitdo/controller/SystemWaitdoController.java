@@ -25,7 +25,7 @@ public class SystemWaitdoController extends BaseController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DbKit dbKit = new DbKit("select * from system_waitdo  where 1=1 ");
+		DbKit dbKit = new DbKit("select t.*,a.menu_id as parentId from system_waitdo t left join  security_news a on t.target_id=a.id  where 1=1");
 		String searchSQL = "";
 		String orderSQL = "";
 		dbKit.append(orderSQL);

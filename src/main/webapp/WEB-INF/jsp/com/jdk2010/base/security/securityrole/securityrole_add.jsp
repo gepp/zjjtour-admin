@@ -64,7 +64,6 @@
 						<li><label>角色类型<b></b></label> 
 						 <div class="vocation">
 						<select  name="securityRole.type" class="select1">
-							<option value="0">系统管理</option>
 							<option value="1">审核</option>
 							<option value="2">发布</option>
 						</select>

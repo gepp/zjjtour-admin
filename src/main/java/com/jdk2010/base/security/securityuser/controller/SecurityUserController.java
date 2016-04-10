@@ -201,7 +201,7 @@ public class SecurityUserController extends BaseController {
         String reason = "";
         String id = getPara("id");
         SecurityUser securityUser = securityUserService.findById(id, SecurityUser.class);
-        securityUser.setUserpwd("de88e3e4ab202d87754078cbb2df6063");
+        securityUser.setUserpwd("96e79218965eb72c92a549dd5a330112");
         securityOrganizationService.update(securityUser);
         ReturnData returnData = new ReturnData(flag, reason);
         renderJson(response, returnData);

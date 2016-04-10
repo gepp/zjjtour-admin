@@ -88,15 +88,8 @@
 																me
 																		.holdSubmit(false);
 																if (data.status == 'success') {
-																	parent.layer.alert(
-																					'当前操作成功',
-																					{
-																						closeBtn : 0
-																					},
-																					function(index) {
-																						parent.layer.close(index);
-																						window.location.href = '${contextpath}/defaultMain.htm';
-																					});
+																	 alert('当前操作成功');
+																	 window.location.href = '${contextpath}/defaultMain.htm';
 																} else {
 																	sAlert(data.message);
 																	$("#userpwd").val('');

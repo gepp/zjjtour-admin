@@ -29,468 +29,556 @@ import com.jdk2010.framework.util.StringUtil;
 @RequestMapping(value = "/securitynews")
 public class SecurityNewsController extends BaseController {
 
-    @Resource
-    ISecurityNewsService securityNewsService;
+	@Resource
+	ISecurityNewsService securityNewsService;
 
-    @Resource
-    ISecurityMenuService securityMenuService;
-    
-    @Resource
-    DalClient dalClient;
+	@Resource
+	ISecurityMenuService securityMenuService;
 
-    @RequestMapping("/list")
-    public String list(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	 Map<String, Object> indexsettingMap = dalClient.queryForObject("select * from system_indexsetting ");
-         setAttr("indexsettingMap", indexsettingMap);
-        String id = getPara("id");
-        Integer parentId=dalClient.queryColumn("select parent_id from security_menu where id ='"+getPara("id")+"'", "parent_id");
-        setAttr("parentId", parentId);
-        SecurityMenu menu = securityMenuService.findById(id, SecurityMenu.class);
-        setAttr("menu", menu);
-        DbKit dbKit = new DbKit(
-                "select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 and t.menu_id="+id+"");
-        String searchSQL = "";
-        String orderSQL = " order by t.ctime desc";
-        String title = getPara("title");
-        if (title != null && !"".equals(title)) {
-            searchSQL = searchSQL + " and t.title LIKE :title";
-            if (request.getMethod().equals("get")) {
-                title = StringUtil.transCharset(title, "ISO8859-1", "UTF-8");
-            }
-            setAttr("title", title);
-            dbKit.append(searchSQL);
-            dbKit.put("title", "%" + title + "%");
-        }
-        String reviewStatus=getPara("reviewStatus");
-        if(reviewStatus!=null&&(reviewStatus.equals("1")||reviewStatus.equals("2"))){
-            searchSQL = searchSQL + " and t.review_status ="+reviewStatus;
-            dbKit.append(searchSQL);
-             setAttr("reviewStatus", reviewStatus);
-        }
-        dbKit.append(orderSQL);
-        
-        System.out.println(dbKit.getSql());
-        Page pageList = securityNewsService.queryForPageList(dbKit, getPage(), SecurityNews.class);
-        setAttr("pageList", pageList);
-        return "/com/jdk2010/base/security/securitynews/securitynews";
-    }
+	@Resource
+	DalClient dalClient;
 
-    @RequestMapping("/add")
-    public String add(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String menuId = getPara("menuId");
-        SecurityMenu menu = securityMenuService.findById(menuId, SecurityMenu.class);
-        setAttr("menu", menu);
-        return "/com/jdk2010/base/security/securitynews/securitynews_add";
-    }
+	@RequestMapping("/list")
+	public String list(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		Map<String, Object> indexsettingMap = dalClient
+				.queryForObject("select * from system_indexsetting ");
+		setAttr("indexsettingMap", indexsettingMap);
+		String id = getPara("id");
+		setAttr("id", id);
+		Integer parentId = dalClient.queryColumn(
+				"select parent_id from security_menu where id ='"
+						+ getPara("id") + "'", "parent_id");
+		setAttr("parentId", parentId);
+		SecurityMenu menu = securityMenuService
+				.findById(id, SecurityMenu.class);
+		setAttr("menu", menu);
+		String sql="select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 and t.menu_id="
+				+ id + "";
+		
+		if(getPara("news_type")!=null){
+			sql=sql+" and t.news_type='"+getPara("news_type")+"'";
+		}
+		setAttr("news_type", getPara("news_type"));
+		DbKit dbKit = new DbKit(sql);
+		String searchSQL = "";
+		String orderSQL = " order by t.ctime desc";
+		String title = getPara("title");
+		if (title != null && !"".equals(title)) {
+			searchSQL = searchSQL + " and t.title LIKE :title";
+			if (request.getMethod().equals("get")) {
+				title = StringUtil.transCharset(title, "ISO8859-1", "UTF-8");
+			}
+			setAttr("title", title);
+			dbKit.append(searchSQL);
+			dbKit.put("title", "%" + title + "%");
+		}
+		String reviewStatus = getPara("reviewStatus");
+		if (reviewStatus != null
+				&& (reviewStatus.equals("1") || reviewStatus.equals("2"))) {
+			searchSQL = searchSQL + " and t.review_status =" + reviewStatus;
+			dbKit.append(searchSQL);
+			setAttr("reviewStatus", reviewStatus);
+		}
+		dbKit.append(orderSQL);
 
-    @RequestMapping("/addaction")
-    public void addaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        SecurityNews securityNews = getModel(SecurityNews.class);
-        SecurityUser user = getSessionAttr("securityUser");
-        String indexStatus = getPara("indexStatus");
-        if (indexStatus != null) {
-            securityNews.setIndexStatus("1");
-        } else {
-            securityNews.setIndexStatus("0");
-        }
+		System.out.println(dbKit.getSql());
+		Page pageList = securityNewsService.queryForPageList(dbKit, getPage(),
+				SecurityNews.class);
+		setAttr("pageList", pageList);
+		return "/com/jdk2010/base/security/securitynews/securitynews";
+	}
 
-        String topStatus = getPara("topStatus");
-        if (topStatus != null) {
-            securityNews.setTopStatus("1");
-        } else {
-            securityNews.setTopStatus("0");
-        }
-        String jumpType = getPara("jumpType");
+	@RequestMapping("/add")
+	public String add(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String menuId = getPara("menuId");
+		String news_type=getPara("news_type");
+		setAttr("news_type", news_type);
+		SecurityMenu menu = securityMenuService.findById(menuId,
+				SecurityMenu.class);
+		setAttr("menu", menu);
+		return "/com/jdk2010/base/security/securitynews/securitynews_add";
+	}
 
-        if (jumpType != null) {
-            securityNews.setJumpType("1");
-        } else {
-            securityNews.setJumpType("0");
-        }
-        String maodianStatus = getPara("maodianStatus");
+	@RequestMapping("/addaction")
+	public void addaction(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		SecurityNews securityNews = getModel(SecurityNews.class);
+		SecurityUser user = getSessionAttr("securityUser");
+		String indexStatus = getPara("indexStatus");
+		if (indexStatus != null) {
+			securityNews.setIndexStatus("1");
+		} else {
+			securityNews.setIndexStatus("0");
+		}
 
-        if (maodianStatus != null) {
-            securityNews.setMaodianStatus("1");
-        } else {
-            securityNews.setMaodianStatus("0");
-        }
-        securityNews.setMenuId(getParaToInt("menuId"));
-        securityNews.setUserid(user.getId());
-        securityNews.setCtime(new Date());
-        securityNews.setStatus(0);
-        securityNews.setReviewStatus("0");
-        securityNews.setNewsType("ARTICLE");
-       Integer news_id= securityNewsService.save(securityNews);
-        
-        String[] maodianName=getParaValues("maodianName");
-        String[] maodianContent=getParaValues("maodianContent");
-        if(maodianName!=null&&maodianContent!=null){
-        for(int i=0;i<maodianName.length;i++){
-            String maodianNameInsert=maodianName[i];
-            String maodianContentInsert=maodianContent[i];
-            if(StringUtil.isNotBlank(maodianNameInsert)&&StringUtil.isNotBlank(maodianContentInsert)){
-                String sql="insert into news_maodian (news_id,orderlist,maodian_name,maodian_content) values("+news_id+","+(i+1)+",'"+maodianNameInsert+"','"+maodianContentInsert+"')";
-                dalClient.update(sql);
-            }
-        }
-        }
-        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
-        renderJson(response, returnData);
-    }
+		String topStatus = getPara("topStatus");
+		if (topStatus != null) {
+			securityNews.setTopStatus("1");
+		} else {
+			securityNews.setTopStatus("0");
+		}
+		String jumpType = getPara("jumpType");
 
-    @RequestMapping("/modify")
-    public String modify(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String id = getPara("id");
-        SecurityNews securityNews = securityNewsService.findById(id, SecurityNews.class);
-        setAttr("securityNews", securityNews);
-        
-        Integer menuId = securityNews.getMenuId();
-        SecurityMenu menu = securityMenuService.findById(menuId, SecurityMenu.class);
-        setAttr("menu", menu);
-        List<Map<String,Object>> maodianList=dalClient.queryForObjectList("select * from news_maodian where news_id ="+id +" order by orderlist asc");
-        setAttr("maodianList", maodianList);
-        return "/com/jdk2010/base/security/securitynews/securitynews_modify";
-    }
+		if (jumpType != null) {
+			securityNews.setJumpType("1");
+		} else {
+			securityNews.setJumpType("0");
+		}
+		String maodianStatus = getPara("maodianStatus");
 
-    @RequestMapping("/modifyaction")
-    public void modifyaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        SecurityNews securityNews = getModel(SecurityNews.class);
-        String indexStatus = getPara("indexStatus");
-        if (indexStatus != null) {
-            securityNews.setIndexStatus("1");
-        } else {
-            securityNews.setIndexStatus("0");
-        }
+		if (maodianStatus != null) {
+			securityNews.setMaodianStatus("1");
+		} else {
+			securityNews.setMaodianStatus("0");
+		}
+		securityNews.setMenuId(getParaToInt("menuId"));
+		securityNews.setUserid(user.getId());
+		securityNews.setCtime(new Date());
+		securityNews.setStatus(0);
+		if (getPara("review_status") != null&&!getPara("review_status").equals("")) {
+			securityNews.setReviewStatus("1");
+		} else {
+			securityNews.setReviewStatus("0");
+		}
+		if(!StringUtil.isBlank(getPara("news_type"))){
+			securityNews.setNewsType(getPara("news_type"));
+		}else{
+			securityNews.setNewsType("ARTICLE");
+		}
+		
+		Integer news_id = securityNewsService.save(securityNews);
 
-        String topStatus = getPara("topStatus");
-        if (topStatus != null) {
-            securityNews.setTopStatus("1");
-        } else {
-            securityNews.setTopStatus("0");
-        }
-        String jumpType = getPara("jumpType");
+		String[] maodianName = getParaValues("maodianName");
+		String[] maodianContent = getParaValues("maodianContent");
+		if (maodianName != null && maodianContent != null) {
+			for (int i = 0; i < maodianName.length; i++) {
+				String maodianNameInsert = maodianName[i];
+				String maodianContentInsert = maodianContent[i];
+				if (StringUtil.isNotBlank(maodianNameInsert)
+						&& StringUtil.isNotBlank(maodianContentInsert)) {
+					String sql = "insert into news_maodian (news_id,orderlist,maodian_name,maodian_content) values("
+							+ news_id
+							+ ","
+							+ (i + 1)
+							+ ",'"
+							+ maodianNameInsert
+							+ "','"
+							+ maodianContentInsert
+							+ "')";
+					dalClient.update(sql);
+				}
+			}
+		}
+		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+		renderJson(response, returnData);
+	}
 
-        if (jumpType != null) {
-            securityNews.setJumpType("1");
-        } else {
-            securityNews.setJumpType("0");
-        }
-        
-        String maodianStatus = getPara("maodianStatus");
-        if (maodianStatus != null) {
-            securityNews.setMaodianStatus("1");
-        } else {
-            securityNews.setMaodianStatus("0");
-        }
-        securityNewsService.update(securityNews);
-        
-        String[] maodianName=getParaValues("maodianName");
-        String[] maodianContent=getParaValues("maodianContent");
-        if(maodianName!=null&&maodianContent!=null){
-        dalClient.update("delete from news_maodian where news_id="+securityNews.getId());
-            for(int i=0;i<maodianName.length;i++){
-                String maodianNameInsert=maodianName[i];
-                String maodianContentInsert=maodianContent[i];
-                if(StringUtil.isNotBlank(maodianNameInsert)&&StringUtil.isNotBlank(maodianContentInsert)){
-                    String sql="insert into news_maodian (news_id,orderlist,maodian_name,maodian_content) values("+securityNews.getId()+","+(i+1)+",'"+maodianNameInsert+"','"+maodianContentInsert+"')";
-                    dalClient.update(sql);
-                }
-            }
-        }
-        
-        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
-        renderJson(response, returnData);
-    }
+	@RequestMapping("/modify")
+	public String modify(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String id = getPara("id");
+		SecurityNews securityNews = securityNewsService.findById(id,
+				SecurityNews.class);
+		setAttr("securityNews", securityNews);
 
-    @RequestMapping("/delete")
-    public void delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String ids = getPara("ids");
-        securityNewsService.deleteByIDS(ids, SecurityNews.class);
-        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
-        renderJson(response, returnData);
-    }
+		String news_type=getPara("news_type");
+		setAttr("news_type", news_type);
+		
+		Integer menuId = securityNews.getMenuId();
+		SecurityMenu menu = securityMenuService.findById(menuId,
+				SecurityMenu.class);
+		setAttr("menu", menu);
+		List<Map<String, Object>> maodianList = dalClient
+				.queryForObjectList("select * from news_maodian where news_id ="
+						+ id + " order by orderlist asc");
+		setAttr("maodianList", maodianList);
+		return "/com/jdk2010/base/security/securitynews/securitynews_modify";
+	}
 
-    @RequestMapping("/view")
-    public String view(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String id = getPara("id");
-        SecurityNews securityNews = securityNewsService.findById(id, SecurityNews.class);
-        setAttr("securityNews", securityNews);
-        return "/com/jdk2010/base/security/securitynews/securitynews_view";
-    }
-    
-    @RequestMapping("/modifyDetail")
-    public String modifyDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String menuId=getPara("menuId");
-        SecurityMenu securityMenu = securityMenuService.findById(menuId, SecurityMenu.class);
-       
-        SecurityNews securityNews = securityNewsService.queryForObject("select * from security_news where menu_id="+menuId+"",SecurityNews.class);
-        setAttr("securityNews", securityNews);
-        setAttr("menuId", menuId);
-        return "/com/jdk2010/base/security/securitynews/securitynews_modifydetail";
-    }
-    
-    
-    @RequestMapping("/modifydetailaction")
-    public void modifydetailaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        SecurityNews securityNews = getModel(SecurityNews.class);
-        String indexStatus = getPara("indexStatus");
-        if (indexStatus != null) {
-            securityNews.setIndexStatus("1");
-        } else {
-            securityNews.setIndexStatus("0");
-        }
-        securityNews.setNewsType("ARTICLE");
-        String topStatus = getPara("topStatus");
-        if (topStatus != null) {
-            securityNews.setTopStatus("1");
-        } else {
-            securityNews.setTopStatus("0");
-        }
-        String jumpType = getPara("jumpType");
+	@RequestMapping("/modifyaction")
+	public void modifyaction(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		SecurityNews securityNews = getModel(SecurityNews.class);
+		String indexStatus = getPara("indexStatus");
+		if (indexStatus != null) {
+			securityNews.setIndexStatus("1");
+		} else {
+			securityNews.setIndexStatus("0");
+		}
 
-        if (jumpType != null) {
-            securityNews.setJumpType("1");
-        } else {
-            securityNews.setJumpType("0");
-        }
-        if(securityNews.getId()!=null){
-        securityNewsService.update(securityNews);
-        }else{
-          securityNewsService.save(securityNews);  
-        }
-        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
-        renderJson(response, returnData);
-    }
-    
-    
-    @RequestMapping("/updateStatus")
-    public void updateStatus(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String ids = getPara("ids");
-        String reason=getPara("reason");
-        String review_status=getPara("reviewStatus");
-        
-        SecurityUser securityUser=getSessionAttr("securityUser");
-        Integer review_userid=securityUser.getId();
-        String review_time=DateUtil.getNowTime();
-        
-        for(int i=0;i<ids.split(",").length;i++){
-            if(!StringUtil.isBlank(ids.split(",")[i])){
-            dalClient.update("update security_news set review_userid="+review_userid+", review_status="+review_status+",review_reason='"+reason+"',review_time='"+review_time+"' where id="+ids.split(",")[i]);
-            }
-            }
-        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
-        renderJson(response, returnData);
-    }
+		String topStatus = getPara("topStatus");
+		if (topStatus != null) {
+			securityNews.setTopStatus("1");
+		} else {
+			securityNews.setTopStatus("0");
+		}
+		String jumpType = getPara("jumpType");
 
-    @RequestMapping("/toCheck")
-    public String toCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String ids = getPara("ids");
-        String type=getPara("type");
-        setAttr("type", type);
-        setAttr("ids", ids);
-        setAttr("id", getPara("id"));
-        String jumpType=getPara("jumpType");
-        setAttr("jumpType", jumpType);
-        Integer parentId=dalClient.queryColumn("select parent_id from security_menu where id ='"+getPara("id")+"'", "parent_id");
-       setAttr("parentId", parentId);
-        return "/com/jdk2010/base/security/securitynews/toCheck";
-    }
-    
-    
-    @RequestMapping("/listWaitShenhe")
-    public String listWaitShenhe(HttpServletRequest request, HttpServletResponse response) throws Exception {
- 
-         DbKit dbKit = new DbKit( "select t.*,a.name as menuName from security_news t left join security_menu a on t.menu_id=a.id   where  t.review_status=0");
-        String searchSQL = "";
-        String orderSQL = " order by t.ctime desc";
-        String title = getPara("title");
-        if (title != null && !"".equals(title)) {
-            searchSQL = searchSQL + " and t.title LIKE :title";
-            if (request.getMethod().equals("get")) {
-                title = StringUtil.transCharset(title, "ISO8859-1", "UTF-8");
-            }
-            setAttr("title", title);
-            dbKit.append(searchSQL);
-            dbKit.put("title", "%" + title + "%");
-        }
-       
-        dbKit.append(orderSQL);
-        Page pageList = securityNewsService.queryForPageList(dbKit, getPage(), SecurityNews.class);
-        setAttr("pageList", pageList);
-        return "/com/jdk2010/base/security/securitynews/securitynews_wait_check";
-    }
-    
-    @RequestMapping("/listWaitHuifu")
-    public String listWaitHuifu(HttpServletRequest request, HttpServletResponse response) throws Exception {
-         DbKit dbKit = new DbKit(
-                "select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 ");
-        String searchSQL = "";
-        String orderSQL = " order by t.ctime desc";
-        String title = getPara("title");
-        if (title != null && !"".equals(title)) {
-            searchSQL = searchSQL + " and t.title LIKE :title";
-            if (request.getMethod().equals("get")) {
-                title = StringUtil.transCharset(title, "ISO8859-1", "UTF-8");
-            }
-            setAttr("title", title);
-            dbKit.append(searchSQL);
-            dbKit.put("title", "%" + title + "%");
-        }
-        String reviewStatus=getPara("reviewStatus");
-        if(reviewStatus!=null&&(reviewStatus.equals("1")||reviewStatus.equals("2"))){
-            searchSQL = searchSQL + " and t.review_status ="+reviewStatus;
-            dbKit.append(searchSQL);
-             setAttr("reviewStatus", reviewStatus);
-        }
-        dbKit.append(orderSQL);
-        
-        System.out.println(dbKit.getSql());
-        Page pageList = securityNewsService.queryForPageList(dbKit, getPage(), SecurityNews.class);
-        setAttr("pageList", pageList);
-        return "/com/jdk2010/base/security/securitynews/securitynews";
-    }
-    
-    
-    @RequestMapping("/toViedoList")
-    public String toViedoList(HttpServletRequest request, HttpServletResponse response) throws Exception {
-         
-        DbKit dbKit = new DbKit(
-                "select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 and t.news_type='VIDEO'");
-        String searchSQL = "";
-        String orderSQL = " order by t.ctime desc";
-        String title = getPara("title");
-        if (title != null && !"".equals(title)) {
-            searchSQL = searchSQL + " and t.title LIKE :title";
-            if (request.getMethod().equals("get")) {
-                title = StringUtil.transCharset(title, "ISO8859-1", "UTF-8");
-            }
-            setAttr("title", title);
-            dbKit.append(searchSQL);
-            dbKit.put("title", "%" + title + "%");
-        }
-        String reviewStatus=getPara("reviewStatus");
-        if(reviewStatus!=null&&(reviewStatus.equals("1")||reviewStatus.equals("2"))){
-            searchSQL = searchSQL + " and t.review_status ="+reviewStatus;
-            dbKit.append(searchSQL);
-             setAttr("reviewStatus", reviewStatus);
-        }
-        dbKit.append(orderSQL);
-        Page pageList = securityNewsService.queryForPageList(dbKit, getPage(), SecurityNews.class);
-        setAttr("pageList", pageList);
-        return "/com/jdk2010/base/security/video/securitynews";
-    }
-    
-    
-    @RequestMapping("/addVideo")
-    public String addVideo(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return "/com/jdk2010/base/security/video/securitynews_add";
-    }
+		if (jumpType != null) {
+			securityNews.setJumpType("1");
+		} else {
+			securityNews.setJumpType("0");
+		}
 
-    @RequestMapping("/addVideoaction")
-    public void addVideoaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        SecurityNews securityNews = getModel(SecurityNews.class);
-        SecurityUser user = getSessionAttr("securityUser");
-        String indexStatus = getPara("indexStatus");
-        if (indexStatus != null) {
-            securityNews.setIndexStatus("1");
-        } else {
-            securityNews.setIndexStatus("0");
-        }
+		String maodianStatus = getPara("maodianStatus");
+		if (maodianStatus != null) {
+			securityNews.setMaodianStatus("1");
+		} else {
+			securityNews.setMaodianStatus("0");
+		}
+		if (getPara("review_status") != null&&!getPara("review_status").equals("")) {
+			securityNews.setReviewStatus("1");
+		} else {
+			securityNews.setReviewStatus("0");
+		}
+		securityNewsService.update(securityNews);
 
-        String topStatus = getPara("topStatus");
-        if (topStatus != null) {
-            securityNews.setTopStatus("1");
-        } else {
-            securityNews.setTopStatus("0");
-        }
-        String jumpType = getPara("jumpType");
+		String[] maodianName = getParaValues("maodianName");
+		String[] maodianContent = getParaValues("maodianContent");
+		if (maodianName != null && maodianContent != null) {
+			dalClient.update("delete from news_maodian where news_id="
+					+ securityNews.getId());
+			for (int i = 0; i < maodianName.length; i++) {
+				String maodianNameInsert = maodianName[i];
+				String maodianContentInsert = maodianContent[i];
+				if (StringUtil.isNotBlank(maodianNameInsert)
+						&& StringUtil.isNotBlank(maodianContentInsert)) {
+					String sql = "insert into news_maodian (news_id,orderlist,maodian_name,maodian_content) values("
+							+ securityNews.getId()
+							+ ","
+							+ (i + 1)
+							+ ",'"
+							+ maodianNameInsert
+							+ "','"
+							+ maodianContentInsert
+							+ "')";
+					dalClient.update(sql);
+				}
+			}
+		}
 
-        if (jumpType != null) {
-            securityNews.setJumpType("1");
-        } else {
-            securityNews.setJumpType("0");
-        }
-        
-        String outStatus = getPara("outStatus");
-        if (outStatus != null) {
-            securityNews.setOutStatus("1");
-        } else {
-            securityNews.setOutStatus("0");
-        }
-        securityNews.setMenuId(getParaToInt("menuId"));
-        securityNews.setUserid(user.getId());
-        securityNews.setCtime(new Date());
-        securityNews.setStatus(0);
-        securityNews.setReviewStatus("0");
-        securityNews.setNewsType("VIDEO");
-        securityNews.setMenuId(1054);
-        securityNewsService.save(securityNews);
-        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
-        renderJson(response, returnData);
-    }
-    
-    
-    @RequestMapping("/modifyVideo")
-    public String modifyVideo(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String id = getPara("id");
-        SecurityNews securityNews = securityNewsService.findById(id, SecurityNews.class);
-        setAttr("securityNews", securityNews);
-        
-        
-        return "/com/jdk2010/base/security/video/securitynews_modify";
-    }
+		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+		renderJson(response, returnData);
+	}
 
-    @RequestMapping("/modifyVideoaction")
-    public void modifyVideoaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        SecurityNews securityNews = getModel(SecurityNews.class);
-        String indexStatus = getPara("indexStatus");
-        if (indexStatus != null) {
-            securityNews.setIndexStatus("1");
-        } else {
-            securityNews.setIndexStatus("0");
-        }
+	@RequestMapping("/delete")
+	public void delete(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String ids = getPara("ids");
+		securityNewsService.deleteByIDS(ids, SecurityNews.class);
+		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+		renderJson(response, returnData);
+	}
 
-        String topStatus = getPara("topStatus");
-        if (topStatus != null) {
-            securityNews.setTopStatus("1");
-        } else {
-            securityNews.setTopStatus("0");
-        }
-        String jumpType = getPara("jumpType");
+	@RequestMapping("/view")
+	public String view(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String id = getPara("id");
+		SecurityNews securityNews = securityNewsService.findById(id,
+				SecurityNews.class);
+		setAttr("securityNews", securityNews);
+		return "/com/jdk2010/base/security/securitynews/securitynews_view";
+	}
 
-        if (jumpType != null) {
-            securityNews.setJumpType("1");
-        } else {
-            securityNews.setJumpType("0");
-        }
-        String outStatus = getPara("outStatus");
-        if (outStatus != null) {
-            securityNews.setOutStatus("1");
-        } else {
-            securityNews.setOutStatus("0");
-        }
-        securityNewsService.update(securityNews);
-        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
-        renderJson(response, returnData);
-    }
-    
-    @RequestMapping("/toChengxin")
-    public String toChengxin(HttpServletRequest request, HttpServletResponse response) throws Exception {
-         
-        SecurityNews securityNews = securityNewsService.queryForObject("select * from security_news where  menu_id=1080",SecurityNews.class);
-        setAttr("securityNews", securityNews);
-        
-        return "/com/jdk2010/base/security/securitynews/chengxin_modify";
-    }
+	@RequestMapping("/modifyDetail")
+	public String modifyDetail(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String menuId = getPara("menuId");
+		SecurityMenu securityMenu = securityMenuService.findById(menuId,
+				SecurityMenu.class);
 
-    @RequestMapping("/chengxinmodifyaction")
-    public void chengxinmodifyaction(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        SecurityNews securityNews = getModel(SecurityNews.class);
-        
-        securityNewsService.update(securityNews);
-        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
-        renderJson(response, returnData);
-    }
-    
-  
+		SecurityNews securityNews = securityNewsService.queryForObject(
+				"select * from security_news where menu_id=" + menuId + "",
+				SecurityNews.class);
+		setAttr("securityNews", securityNews);
+		setAttr("menuId", menuId);
+		return "/com/jdk2010/base/security/securitynews/securitynews_modifydetail";
+	}
+
+	@RequestMapping("/modifydetailaction")
+	public void modifydetailaction(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		SecurityNews securityNews = getModel(SecurityNews.class);
+		String indexStatus = getPara("indexStatus");
+		if (indexStatus != null) {
+			securityNews.setIndexStatus("1");
+		} else {
+			securityNews.setIndexStatus("0");
+		}
+		securityNews.setNewsType("ARTICLE");
+		String topStatus = getPara("topStatus");
+		if (topStatus != null) {
+			securityNews.setTopStatus("1");
+		} else {
+			securityNews.setTopStatus("0");
+		}
+		String jumpType = getPara("jumpType");
+
+		if (jumpType != null) {
+			securityNews.setJumpType("1");
+		} else {
+			securityNews.setJumpType("0");
+		}
+		if (securityNews.getId() != null) {
+			securityNewsService.update(securityNews);
+		} else {
+			securityNewsService.save(securityNews);
+		}
+		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+		renderJson(response, returnData);
+	}
+
+	@RequestMapping("/updateStatus")
+	public void updateStatus(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String ids = getPara("ids");
+		String reason = getPara("reason");
+		String review_status = getPara("reviewStatus");
+
+		SecurityUser securityUser = getSessionAttr("securityUser");
+		Integer review_userid = securityUser.getId();
+		String review_time = DateUtil.getNowTime();
+
+		for (int i = 0; i < ids.split(",").length; i++) {
+			if (!StringUtil.isBlank(ids.split(",")[i])) {
+				dalClient.update("update security_news set review_userid="
+						+ review_userid + ", review_status=" + review_status
+						+ ",review_reason='" + reason + "',review_time='"
+						+ review_time + "' where id=" + ids.split(",")[i]);
+			}
+		}
+		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+		renderJson(response, returnData);
+	}
+
+	@RequestMapping("/toCheck")
+	public String toCheck(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String ids = getPara("ids");
+		String type = getPara("type");
+		setAttr("type", type);
+		setAttr("ids", ids);
+		setAttr("id", getPara("id"));
+		String jumpType = getPara("jumpType");
+		setAttr("jumpType", jumpType);
+		Integer parentId = dalClient.queryColumn(
+				"select parent_id from security_menu where id ='"
+						+ getPara("id") + "'", "parent_id");
+		setAttr("parentId", parentId);
+		return "/com/jdk2010/base/security/securitynews/toCheck";
+	}
+
+	@RequestMapping("/listWaitShenhe")
+	public String listWaitShenhe(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		Map<String, Object> indexsettingMap = dalClient
+				.queryForObject("select * from system_indexsetting ");
+		setAttr("indexsettingMap", indexsettingMap);
+		DbKit dbKit = new DbKit(
+				"select t.*,a.name as menuName from security_news t left join security_menu a on t.menu_id=a.id   where  t.review_status=0");
+		String searchSQL = "";
+		String orderSQL = " order by t.ctime desc";
+		String title = getPara("title");
+		if (title != null && !"".equals(title)) {
+			searchSQL = searchSQL + " and t.title LIKE :title";
+			if (request.getMethod().equals("get")) {
+				title = StringUtil.transCharset(title, "ISO8859-1", "UTF-8");
+			}
+			setAttr("title", title);
+			dbKit.append(searchSQL);
+			dbKit.put("title", "%" + title + "%");
+		}
+
+		dbKit.append(orderSQL);
+		Page pageList = securityNewsService.queryForPageList(dbKit, getPage(),
+				SecurityNews.class);
+		setAttr("pageList", pageList);
+		return "/com/jdk2010/base/security/securitynews/securitynews_wait_check";
+	}
+
+	@RequestMapping("/listWaitHuifu")
+	public String listWaitHuifu(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DbKit dbKit = new DbKit(
+				"select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 ");
+		String searchSQL = "";
+		String orderSQL = " order by t.ctime desc";
+		String title = getPara("title");
+		if (title != null && !"".equals(title)) {
+			searchSQL = searchSQL + " and t.title LIKE :title";
+			if (request.getMethod().equals("get")) {
+				title = StringUtil.transCharset(title, "ISO8859-1", "UTF-8");
+			}
+			setAttr("title", title);
+			dbKit.append(searchSQL);
+			dbKit.put("title", "%" + title + "%");
+		}
+		String reviewStatus = getPara("reviewStatus");
+		if (reviewStatus != null
+				&& (reviewStatus.equals("1") || reviewStatus.equals("2"))) {
+			searchSQL = searchSQL + " and t.review_status =" + reviewStatus;
+			dbKit.append(searchSQL);
+			setAttr("reviewStatus", reviewStatus);
+		}
+		dbKit.append(orderSQL);
+
+		System.out.println(dbKit.getSql());
+		Page pageList = securityNewsService.queryForPageList(dbKit, getPage(),
+				SecurityNews.class);
+		setAttr("pageList", pageList);
+		return "/com/jdk2010/base/security/securitynews/securitynews";
+	}
+
+	@RequestMapping("/toViedoList")
+	public String toViedoList(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		DbKit dbKit = new DbKit(
+				"select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 and t.news_type='VIDEO'");
+		String searchSQL = "";
+		String orderSQL = " order by t.ctime desc";
+		String title = getPara("title");
+		if (title != null && !"".equals(title)) {
+			searchSQL = searchSQL + " and t.title LIKE :title";
+			if (request.getMethod().equals("get")) {
+				title = StringUtil.transCharset(title, "ISO8859-1", "UTF-8");
+			}
+			setAttr("title", title);
+			dbKit.append(searchSQL);
+			dbKit.put("title", "%" + title + "%");
+		}
+		String reviewStatus = getPara("reviewStatus");
+		if (reviewStatus != null
+				&& (reviewStatus.equals("1") || reviewStatus.equals("2"))) {
+			searchSQL = searchSQL + " and t.review_status =" + reviewStatus;
+			dbKit.append(searchSQL);
+			setAttr("reviewStatus", reviewStatus);
+		}
+		dbKit.append(orderSQL);
+		Page pageList = securityNewsService.queryForPageList(dbKit, getPage(),
+				SecurityNews.class);
+		setAttr("pageList", pageList);
+		return "/com/jdk2010/base/security/video/securitynews";
+	}
+
+	@RequestMapping("/addVideo")
+	public String addVideo(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return "/com/jdk2010/base/security/video/securitynews_add";
+	}
+
+	@RequestMapping("/addVideoaction")
+	public void addVideoaction(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		SecurityNews securityNews = getModel(SecurityNews.class);
+		SecurityUser user = getSessionAttr("securityUser");
+		String indexStatus = getPara("indexStatus");
+		if (indexStatus != null) {
+			securityNews.setIndexStatus("1");
+		} else {
+			securityNews.setIndexStatus("0");
+		}
+
+		String topStatus = getPara("topStatus");
+		if (topStatus != null) {
+			securityNews.setTopStatus("1");
+		} else {
+			securityNews.setTopStatus("0");
+		}
+		String jumpType = getPara("jumpType");
+
+		if (jumpType != null) {
+			securityNews.setJumpType("1");
+		} else {
+			securityNews.setJumpType("0");
+		}
+
+		String outStatus = getPara("outStatus");
+		if (outStatus != null) {
+			securityNews.setOutStatus("1");
+		} else {
+			securityNews.setOutStatus("0");
+		}
+		securityNews.setMenuId(getParaToInt("menuId"));
+		securityNews.setUserid(user.getId());
+		securityNews.setCtime(new Date());
+		securityNews.setStatus(0);
+		securityNews.setReviewStatus("0");
+		securityNews.setNewsType("VIDEO");
+		securityNews.setMenuId(1054);
+		securityNewsService.save(securityNews);
+		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+		renderJson(response, returnData);
+	}
+
+	@RequestMapping("/modifyVideo")
+	public String modifyVideo(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String id = getPara("id");
+		SecurityNews securityNews = securityNewsService.findById(id,
+				SecurityNews.class);
+		setAttr("securityNews", securityNews);
+
+		return "/com/jdk2010/base/security/video/securitynews_modify";
+	}
+
+	@RequestMapping("/modifyVideoaction")
+	public void modifyVideoaction(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		SecurityNews securityNews = getModel(SecurityNews.class);
+		String indexStatus = getPara("indexStatus");
+		if (indexStatus != null) {
+			securityNews.setIndexStatus("1");
+		} else {
+			securityNews.setIndexStatus("0");
+		}
+
+		String topStatus = getPara("topStatus");
+		if (topStatus != null) {
+			securityNews.setTopStatus("1");
+		} else {
+			securityNews.setTopStatus("0");
+		}
+		String jumpType = getPara("jumpType");
+
+		if (jumpType != null) {
+			securityNews.setJumpType("1");
+		} else {
+			securityNews.setJumpType("0");
+		}
+		String outStatus = getPara("outStatus");
+		if (outStatus != null) {
+			securityNews.setOutStatus("1");
+		} else {
+			securityNews.setOutStatus("0");
+		}
+		securityNewsService.update(securityNews);
+		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+		renderJson(response, returnData);
+	}
+
+	@RequestMapping("/toChengxin")
+	public String toChengxin(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		SecurityNews securityNews = securityNewsService.queryForObject(
+				"select * from security_news where  menu_id=1080",
+				SecurityNews.class);
+		setAttr("securityNews", securityNews);
+
+		return "/com/jdk2010/base/security/securitynews/chengxin_modify";
+	}
+
+	@RequestMapping("/chengxinmodifyaction")
+	public void chengxinmodifyaction(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		SecurityNews securityNews = getModel(SecurityNews.class);
+
+		securityNewsService.update(securityNews);
+		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+		renderJson(response, returnData);
+	}
+
 }

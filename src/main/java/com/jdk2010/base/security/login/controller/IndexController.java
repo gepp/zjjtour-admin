@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -135,24 +136,37 @@ public class IndexController extends BaseController {
             setAttr("jdkHome", OsInfoUtil.getJdkHome());
             setAttr("osName", OsInfoUtil.getOsName());
 
+            String fabuFlag=getSessionAttr("fabuFlag")+"";
+            String shenheFlag=getSessionAttr("shenheFlag");
+            
+            
             DbKit dbKit = new DbKit(
                     "select t.*,a.name as menuName from security_news t left join security_menu a on t.menu_id=a.id   where  t.review_status=0");
             String searchSQL = "";
             String orderSQL = " order by t.ctime desc limit 0,7";
             dbKit.append(orderSQL);
             List<SecurityNews> newsList = securityNewsService.queryForList(dbKit, SecurityNews.class);
-            setAttr("newsList", newsList);
-
+            
             dbKit = new DbKit(
-                    "select t.*,a.realname as replayName,b.realname as reviewName from member_complain t inner join security_user a on t.replay_userid=a.id   inner join security_user b on t.review_userid=b.id    where 1=1 and t.replay_status=0 order by t.complain_time desc limit 0,7");
+                    "select t.*,a.realname as replayName,b.realname as reviewName from member_complain t left join security_user a on t.replay_userid=a.id   left join security_user b on t.review_userid=b.id    where 1=1 and t.replay_status=0 order by t.complain_time desc limit 0,7");
             List<MemberComplain> memberComplainReplayList = dalClient.queryForObjectList(dbKit, MemberComplain.class);
-            setAttr("memberComplainReplayList", memberComplainReplayList);
 
             dbKit = new DbKit(
-                    "select t.*,a.realname as replayName,b.realname as reviewName from member_complain t inner join security_user a on t.replay_userid=a.id   inner join security_user b on t.review_userid=b.id    where 1=1 and t.replay_status=1 and t.review_status=0 order by t.complain_time desc limit 0,7");
+                    "select t.*,a.realname as replayName,b.realname as reviewName from member_complain t left join security_user a on t.replay_userid=a.id   left join security_user b on t.review_userid=b.id    where 1=1 and t.replay_status=1 and t.review_status=0 order by t.complain_time desc limit 0,7");
             List<MemberComplain> memberComplainReviewList = dalClient.queryForObjectList(dbKit, MemberComplain.class);
-            setAttr("memberComplainReviewList", memberComplainReviewList);
 
+            System.out.println("fabuFlag:"+fabuFlag+",shenheFlag");
+            if("1".equals(shenheFlag)||"system".equals(securityUser.getUsername())){
+           	 setAttr("newsList", newsList);
+           	setAttr("memberComplainReplayList", memberComplainReplayList);
+           	setAttr("memberComplainReviewList", memberComplainReviewList);
+           }else{
+        	   setAttr("newsList", new ArrayList<SecurityNews>());
+              	setAttr("memberComplainReplayList", new ArrayList<MemberComplain>());
+              	setAttr("memberComplainReviewList", new ArrayList<MemberComplain>());
+           }
+          
+            
             return "/defaultMain";
         }
 

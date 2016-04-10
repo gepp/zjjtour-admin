@@ -48,7 +48,7 @@
 						<div class="vocation">
 						 <select class="select1" name="replay_status">
 						 <option value="" <c:if test="${replay_status==''}">selected</c:if>>全部</option>
-						  <option value="0" <c:if test="${replay_status=='0'}">selected</c:if>>未处理</option>
+						  <option value="0" <c:if test="${replay_status=='0'}">selected</c:if>>未回复</option>
 						 <option value="1" <c:if test="${replay_status=='1'}">selected</c:if>>已回复</option>
 						 </select>
 						 </div>
@@ -156,7 +156,7 @@
 						<fmt:formatDate value="${item.complainTime }" pattern="yyyy-MM-dd HH:mm" var="complainTime"/>
 						<td>${complainTime}</td>
 
-						<td>${ item.replayStatus==0?'未处理':'已回复'}</td>
+						<td>${ item.replayStatus==0?'未回复':'已回复'}</td>
 
 						<td>${ item.replayName}</td>
 						<fmt:formatDate value="${item.replayTime }" pattern="yyyy-MM-dd HH:mm" var="replayTime"/>

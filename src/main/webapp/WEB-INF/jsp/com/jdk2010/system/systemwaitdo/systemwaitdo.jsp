@@ -60,7 +60,7 @@
 
 						<td>${ item.name}</td>
 
-						<td>${ item.title}</td>
+						<td onclick="review('${item.targetId}')">${ item.title}</td>
 
 						<td>${ item.ctime}</td>
 
@@ -89,5 +89,21 @@
 		$(document).ready(function(){
 			table_init("${ contextpath}/systemwaitdo","${ contextpath}/systemwaitdo/list?");
 		});
+		function review(parentId,id){
+			var detailUrl='${indexsettingMap.index_url}';
+			if(parentId=='1011'){
+				detailUrl=detailUrl+'quanjingDetail.htm?id='+id;
+			}
+			else if(parentId=='1010'){
+				detailUrl=detailUrl+'changyouDetail.htm?id='+id;
+			}
+			else if(parentId=='1058'){
+				detailUrl=detailUrl+'xiuxianDetail.htm?id='+id;
+			}
+			else if(parentId=='1037'){
+				detailUrl=detailUrl+'tingwenDetail.htm?id='+id;
+			}
+			parent.window.open(detailUrl,'_blank');
+		}
 </script>
 

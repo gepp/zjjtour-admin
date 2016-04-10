@@ -38,6 +38,9 @@
 		<ul class="placeul">
 			<li><a href="#">首页</a></li>
 			<li><a href="#">${menu.name }</a></li>
+			<c:if test="${news_type=='ZYHD' }"><li><a href="#">重要活动</a></li></c:if>
+			<c:if test="${news_type=='ZYJH' }"><li><a href="#">重要讲话</a></li></c:if>
+			<c:if test="${news_type=='MTBD' }"><li><a href="#">媒体报道</a></li></c:if>
 					<li><a href="#">新增</a></li>
 		</ul>
 		
@@ -48,7 +51,7 @@
 			<div id="tab1" class="tabson" style="">
 				<ul class="forminfo">
 					<form action="" method="post" id="securityNewsForm">
-					
+					<input  name="news_type" value="${news_type }" type="hidden" />
 					<input type="hidden" id="menuId" name="menuId" value="${menu.id }"/>
 						<li><label>标题<b></b></label> <input type="text"
 							class="dfinput" id="title" name="securityNews.title"
@@ -56,6 +59,9 @@
 						<li><label>seo关键字<b></b></label> <input type="text"
 							class="dfinput" id="keywords" name="securityNews.keywords"
 							placeholder="请输入关键字" /></li>
+						<li><label>系统来源<b></b></label> <input type="text"
+							class="dfinput" id="newsFrom" name="securityNews.newsFrom"
+							placeholder="请输入系统来源" /></li>
 						<li><label>简略标题<b></b></label> <input type="text"
 							class="dfinput" id="litterTitle" name="securityNews.litterTitle"
 							placeholder="" /></li>
@@ -92,6 +98,7 @@
 							</div>
 						
 						</li>
+						<div id="defaultDiv">
 						<li><label>内容摘要<b></b></label> 
 							<textarea cols="60" rows="20" name="securityNews.abstractContent"
 							id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput">
@@ -102,6 +109,8 @@
 								name="securityNews.content"
 								style="width: 700px; height: 250px; visibility: hidden;"></textarea>
 						</li>
+						</div>
+						<c:if test="${news_type=='' }">
 						<li><label>全景控件url<b></b></label>
 						 <input type="text"
 							class="dfinput" id="quanjingUrl" name="securityNews.quanjingUrl"
@@ -116,13 +125,15 @@
 						<input name=""
 							type="button" class="btn" value="添加锚点" onclick="addMaodian()" />
 						</li>
+						</c:if>
  						<div id="maodianDiv">
  						</div>
-
-						<li><label>&nbsp;</label><input name="" type="submit"
-							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
+						<input type="hidden" value="" name="review_status"  id="review_status"/>
+						<li><label>&nbsp;</label><input id="submitbtn" name="" type="submit"
+							class="btn" value=" 确定" /> &nbsp;&nbsp;<input name="" type="button"
+							class="btn" value="审核通过" onclick="shenhe();"/> &nbsp;&nbsp; <input name=""
 							type="button" class="btn" value="返回"
-							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${menu.id }'" /></li>
+							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${menu.id }&news_type=${news_type }'" /></li>
 						<input type="hidden"  value="0" id="incId" name="incId"/>
 					</form>
 				</ul>
@@ -139,9 +150,12 @@
 		  
 		 if($("input[name='maodianStatus']").prop("checked")){
 			 $("#showMaodian").css("display","");
-			 
+			 $("#maodianDiv").css("display","");
+			 $("#defaultDiv").css("display","none");
 		 }else{
 			 $("#showMaodian").css("display","none");
+			 $("#maodianDiv").css("display","none");
+			 $("#defaultDiv").css("display","");
 		 }
 	}
 	</script>
@@ -154,6 +168,10 @@
 			allowFileManager : true
 		});
 	});
+	function shenhe(){
+		$("#review_status").val("1");
+		$("#submitbtn").click();	
+	}
 	KindEditor.ready(function(K) {
 		var editor = K.editor({
 			allowFileManager : true
@@ -182,7 +200,7 @@
 						editor.hideDialog();
 					}
 				});
-			});
+			}); 
 		});
 		K('#fileBtn').click(function() {
 			
@@ -241,17 +259,9 @@
 																		.holdSubmit(false);
 																if (data.status == 'success') {
 
-																	parent.layer
-																			.alert(
-																					'当前操作成功',
-																					{
- 																						closeBtn : 0
-																					},
-																					function(index) {
-																						parent.layer.close(index);
-																						
-																						window.location.href = '${ contextpath}/securitynews/list.htm?id=${menu.id }';
-																					});
+																	 	alert('当前操作成功');
+																		window.location.href = '${ contextpath}/securitynews/list.htm?id=${menu.id }&news_type=${news_type}';
+																				 
 
 																} else {
 																	sAlert('当前操作失败');

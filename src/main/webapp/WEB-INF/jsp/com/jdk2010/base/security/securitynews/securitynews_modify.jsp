@@ -41,6 +41,9 @@
 		<ul class="placeul">
 			<li><a href="#">首页</a></li>
 			<li><a href="#">${menu.name }</a></li>
+			<c:if test="${news_type=='ZYHD' }"><li><a href="#">重要活动</a></li></c:if>
+			<c:if test="${news_type=='ZYJH' }"><li><a href="#">重要讲话</a></li></c:if>
+			<c:if test="${news_type=='MTBD' }"><li><a href="#">媒体报道</a></li></c:if>
 			<li><a href="#">编辑</a></li>
 		</ul>
 	</div>
@@ -51,12 +54,16 @@
 				<ul class="forminfo">
 					<form action="" method="post" id="securityNewsForm">
  					<input  type="hidden" class="dfinput" id="id" name="securityNews.id" placeholder="请输入id" value="${ securityNews.id}" />
+ 					<input  name="news_type" value="${news_type }" type="hidden" />
 						<li><label>标题<b></b></label> <input type="text"
 							class="dfinput" id="title" name="securityNews.title"
 							placeholder="请输入标题" value="${ securityNews.title}" /></li>
 						<li><label>seo关键字<b></b></label> <input type="text"
 							class="dfinput" id="keywords" name="securityNews.keywords" value="${securityNews.keywords }"
 							placeholder="请输入关键字" /></li>
+						<li><label>系统来源<b></b></label> <input type="text"
+							class="dfinput" id="newsFrom" name="securityNews.newsFrom" value="${securityNews.newsFrom }"
+							placeholder="请输入系统来源" /></li>
 						<li><label>简略标题<b></b></label> <input type="text"
 							class="dfinput" id="litterTitle" name="securityNews.litterTitle"
 							placeholder="" value="${securityNews.litterTitle }" /></li>
@@ -97,6 +104,7 @@
 							</div>
 						
 						</li>
+						<div id="defaultDiv" <c:if test="${securityNews.maodianStatus==1 }">style="display:none"</c:if>>
 						<li><label>内容摘要<b></b></label> 
 							<textarea cols="60" rows="20" name="securityNews.abstractContent"
 							id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput">
@@ -112,6 +120,8 @@
 								</textarea>
 						
 						</li>
+						</div>
+						<c:if test="${news_type=='' }">
 						<li><label>全景控件url<b></b></label>
 						 <input type="text"
 							class="dfinput" id="quanjingUrl" name="securityNews.quanjingUrl"
@@ -123,6 +133,7 @@
 						<li><label>&nbsp;<b></b></label> 
 						<input type="checkbox" <c:if test="${securityNews.maodianStatus==1 }">checked</c:if> name="maodianStatus" onclick="isShowMaodian();"/>是否启用锚点
 						</li>
+						</c:if>
 						<li style="<c:if test="${securityNews.maodianStatus==0 }">display:none</c:if>" id="showMaodian"><label>&nbsp;<b></b></label> 
 						<input name=""
 							type="button" class="btn" value="添加锚点" onclick="addMaodian()" />
@@ -151,11 +162,15 @@
 							</c:forEach>
 						</div>
 						<input type="hidden"  value="${fn:length(maodianList)}" id="incId" name="incId"/>
+						<input type="hidden" value="" name="review_status"  id="review_status"/>
 						
-						<li><label>&nbsp;</label><input name="" type="submit"
-							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
+						<li><label>&nbsp;</label><input id="submitbtn" name="" type="submit"
+							class="btn" value=" 确定" /> &nbsp;&nbsp; 
+							<input name="" type="button"
+							class="btn" value="审核通过" onclick="shenhe();"/> &nbsp;&nbsp;
+							<input name=""
 							type="button" class="btn" value="返回"
-							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${securityNews.menuId }'" /></li>
+							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${securityNews.menuId }&news_type=${news_type }'" /></li>
 					</form>
 				</ul>
 			</div>
@@ -170,10 +185,18 @@
 		 var checkbox = $("input[name='maodianStatus']");
 		 if($("input[name='maodianStatus']").prop("checked")){
 			 $("#showMaodian").css("display","");
-			 
+			 $("#maodianDiv").css("display","");
+			 $("#defaultDiv").css("display","none");
 		 }else{
 			 $("#showMaodian").css("display","none");
+			 $("#maodianDiv").css("display","none");
+			 $("#defaultDiv").css("display","");
 		 }
+	}
+	
+	function shenhe(){
+		$("#review_status").val("1");
+		$("#submitbtn").click();	
 	}
 	function addMaodian(){
 		var incId=$("#incId").val();
@@ -296,16 +319,9 @@
 																me
 																		.holdSubmit(false);
 																if (data.status == 'success') {
-																	parent.layer
-																			.alert(
-																					'当前操作成功',
-																					{
-																						closeBtn : 0
-																					},
-																					function(index) {
-																						parent.layer.close(index);
-																						window.location.href = '${ contextpath}/securitynews/list.htm?id=${securityNews.menuId }';
-																					});
+																	alert('当前操作成功');
+																	window.location.href = '${ contextpath}/securitynews/list.htm?id=${securityNews.menuId }&news_type=${news_type}';
+
 																} else {
 																	sAlert('当前操作失败');
 																}

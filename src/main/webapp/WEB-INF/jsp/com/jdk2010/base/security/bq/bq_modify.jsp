@@ -51,8 +51,8 @@
 							placeholder="请输入标签名称" value="${ securityMenu.name}" /></li>
 						<li><label>标签上级<b></b></label>
 							<div class="vocation">
-								<select name="securityMenu.parentId" class="select1">
-									<option value="0">无</option>
+								<select name="securityMenu.parentId" class="select1" >
+									<option value="">无</option>
 									<c:forEach var="item" items="${firstMenuList }">
 										<option value="${item.id }" <c:if test="${securityMenu.parentId==item.id}">selected</c:if>>${item.name }</option>
 									</c:forEach>
@@ -62,8 +62,8 @@
 						
 						<li><label>绑定栏目<b></b></label>
 							<div class="vocation">
-								<select name="securityMenu.bannerId" class="select1">
-									<option value="0">无</option>
+								<select name="securityMenu.bannerId" class="select1" id="bannerId">
+									<option value="">无</option>
 									<c:forEach var="item" items="${menuList }">
 										<option value="${item.id }" <c:if test="${securityMenu.bannerId==item.id}">selected</c:if>>${item.name }</option>
 									</c:forEach>
@@ -112,6 +112,11 @@
 			},
 			valid : function(form) {
 				var me = this;
+				if($("#bannerId").val()==''){
+					sAlert('请先绑定栏目！');
+					return false;
+				}
+				
 				// 提交表单之前，hold住表单，防止重复提交
 				me.holdSubmit();
 				$.ajax({

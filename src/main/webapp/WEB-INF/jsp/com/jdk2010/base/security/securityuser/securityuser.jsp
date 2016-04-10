@@ -112,7 +112,7 @@
 						
 						// 提交表单成功后，释放hold，如果不释放hold，就变成了只能提交一次的表单
 						if (data.status == 'success') {
-							parent.layer.alert('重置密码成功！',
+							parent.layer.alert('重置密码成功，密码已重置为111111，请牢记!',
 											{
  												closeBtn : 0
 											},

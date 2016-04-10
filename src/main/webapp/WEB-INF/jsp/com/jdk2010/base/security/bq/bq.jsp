@@ -43,6 +43,7 @@
 			<thead>
 				<tr>
 					<th><input name="" type="checkbox" value="" id="checkAll" /></th>
+					<th>所属栏目</th>
 					<th>标签名称</th>
  					<th>排序号</th>
 					<th>状态</th>
@@ -50,9 +51,21 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="item" items="${menuList}" varStatus="idx">
+				<c:forEach var="item" items="${finalList}" varStatus="idx">
 					<tr>
+						
+						<c:if test="${item.type=='1' }">
+						 
 						<td><input type="checkbox" name="subBox" value="${item.id}" /></td>
+						<td style="width:100px">${item.lanmuName }</td>
+						<td></td>
+ 						<td></td>
+						<td></td>
+						<td></td>
+						</c:if>
+						<c:if test="${item.type=='0' }">
+						<td><input type="checkbox" name="subBox" value="${item.id}" /></td>
+						<td>${item.menuName }</td>
 						<td>${item.name }</td>
  						<td>${item.orderlist }</td>
 						<td>${item.status==0?'停用':'启用' }</td>
@@ -60,10 +73,12 @@
 						 <a href="${contextpath }/bq/bqmodify.htm?id=${item.id}"
 							class="tablelink">编辑</a> 
 							&nbsp;&nbsp;
-						<a href="${contextpath }/bq/listnews.htm?menuId=${item.id}"
+						<a href="${contextpath }/bq/listnews.htm?menuId=${item.id}&banner_id=${item.bannerId}"
 							class="tablelink">新闻管理</a> 
 					
 							</td>
+						</c:if>
+						
 					</tr>
 				</c:forEach>
 

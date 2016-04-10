@@ -43,7 +43,6 @@
 				<tr>
  					<th>栏目名称</th>
  					<th>排序号</th>
-					<th>栏目类型</th>
 					<th>状态</th>
 					<th>操作</th>
 				</tr>
@@ -53,7 +52,6 @@
 					<tr>
  						<td>${item.name }</td>
  						<td>${item.orderlist }</td>
-						<td>${item.column_type=='1'?'列表':(item.column_type=='2'?'详情':'无') }</td>
 						<td>${item.status==0?'停用':'启用' }</td>
 						<td>
 						<c:if test="${item.id!='1010' }">

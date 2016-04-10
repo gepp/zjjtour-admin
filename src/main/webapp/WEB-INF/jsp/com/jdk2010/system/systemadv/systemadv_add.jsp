@@ -63,6 +63,9 @@
 						<li><label>跳转地址<b></b></label> <input type="text"
 							class="dfinput" id="jumpUrl" name="systemAdv.jumpUrl"
 							placeholder="请输入跳转地址" /></li>
+						<li><label>wap跳转地址<b></b></label> <input type="text"
+							class="dfinput" id="jumpWapUrl" name="systemAdv.jumpWapUrl"
+							placeholder="请输入wap跳转地址" /></li> 
 						 
 						<li><label>首页图<b></b></label> <input type="text"
 							class="dfinput" id="imgUrl" name="systemAdv.imgUrl"
@@ -137,13 +140,18 @@ KindEditor.ready(function(K) {
 										{
 											fields : {
 												'systemAdv.title' : 'required;',
-												'systemAdv.imgUrl' : 'required;',
+												 
 												'systemAdv.orderlist' :'required;',
 
 											},
 											valid : function(form) {
 												var me = this;
 												// 提交表单之前，hold住表单，防止重复提交
+												if($("#imgUrl")==''){
+													sAlert('请选择首页图！');
+													return false;
+												}
+												
 												me.holdSubmit();
 												$
 														.ajax({

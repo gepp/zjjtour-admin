@@ -25,17 +25,18 @@
     
     
     <div class="mainbox">
-    
+    <c:if test="${shenheFlag=='1' }">
     <div class="mainleft">
     <div class="leftinfos">
-    
+   
    <div class="infoleft">
     <div class="listtitle">待办-新闻发布<a href="${contextpath }/securitynews/listWaitShenhe.htm" class="more1">去处理</a></div>
     <ul class="newlist">
     
     <c:forEach var="item" items="${newsList }">
     
-    <li><a href="#">
+    <li><a href="${contextpath }/securitynews/listWaitShenhe.htm">
+    	【${item.menuName }】
      	<c:if test="${fn:length(item.title)>20}">
     	${fn:substring(item.title,0,20)}...
     	</c:if>
@@ -53,14 +54,14 @@
     <div class="listtitle">待办-投诉回复<a href="${contextpath }/membercomplain/list.htm" class="more1">去处理</a></div>
     <ul class="newlist">
     <c:forEach var="item" items="${memberComplainReplayList }">
-    <li><a href="#">
+    <li><a href="${contextpath }/membercomplain/list.htm">
      	<c:if test="${fn:length(item.complainTitle)>20}">
     	${fn:substring(item.complainTitle,0,20)}...
     	</c:if>
     	 <c:if test="${fn:length(item.complainTitle)<=20}">
    			 ${item.complainTitle }
     		</c:if>
-    <fmt:formatDate value="${item.ctime }" pattern="yyyy-MM-dd" var="complainTime"/>
+    <fmt:formatDate value="${item.complainTime }" pattern="yyyy-MM-dd" var="complainTime"/>
     </a><b>${complainTime }</b></li>
     </c:forEach>
     </ul>  
@@ -73,7 +74,7 @@
     <div class="listtitle">待办-投诉意见审核<a href="${contextpath }/membercomplain/list.htm" class="more1">去处理</a></div>
     <ul class="newlist">
     <c:forEach var="item" items="${memberComplainReviewList }">
-    <li><a href="#" >
+    <li><a href="${contextpath }/membercomplain/list.htm" >
    	<c:if test="${fn:length(item.complainTitle)>20}">
    	${fn:substring(item.complainTitle,0,20)}...
    	</c:if>
@@ -89,6 +90,7 @@
      
     </div>
     </div>
+    </c:if>
     <!--mainleft end-->
      
     <div class="mainright">

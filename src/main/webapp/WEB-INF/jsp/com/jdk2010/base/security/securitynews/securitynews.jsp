@@ -26,6 +26,9 @@
 		<ul class="placeul">
 			<li><a href="#">首页</a></li>
 			<li><a href="#">${menu.name }</a></li>
+			<c:if test="${news_type=='ZYHD' }"><li><a href="#">重要活动</a></li></c:if>
+			<c:if test="${news_type=='ZYJH' }"><li><a href="#">重要讲话</a></li></c:if>
+			<c:if test="${news_type=='MTBD' }"><li><a href="#">媒体报道</a></li></c:if>
 		</ul>
 	</div>
 	<div class="rightinfo">
@@ -61,7 +64,7 @@
 	        <li onclick="deleteNews();" ><span><img src="${contextpath }/res/images/t03.png"></span>删除</li>
 	        </c:if>
 	        <c:if test="${shenheFlag=='1' }">
-	        <%-- <li class="click" onclick="accept();" ><span><img src="${contextpath }/res/images/t02.png"></span>审核</li> --%>
+	        <li class="click" onclick="accept();" ><span><img src="${contextpath }/res/images/t02.png"></span>批量审核</li>
 	        <li onclick="rollback();" ><span><img src="${contextpath }/res/images/t04.png"></span>驳回</li>
 	        </c:if>
  			</ul>
@@ -109,7 +112,7 @@
 						</c:if>
 						
 						<c:if test="${fabuFlag=='1' }">
-						<a href="${ contextpath }/securitynews/modify.htm?id=${item.id}"
+						<a href="${ contextpath }/securitynews/modify.htm?id=${item.id}&news_type=${news_type}"
 							class="tablelink">编辑</a>  
 						<a href="javascript:void(0)" onclick="deleteNew('${item.id}');"
 							class="tablelink">删除</a>  
@@ -120,7 +123,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		<page:page href="${contextpath}/securitynews/list.htm?title=${title}&menuId=${menu.id }"
+		<page:page href="${contextpath}/securitynews/list.htm?title=${title}&menuId=${menu.id }&reviewStatus=${reviewStatus }&id=${id }&news_type=${news_type }"
 			data="pageList" />
 
 	</div>
@@ -170,7 +173,7 @@
 			window.location.href="${contextpath}/securitymenu/list.htm";
 		}
 		function add(){
- 			window.location.href="${contextpath}/securitynews/add.htm?menuId=${menu.id}";
+ 			window.location.href="${contextpath}/securitynews/add.htm?menuId=${menu.id}&news_type=${news_type}";
 		}
 		function deleteNews(){
 			var del_ids="" ;
@@ -243,7 +246,7 @@
 				    shadeClose: true,
 				    shade: 0.8,
 				    area : [ '500px', '45%' ],
-				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&type=1&id=${menu.id }' //iframe的url
+				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&type=1&id=${menu.id }&jumpType=piliang_check' //iframe的url
 				}); 
 				
 			}
@@ -257,7 +260,7 @@
 				    shadeClose: true,
 				    shade: 0.8,
 				    area : [ '500px', '45%' ],
-				    content: '${contextpath}/securitynews/toCheck.htm?ids='+id+'&type=1&id=${menu.id }' //iframe的url
+				    content: '${contextpath}/securitynews/toCheck.htm?ids='+id+'&type=1&id=${menu.id }&jumpType=piliang_check' //iframe的url
 				}); 
 				
 		}
@@ -283,7 +286,7 @@
 				    shadeClose: true,
 				    shade: 0.8,
 				    area : [ '500px', '45%' ],
-				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&type=2&id=${menu.id }' //iframe的url
+				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&type=2&id=${menu.id }&jumpType=piliang_check' //iframe的url
 				}); 
 				
 			}

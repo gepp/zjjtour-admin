@@ -65,7 +65,6 @@
 						<li><label>角色类型<b></b></label> 
 						 <div class="vocation">
 						<select  name="securityRole.type" class="select1">
-							<option value="0" <c:if test="${ securityRole.type==0}">selected</c:if>>系统管理</option>
 							<option value="1" <c:if test="${ securityRole.type==1}">selected</c:if>>审核</option>
 							<option value="2" <c:if test="${ securityRole.type==2}">selected</c:if>>发布</option>
 						</select>

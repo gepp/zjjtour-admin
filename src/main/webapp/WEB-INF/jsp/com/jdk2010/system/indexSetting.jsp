@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://www.tag.mytag.com" prefix="page"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -73,6 +75,7 @@
 				<tr>
 					<th>标题</th>
 					<th>跳转地址</th>
+					<th>wap跳转地址</th>
 					<th>图片缩略</th>
 					<th>排序号</th>
 					<th>是否启用</th>
@@ -83,7 +86,23 @@
 				<c:forEach items="${pageList.list}" var="item">
 					<tr>
 						<td>${ item.title}</td>
-						<td>${ item.jumpUrl}</td>
+						<td> 
+						<c:if test="${fn:length(item.jumpUrl)>50}">
+					    	${fn:substring(item.jumpUrl,0,50)}...
+					    	</c:if>
+					    	 <c:if test="${fn:length(item.jumpUrl)<=50}">
+					   			 ${item.jumpUrl }
+					    </c:if>
+						
+						</td>
+						<td>
+						<c:if test="${fn:length(item.jumpWapUrl)>50}">
+					    	${fn:substring(item.jumpWapUrl,0,50)}...
+					    	</c:if>
+					    	 <c:if test="${fn:length(item.jumpWapUrl)<=50}">
+					   			 ${item.jumpWapUrl }
+					    </c:if>
+						 </td>
 						<td><img src="${ item.imgUrl}" height="30" width="30" onclick="seePicture('${item.id}')" alt="点击查看大图" /></td>
 						<div id="${item.id}" style="display:none"><img src="${item.imgUrl}"></div>
 

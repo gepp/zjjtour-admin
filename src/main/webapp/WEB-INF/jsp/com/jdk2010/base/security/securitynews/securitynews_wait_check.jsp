@@ -71,8 +71,8 @@
 
 					<tr>
 						<td><input type="checkbox" name="subBox" value="${item.id}" /></td>
-						<td>${ item.menuName}</td>
-						<td>${ item.title}</td>
+						<td >${ item.menuName}</td>
+						<td onclick="review('${item.menuId}','${item.id }')"><a href="" class="tablelink">${ item.title}</a></td>
 						<td>${ item.ctime}</td>
 						<td>${ item.reviewStatus=='0'?'未处理':(item.reviewStatus=='1'?'通过':'驳回')}</td>
 					</tr>
@@ -149,6 +149,22 @@
 
 			}
 
+		}
+		function review(parentId,id){
+			var detailUrl='${indexsettingMap.index_url}';
+			if(parentId=='1012'||parentId=='1013'||parentId=='1014'||parentId=='1015'||parentId=='1084'||parentId=='1085'||parentId=='1086'||parentId=='1087'){
+				detailUrl=detailUrl+'quanjingDetail.htm?id='+id;
+			}
+			else if(parentId=='1010'||parentId=='1036'||parentId=='1088'||parentId=='1089'||parentId=='1090'){
+				detailUrl=detailUrl+'changyouDetail.htm?id='+id;
+			}
+			else if(parentId=='1091'||parentId=='1092'||parentId=='1093'||parentId=='1094'||parentId=='1095'){
+				detailUrl=detailUrl+'xiuxianDetail.htm?id='+id;
+			}
+			else if(parentId=='1037'||parentId=='1038'||parentId=='1055'||parentId=='1056'||parentId=='1057'){
+				detailUrl=detailUrl+'tingwenDetail.htm?id='+id;
+			}
+			parent.window.open(detailUrl,'_blank');
 		}
 	</script>
 

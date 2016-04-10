@@ -19,8 +19,8 @@ import com.sun.image.codec.jpeg.ImageFormatException;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
-@Controller
-@RequestMapping("/captcha")
+/*@Controller
+@RequestMapping("/captcha")*/
 public class CodeController extends BaseController {
 
 	@Resource

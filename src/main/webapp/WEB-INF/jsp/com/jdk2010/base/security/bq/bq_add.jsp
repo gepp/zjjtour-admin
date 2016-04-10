@@ -61,8 +61,8 @@
 						</li>
 						<li><label>绑定栏目<b></b></label>
 							<div class="vocation">
-								<select name="securityMenu.bannerId" class="select1">
-									<option value="0">无</option>
+								<select name="securityMenu.bannerId" class="select1" id="bannerId">
+									<option value="">无</option>
 									<c:forEach var="item" items="${menuList }">
 										<option value="${item.id }">${item.name }</option>
 									</c:forEach>
@@ -112,8 +112,14 @@
 			},
 			valid : function(form) {
 				var me = this;
+				if($("#bannerId").val()==''){
+					sAlert('请先绑定栏目！');
+					return false;
+				}
+				
 				// 提交表单之前，hold住表单，防止重复提交
 				me.holdSubmit();
+				
 				$.ajax({
 					url : "${ contextpath}/bq/bqaddaction",
 					data : $(form).serialize(),

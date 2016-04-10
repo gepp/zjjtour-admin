@@ -31,7 +31,7 @@ function login(){
 	//var captcha=$("#captcha").val();
 	var rememberMe=$("#rememberMe").prop("checked");
 	if(username==''||password==''){
-		layer.alert('请填写用户名/密码/验证码！');
+		alert('请填写用户名/密码/验证码！');
 	}
 	else{
         var map={"username":username,"password":$.decode(password),"rememberMe":rememberMe};
@@ -46,7 +46,7 @@ function login(){
 		           }else{
 		        	 //  $("#imgsrc").click();
 		        	 //  $("#captcha").val('');
-		        	   layer.alert(data.reason);
+		        	   alert(data.reason);
 		           }
 		        }, 
 		        error:function(data) {

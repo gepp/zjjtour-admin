@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>路线管理</title>
+<title>内容管理</title>
 <link href="${ contextpath }/res/css/style.css" rel="stylesheet"
 	type="text/css" />
 <link href="${ contextpath }/res/css/page.css" rel="stylesheet"
@@ -26,7 +26,7 @@
 		<span>位置：</span>
 		<ul class="placeul">
 			<li><a href="#">首页</a></li>
- 			<li><a href="#">标签管理</a></li>
+ 			<li><a href="#">内容管理</a></li>
 		</ul>
 	</div>
 	<div class="rightinfo">
@@ -57,12 +57,12 @@
 		<br/>
 		 <div class="tools">
 			<ul class="toolbar">
-			<li class="click" onclick="add();" ><span><img src="${contextpath }/res/images/t01.png"></span>添加线路</li>
-	        <li onclick="deleteNews();" ><span><img src="${contextpath }/res/images/t03.png"></span>删除线路</li>
+			<li class="click" onclick="add();" ><span><img src="${contextpath }/res/images/t01.png"></span>添加内容</li>
+	        <li onclick="deleteNews();" ><span><img src="${contextpath }/res/images/t03.png"></span>删除内容</li>
  			</ul>
 		</div>
 		<div class="formtitle1">
-			<span>已选线路</span>
+			<span>已选内容</span>
 		</div>
 		<table class="tablelist">
 			<thead>
@@ -81,7 +81,7 @@
 
 					<tr>
 						<td><input type="checkbox" name="subBox" value="${item.id}" /></td>
-						<td>${ item.title}</td>
+						<td onclick="review('${item.menuId}','${item.id }')"><a href="" class="tablelink">${ item.title}</a></td>
 						<td>${ item.realname}</td>
 						<td>${ item.ctime}</td>
 						<td>${ item.reviewStatus=='0'?'未处理':(item.reviewStatus=='1'?'通过':'失败')}</td>
@@ -112,10 +112,10 @@
 		function add(){
 			layer.open({
 				type : 2,
-				title : '线路选择',
+				title : '内容选择',
 				shadeClose : true,
 				area : [ '90%', '80%' ],
-				content : '${contextpath}/bq/bqselect.htm?bgId=${menu.id }' //iframe的url
+				content : '${contextpath}/bq/bqselect.htm?bgId=${menu.id }&bannerId=${menu.bannerId}' //iframe的url
 			});
 		}
 		function deleteNews(){
@@ -165,6 +165,23 @@
 				});
 			 
 			}
+		}
+		
+		function review(parentId,id){
+			var detailUrl='${indexsettingMap.index_url}';
+			if(parentId=='1012'||parentId=='1013'||parentId=='1014'||parentId=='1015'||parentId=='1084'||parentId=='1085'||parentId=='1086'||parentId=='1087'){
+				detailUrl=detailUrl+'quanjingDetail.htm?id='+id;
+			}
+			else if(parentId=='1010'||parentId=='1036'||parentId=='1088'||parentId=='1089'||parentId=='1090'){
+				detailUrl=detailUrl+'changyouDetail.htm?id='+id;
+			}
+			else if(parentId=='1091'||parentId=='1092'||parentId=='1093'||parentId=='1094'||parentId=='1095'){
+				detailUrl=detailUrl+'xiuxianDetail.htm?id='+id;
+			}
+			else if(parentId=='1037'||parentId=='1038'||parentId=='1055'||parentId=='1056'||parentId=='1057'){
+				detailUrl=detailUrl+'tingwenDetail.htm?id='+id;
+			}
+			parent.window.open(detailUrl,'_blank');
 		}
 		
 </script>

@@ -105,9 +105,13 @@
 								</textarea>
 						
 						</li>
+						<input type="hidden" value="" name="review_status"  id="review_status"/>
 						<input type="hidden" value="${menuId }" name="securityNews.menuId" />
-						<li><label>&nbsp;</label><input name="" type="submit"
-							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
+						
+						<li><label>&nbsp;</label><input  id="submitbtn" type="submit"
+							class="btn" value=" 确定" /> &nbsp;&nbsp; 
+							<input name="" type="button"
+							class="btn" value="审核通过" onclick="shenhe();"/> &nbsp;&nbsp;<input name=""
 							type="button" class="btn" value="返回"
 							onclick="window.location.href = '${ contextpath}/securitymenu/list.htm';" /></li>
 					</form>
@@ -119,6 +123,10 @@
 </html>
 <script type="text/javascript">
 	$('.tablelist tbody tr:odd').addClass('odd');
+	function shenhe(){
+		$("#review_status").val("1");
+		$("#submitbtn").click();	
+	}
 	</script>
 
 
