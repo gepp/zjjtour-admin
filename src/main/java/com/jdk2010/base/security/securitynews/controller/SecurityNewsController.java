@@ -56,7 +56,7 @@ public class SecurityNewsController extends BaseController {
 		String sql="select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 and t.menu_id="
 				+ id + "";
 		
-		if(getPara("news_type")!=null){
+		if(StringUtil.isNotBlank(getPara("news_type"))){
 			sql=sql+" and t.news_type='"+getPara("news_type")+"'";
 		}
 		setAttr("news_type", getPara("news_type"));

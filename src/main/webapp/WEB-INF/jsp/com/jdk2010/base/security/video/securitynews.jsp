@@ -112,7 +112,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		<page:page href="${contextpath}/securitynews/list.htm?title=${title}&menuId=${menu.id }"
+		<page:page href="${contextpath}/securitynews/toViedoList.htm?title=${title}&menuId=${menu.id }"
 			data="pageList" />
 
 	</div>
