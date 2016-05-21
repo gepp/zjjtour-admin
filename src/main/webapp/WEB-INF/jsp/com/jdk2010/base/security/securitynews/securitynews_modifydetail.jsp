@@ -97,6 +97,10 @@
 							</div>
 						
 						</li>
+						<li><label>摘要<b></b></label> 
+							<textarea cols="60" rows="20" name="securityNews.abstractContent" id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput">${securityNews.abstractContent}</textarea>
+						
+						</li>
 						<li><label>通告内容<b></b></label> 
 						<textarea id="content"
 								name="securityNews.content"
@@ -110,8 +114,11 @@
 						
 						<li><label>&nbsp;</label><input  id="submitbtn" type="submit"
 							class="btn" value=" 确定" /> &nbsp;&nbsp; 
+							 <c:if test="${shenheFlag=='1' }">
 							<input name="" type="button"
-							class="btn" value="审核通过" onclick="shenhe();"/> &nbsp;&nbsp;<input name=""
+							class="btn" value="审核通过" onclick="shenhe();"/> &nbsp;&nbsp;
+							</c:if>
+							<input name=""
 							type="button" class="btn" value="返回"
 							onclick="window.location.href = '${ contextpath}/securitymenu/list.htm';" /></li>
 					</form>

@@ -93,7 +93,7 @@
 									<option value="0" selected>全部</option>
 								</select>
 							</div>
-						
+						<input type="hidden" id="bannerMenuId" value="${bannerMenuId }"  name="bannerMenuId"/>
 						</li>
 						<li><label>视频摘要<b></b></label> <input type="text"
 							class="dfinput" id="abstractContent" name="securityNews.abstractContent"
@@ -111,7 +111,7 @@
 						<li><label>&nbsp;</label><input name="" type="submit"
 							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
 							type="button" class="btn" value="返回"
-							onclick="window.location='${ contextpath}/securitynews/toViedoList'" /></li>
+							onclick="window.location='${ contextpath}/securitynews/toViedoList.htm?bannerMenuId=${bannerMenuId }'" /></li>
 					</form>
 				</ul>
 			</div>
@@ -230,17 +230,9 @@
 																me
 																		.holdSubmit(false);
 																if (data.status == 'success') {
+																	alert('当前操作成功');
+																	window.location.href = '${ contextpath}/securitynews/toViedoList.htm?id=${menu.id }&bannerMenuId=${bannerMenuId}';
 
-																	parent.layer
-																			.alert(
-																					'当前操作成功',
-																					{
- 																						closeBtn : 0
-																					},
-																					function(index) {
-																						parent.layer.close(index);
-																						window.location.href = '${ contextpath}/securitynews/toViedoList.htm?id=${menu.id }';
-																					});
 
 																} else {
 																	sAlert('当前操作失败');

@@ -128,7 +128,7 @@
 						&nbsp;&nbsp;
 						<input type="checkbox" name="supportStatus"
 						<c:if test="${memberActivity.supportStatus==1 }">checked</c:if>
-						/>是否支持报名
+						/>支持报名
 						</li>	
 						 <fmt:formatDate value="${memberActivity.startTime}" var="startTime" pattern="yyyy-MM-dd" />
 						  <fmt:formatDate value="${memberActivity.endTime}" var="endTime" pattern="yyyy-MM-dd" />

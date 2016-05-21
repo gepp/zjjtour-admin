@@ -65,7 +65,10 @@
 								<select name="securityMenu.bannerId" class="select1" id="bannerId">
 									<option value="">无</option>
 									<c:forEach var="item" items="${menuList }">
-										<option value="${item.id }" <c:if test="${securityMenu.bannerId==item.id}">selected</c:if>>${item.name }</option>
+										
+										<option <c:if test="${item.column_type!=1 }">
+											disabled
+										</c:if> value="${item.id }" <c:if test="${securityMenu.bannerId==item.id}">selected</c:if>>${item.name }</option>
 									</c:forEach>
  								</select>
  							</div>

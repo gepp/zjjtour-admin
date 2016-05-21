@@ -122,8 +122,8 @@
 						/>是否置顶
 						&nbsp;&nbsp;
 						<input type="checkbox" name="supportStatus"
-						<c:if test="${memberActivity.supportStatus==1 }">checked</c:if>
-						/>是否支持报名
+						checked
+						/>支持报名
 						</li>	
 						 
 						<li><label>开始时间<b></b></label> <input type="text"

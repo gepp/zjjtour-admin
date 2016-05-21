@@ -45,6 +45,7 @@
 			<c:if test="${news_type=='ZYJH' }"><li><a href="#">重要讲话</a></li></c:if>
 			<c:if test="${news_type=='MTBD' }"><li><a href="#">媒体报道</a></li></c:if>
 			<li><a href="#">编辑</a></li>
+			 
 		</ul>
 	</div>
 	<div class="formbody">
@@ -55,6 +56,25 @@
 					<form action="" method="post" id="securityNewsForm">
  					<input  type="hidden" class="dfinput" id="id" name="securityNews.id" placeholder="请输入id" value="${ securityNews.id}" />
  					<input  name="news_type" value="${news_type }" type="hidden" />
+ 						<li><label>&nbsp;<b></b></label>
+ 						<input name=""
+							type="button" class="btn" value="返回"
+							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${securityNews.menuId }&news_type=${news_type }'" />
+ 						
+ 						</li>
+ 						<li>
+ 						<label>所属标签<b></b></label>
+ 						<div class="vocation">
+ 						<select  id="bq_id" name="bq_id" class="select1">
+ 						<c:forEach var="bq" items="${bqList }" >
+ 						
+ 							<option value="${bq.id }" <c:if test="${old_bq_id==bq.id }">selected</c:if>>${bq.name }</option>
+ 						</c:forEach>
+ 						
+ 						</select>
+ 						</div>
+ 						</li>
+ 						
 						<li><label>标题<b></b></label> <input type="text"
 							class="dfinput" id="title" name="securityNews.title"
 							placeholder="请输入标题" value="${ securityNews.title}" /></li>
@@ -104,20 +124,14 @@
 							</div>
 						
 						</li>
-						<div id="defaultDiv" <c:if test="${securityNews.maodianStatus==1 }">style="display:none"</c:if>>
 						<li><label>内容摘要<b></b></label> 
-							<textarea cols="60" rows="20" name="securityNews.abstractContent"
-							id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput">
-							
-							</textarea>
+							<textarea cols="60" rows="20" name="securityNews.abstractContent" id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput">${securityNews.abstractContent}</textarea>
 						
 						</li>
+						<div id="defaultDiv" <c:if test="${securityNews.maodianStatus==1 }">style="display:none"</c:if>>
+						
 						<li><label>内容详情<b></b></label> 
-						<textarea id="content"
-								name="securityNews.content"
-								style="width: 700px; height: 250px; visibility: hidden;">
-								${securityNews.content }
-								</textarea>
+						<textarea id="content" name="securityNews.content" style="width: 700px; height: 250px; visibility: hidden;">${securityNews.content }</textarea>
 						
 						</li>
 						</div>
@@ -139,7 +153,7 @@
 							type="button" class="btn" value="添加锚点" onclick="addMaodian()" />
 						</li>
 						
-						<div id="maodianDiv">
+						<div id="maodianDiv" style="<c:if test="${securityNews.maodianStatus==0 }">display:none</c:if>">
 							<c:forEach var="maodian" items="${maodianList }" varStatus="status">
 							<div id="div${status.index + 1 }">
 								<li><label>锚点名称<b></b></label><input type="text" class="dfinput"  name="maodianName"  value="${maodian.maodian_name }"/>&nbsp;&nbsp;
@@ -166,8 +180,11 @@
 						
 						<li><label>&nbsp;</label><input id="submitbtn" name="" type="submit"
 							class="btn" value=" 确定" /> &nbsp;&nbsp; 
+							 <c:if test="${shenheFlag=='1' }">
+							
 							<input name="" type="button"
 							class="btn" value="审核通过" onclick="shenhe();"/> &nbsp;&nbsp;
+							</c:if>
 							<input name=""
 							type="button" class="btn" value="返回"
 							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${securityNews.menuId }&news_type=${news_type }'" /></li>
@@ -180,19 +197,7 @@
 </html>
 <script type="text/javascript">
 	$('.tablelist tbody tr:odd').addClass('odd');
-	$("#abstractContent").html("${securityNews.abstractContent }");
-	function isShowMaodian(){
-		 var checkbox = $("input[name='maodianStatus']");
-		 if($("input[name='maodianStatus']").prop("checked")){
-			 $("#showMaodian").css("display","");
-			 $("#maodianDiv").css("display","");
-			 $("#defaultDiv").css("display","none");
-		 }else{
-			 $("#showMaodian").css("display","none");
-			 $("#maodianDiv").css("display","none");
-			 $("#defaultDiv").css("display","");
-		 }
-	}
+ 	
 	
 	function shenhe(){
 		$("#review_status").val("1");
@@ -232,9 +237,25 @@
 			allowFileManager : true
 		});
 	});
+	function isShowMaodian(){
+		 var checkbox = $("input[name='maodianStatus']");
+		  
+		 if($("input[name='maodianStatus']").prop("checked")){
+			 $("#showMaodian").css("display","");
+			 $("#maodianDiv").css("display","");
+			 $("#defaultDiv").css("display","none");
+			 $("#abstractContent").val("");
+			  
+		 }else{
+			 $("#showMaodian").css("display","none");
+			 $("#maodianDiv").css("display","none");
+			 $("#defaultDiv").css("display","");
+		 }
+	}
 	function deleteMaodian(id){
 		$("#"+id).remove();
 	}
+	
 	
 	KindEditor.ready(function(K) {
 		var editor = K.editor({
@@ -283,7 +304,7 @@
 		
 		
 	});
-	
+ 
  	$(document).ready(
  		function(){
  		  $(".select1").uedSelect({

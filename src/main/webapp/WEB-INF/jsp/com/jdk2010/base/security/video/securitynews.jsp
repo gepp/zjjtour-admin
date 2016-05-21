@@ -104,15 +104,20 @@
 						<td>
 						<c:if test="${fabuFlag=='1' }">
 						<a
-							href="${ contextpath }/securitynews/modifyVideo.htm?id=${item.id}"
+							href="${ contextpath }/securitynews/modifyVideo.htm?id=${item.id}&bannerMenuId=${bannerMenuId}"
 							class="tablelink">编辑</a>  
+							&nbsp;
+						<a
+							href="javascript:void(0)" onclick="deleteNew('${item.id}');"
+							class="tablelink">删除</a>  
+						
 						</c:if>
 						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-		<page:page href="${contextpath}/securitynews/toViedoList.htm?title=${title}&menuId=${menu.id }"
+		<page:page href="${contextpath}/securitynews/toViedoList.htm?title=${title}&menuId=${menu.id }&bannerMenuId=${bannerMenuId }"
 			data="pageList" />
 
 	</div>
@@ -130,7 +135,7 @@
 			window.location.href="${contextpath}/securitymenu/list.htm";
 		}
 		function add(){
- 			window.location.href="${contextpath}/securitynews/addVideo.htm";
+ 			window.location.href="${contextpath}/securitynews/addVideo.htm?bannerMenuId=${bannerMenuId}";
 		}
 		function deleteNews(){
 			var del_ids="" ;
@@ -161,7 +166,7 @@
 											closeBtn: 0
 										}, function(index){
 											parent.layer.close(index);
-											window.location.href="${contextpath}/securitynews/toViedoList.htm";
+											window.location.href="${contextpath}/securitynews/toViedoList.htm?bannerMenuId=${bannerMenuId}";
 										});
 									}else{
 										parent.layer.close(index);
@@ -169,7 +174,7 @@
 											closeBtn: 0
 										}, function(index){
 											parent.layer.close(index);
-											window.location.href="${contextpath}/securitynews/toViedoList.htm";
+											window.location.href="${contextpath}/securitynews/toViedoList.htm?bannerMenuId=${bannerMenuId}";
 										});
 									}
 									
@@ -179,6 +184,40 @@
 				});
 			 
 			}
+		}
+		
+		function deleteNew(id){
+			 
+				parent.layer.confirm('您确认删除您所选择的数据么？',function(index){
+					//ajax提交删除数据
+					jQuery.ajax({
+								type: "post", 
+								url:"${contextpath}/securitynews/delete", 
+								dataType: "json",
+								data:{"ids":id},
+								success: function (data) { 
+									parent.layer.close(index);
+									if(data.status=='success'){
+										parent.layer.alert('当前操作成功', {
+											closeBtn: 0
+										}, function(index){
+											parent.layer.close(index);
+											window.location.href="${contextpath}/securitynews/toViedoList.htm?bannerMenuId=${bannerMenuId}";
+										});
+									}else{
+										parent.layer.close(index);
+										parent.layer.alert(data.message, {
+											closeBtn: 0
+										}, function(index){
+											parent.layer.close(index);
+											window.location.href="${contextpath}/securitynews/toViedoList.htm?bannerMenuId=${bannerMenuId}";
+										});
+									}
+									
+									 
+								} 
+						});
+				});
 		}
 		
 		
@@ -203,7 +242,7 @@
 				    shadeClose: true,
 				    shade: 0.8,
 				    area : [ '500px', '45%' ],
-				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&jumpType=video_check&type=1' //iframe的url
+				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&jumpType=video_check&type=1&bannerMenuId=${bannerMenuId}' //iframe的url
 				}); 
 				
 			}
@@ -230,7 +269,7 @@
 				    shadeClose: true,
 				    shade: 0.8,
 				    area : [ '500px', '45%' ],
-				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&jumpType=video_check&type=2' //iframe的url
+				    content: '${contextpath}/securitynews/toCheck.htm?ids='+del_ids+'&jumpType=video_check&type=2&bannerMenuId=${bannerMenuId}' //iframe的url
 				}); 
 				
 			}

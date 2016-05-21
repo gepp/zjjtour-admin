@@ -138,6 +138,11 @@ public class LoginController extends BaseController {
             setSessionAttr("securityUser", securityUser);
              String menuStr = securityUserService.getUserMenuStr(securityUser);
             setSessionAttr("menuStr", menuStr);
+            Map<Object, Object> userMenuMap = securityUserService.getUserMenu(securityUser);
+            String fabuFlag=userMenuMap.get("fabuFlag")+"";
+            String shenheFlag=userMenuMap.get("shenheFlag")+"";
+            setSessionAttr("fabuFlag",fabuFlag);
+            setSessionAttr("shenheFlag",shenheFlag);
             return REDIRECT + "main.htm";
         }
 

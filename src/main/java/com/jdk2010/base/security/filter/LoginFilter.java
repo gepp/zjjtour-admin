@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jdk2010.base.security.securityuser.model.SecurityUser;
+import com.jdk2010.framework.util.CookieUtil;
 
 public class LoginFilter implements Filter {
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -36,6 +37,7 @@ public class LoginFilter implements Filter {
             return;
         }
         if (securityUser == null) {
+        	
             res.sendRedirect(req.getContextPath() + "/login.htm");
         } else {
             chain.doFilter(request, response);

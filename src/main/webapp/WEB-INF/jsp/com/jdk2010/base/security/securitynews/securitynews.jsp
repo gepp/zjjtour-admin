@@ -35,18 +35,34 @@
 	<form method="post" action="${ contextpath}/securitynews/list.htm">
 		<input type="hidden" value="${menu.id }" name="id"/>
 			<ul class="seachform" style="padding-top: 10px; padding-left: 15px">
-			<li><label>标题</label><input type="text" name="title"
-					id="title" class="scinput1" placeholder="" value="${title}" style="width:300px"></li>
-						<li><label>是否审核</label>
-						<div class="vocation">
-						 <select class="select1" name="reviewStatus">
-						 <option value="0" <c:if test="${reviewStatus=='0'}">selected</c:if>>全部</option>
-						 <option value="1" <c:if test="${reviewStatus=='1'}">selected</c:if>>通过</option>
-						 <option value="2" <c:if test="${reviewStatus=='2'}">selected</c:if>>驳回</option>
-						 </select>
-						 </div>
-						 </li>
-					<li>
+				<li><label>标题</label><input type="text" name="title" id="title"
+					class="scinput1" placeholder="" value="${title}"
+					style="width: 300px"></li>
+				<li><label>是否审核</label>
+					<div class="vocation">
+						<select class="select1" name="reviewStatus">
+							<option value="0"
+								<c:if test="${reviewStatus=='0'}">selected</c:if>>全部</option>
+							<option value="1"
+								<c:if test="${reviewStatus=='1'}">selected</c:if>>通过</option>
+							<option value="2"
+								<c:if test="${reviewStatus=='2'}">selected</c:if>>驳回</option>
+						</select>
+					</div></li>
+				<li><label>所属标签<b></b></label>
+					<div class="vocation">
+						<select id="bq_id" name="bq_id" class="select1">
+							<option value="">全部</option>
+							<c:forEach var="bq" items="${bqList }">
+								
+								<option value="${bq.id }"
+									<c:if test="${bq_id==bq.id }">selected</c:if>>${bq.name }</option>
+							</c:forEach>
+
+						</select>
+					</div></li>
+
+				<li>
 					<input name="" type="submit"
 						id="table_refresh" class="scbtn" value="查询" />
 					</li>
@@ -67,6 +83,7 @@
 	        <li class="click" onclick="accept();" ><span><img src="${contextpath }/res/images/t02.png"></span>批量审核</li>
 	        <li onclick="rollback();" ><span><img src="${contextpath }/res/images/t04.png"></span>驳回</li>
 	        </c:if>
+	        <li class="click" onclick="saveOrderlist();" ><span><img src="${contextpath }/res/images/t01.png"></span>保存排序</li>
  			</ul>
 		</div>
 		<div class="formtitle1">
@@ -78,10 +95,12 @@
 					<th><input type="checkbox" width="15px" id="checkAll" /></th>
 					<th>标题</th>
 					<th>发布人</th>
+					
 					<th>发布时间</th>
 					<th>是否审核</th>
 					<th>审核人</th>
 					<th>审核时间</th>
+					<th>排序号</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -104,6 +123,7 @@
 						<td>${ item.reviewStatus=='0'?'未处理':(item.reviewStatus=='1'?'通过':'驳回')}</td>
 						<td>${ item.reviewName}</td>
 						<td>${ item.reviewTime}</td>
+						<td><input type="text" value="${item.orderlist }" id="${item.id}" name="orderlistInput"></input></td>
 						<td>
 						<c:if test="${shenheFlag=='1' }">
 							<c:if test="${item.reviewStatus=='0' }">
@@ -119,11 +139,12 @@
 						</c:if>
 						<a href="#" class="tablelink"  onclick="preview('${item.id}');">预览</a>  
 						</td>
+						
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-		<page:page href="${contextpath}/securitynews/list.htm?title=${title}&menuId=${menu.id }&reviewStatus=${reviewStatus }&id=${id }&news_type=${news_type }"
+		<page:page href="${contextpath}/securitynews/list.htm?title=${title}&menuId=${menu.id }&reviewStatus=${reviewStatus }&id=${id }&news_type=${news_type }&bq_id=${bq_id }"
 			data="pageList" />
 
 	</div>
@@ -175,6 +196,55 @@
 		function add(){
  			window.location.href="${contextpath}/securitynews/add.htm?menuId=${menu.id}&news_type=${news_type}";
 		}
+		function saveOrderlist(){
+			var orderlist_ids="" ;
+			var count=0;
+			var checkbox = $("input[name='orderlistInput']");
+			checkbox.each(function() {
+				if (this.value=='') {
+					alert('请填写排序号');
+					$(this).focus();
+					return false;
+				}else{
+					orderlist_ids=orderlist_ids+$(this).attr("id")+"-"+$(this).val()+"~";
+				}
+			});
+			
+			parent.layer.confirm('您确认保存排序吗？',function(index){
+				//ajax提交删除数据
+				jQuery.ajax({
+							type: "post", 
+							url:"${contextpath}/securitynews/updateOrderlist", 
+							dataType: "json",
+							data:{orderlist_ids:orderlist_ids},
+							success: function (data) { 
+								parent.layer.close(index);
+								if(data.status=='success'){
+									parent.layer.alert('当前操作成功', {
+										closeBtn: 0
+									}, function(index){
+										parent.layer.close(index);
+										window.location.href="${contextpath}/securitynews/list.htm?id=${menu.id}";
+									});
+								}else{
+									parent.layer.close(index);
+									parent.layer.alert(data.message, {
+										closeBtn: 0
+									}, function(index){
+										parent.layer.close(index);
+										window.location.href="${contextpath}/securitynews/list.htm?id=${menu.id}";
+									});
+								}
+								
+								 
+							} 
+					});
+			});
+		 
+			
+			
+		}
+		
 		function deleteNews(){
 			var del_ids="" ;
 			var count=0;

@@ -72,7 +72,7 @@
 				  
 						<li><label>栏目上级<b></b></label>
 							<div class="vocation">
-								<select name="securityMenu.parentId" class="select1">
+								<select name="securityMenu.parentId" id="parentId" class="select1" onchange="getMenuCount()">
 									<option value="0">无</option>
 									<c:forEach var="item" items="${firstMenuList }">
 										<option value="${item.id }">${item.name }</option>
@@ -92,7 +92,8 @@
 						<li><label>页面类型<b></b></label>
 						<div class="vocation">
 						<select name="securityMenu.pageType" class="select1">
-									<option value="0">类型1</option>
+									<option value="0">模版</option>
+									<option value="1">导航</option>
  						</select>
 						</div>
 						</li>	
@@ -143,6 +144,25 @@
 
 
 <script type="text/javascript">
+	function getMenuCount(){
+		var parentId=$("#parentId").val();
+		if(parentId!='0'){
+		$.ajax({
+			url : "${ contextpath}/securitymenu/getMenuCount.htm?parentId="+parentId,
+			type : "get",
+			success : function(data) {
+				if (data.data.total>=8) {
+						alert('二级栏目不允许超过8个,请重新选择！');	
+						document.getElementById("parentId").value='0';
+						 
+						return false;
+				} 
+
+			}
+		});
+		}
+	}
+
 	$(document).ready(function() {
 		  $(".select1").uedSelect({
 				width : 345			  

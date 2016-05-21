@@ -53,6 +53,25 @@
 					<form action="" method="post" id="securityNewsForm">
 					<input  name="news_type" value="${news_type }" type="hidden" />
 					<input type="hidden" id="menuId" name="menuId" value="${menu.id }"/>
+						
+						<li><label>&nbsp;<b></b></label>
+ 						<input name=""
+							type="button" class="btn" value="返回"
+							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${menu.id }&news_type=${news_type }'" />
+ 						
+ 						</li>
+ 						<li>
+ 						<label>所属标签<b></b></label>
+ 						<div class="vocation">
+ 						<select  id="bq_id" name="bq_id" class="select1">
+ 						<c:forEach var="bq" items="${bqList }" >
+ 						
+ 							<option value="${bq.id }" >${bq.name }</option>
+ 						</c:forEach>
+ 						
+ 						</select>
+ 						</div>
+ 						</li>
 						<li><label>标题<b></b></label> <input type="text"
 							class="dfinput" id="title" name="securityNews.title"
 							placeholder="请输入标题" /></li>
@@ -98,12 +117,11 @@
 							</div>
 						
 						</li>
-						<div id="defaultDiv">
 						<li><label>内容摘要<b></b></label> 
-							<textarea cols="60" rows="20" name="securityNews.abstractContent"
-							id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput">
-							</textarea>
+							<textarea cols="60" rows="20" name="securityNews.abstractContent" id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput"></textarea>
 							</li>
+						<div id="defaultDiv">
+						
 						
 						<li><label>内容详情<b></b></label> <textarea id="content"
 								name="securityNews.content"
@@ -130,8 +148,12 @@
  						</div>
 						<input type="hidden" value="" name="review_status"  id="review_status"/>
 						<li><label>&nbsp;</label><input id="submitbtn" name="" type="submit"
-							class="btn" value=" 确定" /> &nbsp;&nbsp;<input name="" type="button"
-							class="btn" value="审核通过" onclick="shenhe();"/> &nbsp;&nbsp; <input name=""
+							class="btn" value=" 确定" /> &nbsp;&nbsp;
+							 <c:if test="${shenheFlag=='1' }">
+							<input name="" type="button"
+							class="btn" value="审核通过" onclick="shenhe();"/> &nbsp;&nbsp; 
+							</c:if>
+							<input name=""
 							type="button" class="btn" value="返回"
 							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${menu.id }&news_type=${news_type }'" /></li>
 						<input type="hidden"  value="0" id="incId" name="incId"/>
@@ -152,6 +174,8 @@
 			 $("#showMaodian").css("display","");
 			 $("#maodianDiv").css("display","");
 			 $("#defaultDiv").css("display","none");
+			 $("#abstractContent").val("");
+			 
 		 }else{
 			 $("#showMaodian").css("display","none");
 			 $("#maodianDiv").css("display","none");

@@ -50,6 +50,24 @@
 				<ul class="forminfo">
 					<form action="" method="post" id="securityNewsForm">
  					<input  type="hidden" class="dfinput" id="id" name="securityNews.id" placeholder="请输入id" value="${ securityNews.id}" />
+						<li><label>&nbsp;<b></b></label>
+ 						<input name=""
+							type="button" class="btn" value="返回"
+							onclick="window.location='${ contextpath}/securitynews/list.htm?id=${securityNews.menuId }&news_type=${news_type }'" />
+ 						
+ 						</li>
+ 						<%-- <li style="display:none">
+ 						<label>所属标签<b></b></label>
+ 						<div class="vocation">
+ 						<select  id="bq_id" name="bq_id" class="select1">
+ 						<c:forEach var="bq" items="${bqList }" >
+ 						
+ 							<option value="${bq.id }" <c:if test="${old_bq_id==bq.id }">selected</c:if>>${bq.name }</option>
+ 						</c:forEach>
+ 						
+ 						</select>
+ 						</div>
+ 						</li> --%>
 						<li><label>标题<b></b></label> <input type="text"
 							class="dfinput" id="title" name="securityNews.title"
 							placeholder="请输入标题" value="${ securityNews.title}" /></li>
@@ -117,7 +135,7 @@
 						<li><label>&nbsp;</label><input name="" type="submit"
 							class="btn" value=" 确定" /> &nbsp;&nbsp; <input name=""
 							type="button" class="btn" value="返回"
-							onclick="window.location='${ contextpath}/securitynews/toViedoList'" /></li>
+							onclick="window.location='${ contextpath}/securitynews/toViedoList.htm?bannerMenuId=${bannerMenuId }'" /></li>
 					</form>
 				</ul>
 			</div>
@@ -232,16 +250,9 @@
 																me
 																		.holdSubmit(false);
 																if (data.status == 'success') {
-																	parent.layer
-																			.alert(
-																					'当前操作成功',
-																					{
-																						closeBtn : 0
-																					},
-																					function(index) {
-																						parent.layer.close(index);
-																						window.location.href = '${ contextpath}/securitynews/toViedoList.htm?id=${securityNews.menuId }';
-																					});
+																	alert('当前操作成功');
+																	window.location.href = '${ contextpath}/securitynews/toViedoList.htm?id=${securityNews.menuId }&bannerMenuId=${bannerMenuId}';
+
 																} else {
 																	sAlert('当前操作失败');
 																}

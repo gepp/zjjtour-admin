@@ -164,6 +164,10 @@
 							&nbsp;&nbsp;<a
 							href="#"  onclick="preview('${item.id}');"
 							class="tablelink">预览</a>
+							
+							<a
+							href="#"  onclick="deleteActivity('${item.id}');"
+							class="tablelink">删除活动</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -214,6 +218,39 @@
 				});
 
 			}
+		}
+		
+		function deleteActivity(del_ids){
+			parent.layer.confirm('您确认删除您所选择的数据么？',function(index){
+				//ajax提交删除数据
+				jQuery.ajax({
+							type: "post", 
+							url:"${contextpath}/memberactivity/delete", 
+							dataType: "json",
+							data:{action:'delete',ids:del_ids},
+							success: function (data) { 
+								parent.layer.close(index);
+								if(data.status=='success'){
+									parent.layer.alert('当前操作成功', {
+										closeBtn: 0
+									}, function(index){
+										parent.layer.close(index);
+										window.location.href="${contextpath}/memberactivity/list.htm?id=${menu.id}";
+									});
+								}else{
+									parent.layer.close(index);
+									parent.layer.alert(data.message, {
+										closeBtn: 0
+									}, function(index){
+										parent.layer.close(index);
+										window.location.href="${contextpath}/memberactivity/list.htm?id=${menu.id}";
+									});
+								}
+								
+								 
+							} 
+					});
+			});
 		}
 
 		function rollback() {

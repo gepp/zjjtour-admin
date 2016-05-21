@@ -64,7 +64,12 @@
 								<select name="securityMenu.bannerId" class="select1" id="bannerId">
 									<option value="">无</option>
 									<c:forEach var="item" items="${menuList }">
-										<option value="${item.id }">${item.name }</option>
+										<option value="${item.id }"
+										<c:if test="${item.column_type!=1 }">
+											disabled
+										</c:if>
+										
+										>${item.name }</option>
 									</c:forEach>
  								</select>
  							</div>

@@ -36,6 +36,8 @@ public class SecurityMenuController extends BaseController {
     }
     
     
+    
+    
     @RequestMapping("/listSearch")
     public String listSearch(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	//1 代表栏目 2代表标签
@@ -55,6 +57,17 @@ public class SecurityMenuController extends BaseController {
         renderJson(response, returnData);
     }
     
+    @RequestMapping("/getMenuCount")
+    public void getMenuCount(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String parentId=getPara("parentId");
+       Long total= dalClient.queryColumn("select count(*) as total from security_menu where parent_id="+parentId, "total");
+       if(total==null){
+    	   total=0L;
+       }
+        ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+        returnData.put("total", total);
+        renderJson(response, returnData);
+    }
 
     @RequestMapping("/add")
     public String add(HttpServletRequest request, HttpServletResponse response) throws Exception {

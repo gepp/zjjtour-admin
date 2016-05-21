@@ -43,48 +43,23 @@ public class SecurityBqController extends BaseController {
 	public String listBq(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		// 1 代表栏目 2代表线路
-		List<Map<String, Object>> menuList = securityMenuService
-				.getMenuListByParentIdColumn("0", "2");
-
-		HashMap<String, Object> linkedMenuList = new LinkedHashMap<String, Object>();
-		for (Map<String, Object> child : menuList) {
-			if (child.get("banner_id") != null) {
-				linkedMenuList.put(child.get("banner_id") + "", null);
-			}
-		}
-
-		Map<String, List<Map<String, Object>>> linkedMenuNameList = new LinkedHashMap<String, List<Map<String, Object>>>();
-
-		for (String key : linkedMenuList.keySet()) {
-			List<Map<String, Object>> childList = new ArrayList<Map<String, Object>>();
-			for (Map<String, Object> child : menuList) {
-				if (child.get("banner_id") != null) {
-					if ((child.get("banner_id")+"").equals(key)) {
-						childList.add(child);
-					}
-				}
-			}
-			SecurityMenu menu = securityMenuService.findById(key,
-					SecurityMenu.class);
-			if (menu != null) {
-				linkedMenuNameList.put(menu.getName(), childList);
-			}
-		}
+		Map<String, List<Map<String, Object>>> linkedMenuNameList = securityMenuService
+				.getBqList();
 
 		setAttr("linkedMenuNameList", linkedMenuNameList);
 
-		List<Map<String, Object>> finalList=new ArrayList<Map<String,Object>>();
-		for(String key:linkedMenuNameList.keySet()){
-			Map<String,Object> mapKey=new HashMap<String, Object>();
+		List<Map<String, Object>> finalList = new ArrayList<Map<String, Object>>();
+		for (String key : linkedMenuNameList.keySet()) {
+			Map<String, Object> mapKey = new HashMap<String, Object>();
 			mapKey.put("lanmuName", key);
-			mapKey.put("type","1");
+			mapKey.put("type", "1");
 			finalList.add(mapKey);
-			for(Map<String,Object> map:linkedMenuNameList.get(key)){
-				map.put("type","0");
+			for (Map<String, Object> map : linkedMenuNameList.get(key)) {
+				map.put("type", "0");
 				finalList.add(map);
 			}
 		}
-		
+
 		setAttr("finalList", finalList);
 		return "/com/jdk2010/base/security/bq/bq";
 	}
@@ -214,10 +189,11 @@ public class SecurityBqController extends BaseController {
 	@RequestMapping("/listnews")
 	public String listnews(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
-		Map<String, Object> indexsettingMap = dalClient.queryForObject("select * from system_indexsetting ");
-        setAttr("indexsettingMap", indexsettingMap);
-        String menuId = getPara("menuId");
+
+		Map<String, Object> indexsettingMap = dalClient
+				.queryForObject("select * from system_indexsetting ");
+		setAttr("indexsettingMap", indexsettingMap);
+		String menuId = getPara("menuId");
 		SecurityMenu menu = securityMenuService.findById(menuId,
 				SecurityMenu.class);
 		setAttr("menu", menu);

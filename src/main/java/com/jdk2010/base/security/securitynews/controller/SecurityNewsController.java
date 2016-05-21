@@ -53,16 +53,22 @@ public class SecurityNewsController extends BaseController {
 		SecurityMenu menu = securityMenuService
 				.findById(id, SecurityMenu.class);
 		setAttr("menu", menu);
-		String sql="select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 and t.menu_id="
+		String bq_id=getPara("bq_id");
+		String sql = "select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 and t.menu_id="
 				+ id + "";
-		
-		if(StringUtil.isNotBlank(getPara("news_type"))){
-			sql=sql+" and t.news_type='"+getPara("news_type")+"'";
+		if(StringUtil.isNotBlank(bq_id)){
+			sql=sql+" and t.id in(select news_id from bq_news where bq_id="+bq_id+")";
+		}else{
+			bq_id="";
+		}
+		setAttr("bq_id", bq_id);
+		if (StringUtil.isNotBlank(getPara("news_type"))) {
+			sql = sql + " and t.news_type='" + getPara("news_type") + "'";
 		}
 		setAttr("news_type", getPara("news_type"));
 		DbKit dbKit = new DbKit(sql);
 		String searchSQL = "";
-		String orderSQL = " order by t.ctime desc";
+		String orderSQL = " order by t.orderlist asc";
 		String title = getPara("title");
 		if (title != null && !"".equals(title)) {
 			searchSQL = searchSQL + " and t.title LIKE :title";
@@ -86,6 +92,15 @@ public class SecurityNewsController extends BaseController {
 		Page pageList = securityNewsService.queryForPageList(dbKit, getPage(),
 				SecurityNews.class);
 		setAttr("pageList", pageList);
+
+		Map<String, List<Map<String, Object>>> linkedMenuNameList = securityMenuService
+				.getBqList();
+
+		List<Map<String, Object>> bqList = linkedMenuNameList.get(menu
+				.getName());
+
+		setAttr("bqList", bqList);
+		
 		return "/com/jdk2010/base/security/securitynews/securitynews";
 	}
 
@@ -93,11 +108,20 @@ public class SecurityNewsController extends BaseController {
 	public String add(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		String menuId = getPara("menuId");
-		String news_type=getPara("news_type");
+		String news_type = getPara("news_type");
 		setAttr("news_type", news_type);
 		SecurityMenu menu = securityMenuService.findById(menuId,
 				SecurityMenu.class);
 		setAttr("menu", menu);
+
+		Map<String, List<Map<String, Object>>> linkedMenuNameList = securityMenuService
+				.getBqList();
+
+		List<Map<String, Object>> bqList = linkedMenuNameList.get(menu
+				.getName());
+
+		setAttr("bqList", bqList);
+
 		return "/com/jdk2010/base/security/securitynews/securitynews_add";
 	}
 
@@ -137,18 +161,24 @@ public class SecurityNewsController extends BaseController {
 		securityNews.setUserid(user.getId());
 		securityNews.setCtime(new Date());
 		securityNews.setStatus(0);
-		if (getPara("review_status") != null&&!getPara("review_status").equals("")) {
+		if (getPara("review_status") != null
+				&& !getPara("review_status").equals("")) {
 			securityNews.setReviewStatus("1");
 		} else {
 			securityNews.setReviewStatus("0");
 		}
-		if(!StringUtil.isBlank(getPara("news_type"))){
+		if (!StringUtil.isBlank(getPara("news_type"))) {
 			securityNews.setNewsType(getPara("news_type"));
-		}else{
+		} else {
 			securityNews.setNewsType("ARTICLE");
 		}
-		
+
 		Integer news_id = securityNewsService.save(securityNews);
+
+		String bq_id = getPara("bq_id");
+
+		dalClient.update("insert into bq_news(bq_id,news_id) values (" + bq_id
+				+ "," + news_id + ")");
 
 		String[] maodianName = getParaValues("maodianName");
 		String[] maodianContent = getParaValues("maodianContent");
@@ -158,16 +188,14 @@ public class SecurityNewsController extends BaseController {
 				String maodianContentInsert = maodianContent[i];
 				if (StringUtil.isNotBlank(maodianNameInsert)
 						&& StringUtil.isNotBlank(maodianContentInsert)) {
-					String sql = "insert into news_maodian (news_id,orderlist,maodian_name,maodian_content) values("
-							+ news_id
-							+ ","
-							+ (i + 1)
-							+ ",'"
-							+ maodianNameInsert
-							+ "','"
-							+ maodianContentInsert
-							+ "')";
-					dalClient.update(sql);
+					Integer orderlist = i + 1;
+					String sql = "insert into news_maodian (news_id,orderlist,maodian_name,maodian_content) values(:news_id,:orderlist,:maodian_name,:maodian_content)";
+					DbKit kit = new DbKit(sql);
+					kit.put("news_id", news_id);
+					kit.put("orderlist", orderlist);
+					kit.put("maodian_name", maodianNameInsert);
+					kit.put("maodian_content", maodianContentInsert);
+					dalClient.update(kit);
 				}
 			}
 		}
@@ -183,9 +211,9 @@ public class SecurityNewsController extends BaseController {
 				SecurityNews.class);
 		setAttr("securityNews", securityNews);
 
-		String news_type=getPara("news_type");
+		String news_type = getPara("news_type");
 		setAttr("news_type", news_type);
-		
+
 		Integer menuId = securityNews.getMenuId();
 		SecurityMenu menu = securityMenuService.findById(menuId,
 				SecurityMenu.class);
@@ -194,6 +222,20 @@ public class SecurityNewsController extends BaseController {
 				.queryForObjectList("select * from news_maodian where news_id ="
 						+ id + " order by orderlist asc");
 		setAttr("maodianList", maodianList);
+
+		Map<String, List<Map<String, Object>>> linkedMenuNameList = securityMenuService
+				.getBqList();
+
+		List<Map<String, Object>> bqList = linkedMenuNameList.get(menu
+				.getName());
+
+		setAttr("bqList", bqList);
+
+		Integer bq_id = dalClient.queryColumn(
+				"select bq_id from bq_news where news_id="
+						+ securityNews.getId(), "bq_id");
+		setAttr("old_bq_id", bq_id);
+
 		return "/com/jdk2010/base/security/securitynews/securitynews_modify";
 	}
 
@@ -207,6 +249,12 @@ public class SecurityNewsController extends BaseController {
 		} else {
 			securityNews.setIndexStatus("0");
 		}
+
+		String bq_id = getPara("bq_id");
+		dalClient.update("delete from bq_news where news_id="
+				+ securityNews.getId());
+		dalClient.update("insert into bq_news(bq_id,news_id) values (" + bq_id
+				+ "," + securityNews.getId() + ")");
 
 		String topStatus = getPara("topStatus");
 		if (topStatus != null) {
@@ -222,13 +270,18 @@ public class SecurityNewsController extends BaseController {
 			securityNews.setJumpType("0");
 		}
 
+		securityNews
+				.setAbstractContent(getPara("securityNews.abstractContent"));
+		securityNews.setContent(getPara("securityNews.content"));
+		securityNews.setQuanjingUrl(getPara("securityNews.quanjingUrl"));
 		String maodianStatus = getPara("maodianStatus");
 		if (maodianStatus != null) {
 			securityNews.setMaodianStatus("1");
 		} else {
 			securityNews.setMaodianStatus("0");
 		}
-		if (getPara("review_status") != null&&!getPara("review_status").equals("")) {
+		if (getPara("review_status") != null
+				&& !getPara("review_status").equals("")) {
 			securityNews.setReviewStatus("1");
 		} else {
 			securityNews.setReviewStatus("0");
@@ -245,16 +298,17 @@ public class SecurityNewsController extends BaseController {
 				String maodianContentInsert = maodianContent[i];
 				if (StringUtil.isNotBlank(maodianNameInsert)
 						&& StringUtil.isNotBlank(maodianContentInsert)) {
-					String sql = "insert into news_maodian (news_id,orderlist,maodian_name,maodian_content) values("
-							+ securityNews.getId()
-							+ ","
-							+ (i + 1)
-							+ ",'"
-							+ maodianNameInsert
-							+ "','"
-							+ maodianContentInsert
-							+ "')";
-					dalClient.update(sql);
+
+					Integer news_id = securityNews.getId();
+					Integer orderlist = i + 1;
+
+					String sql = "insert into news_maodian (news_id,orderlist,maodian_name,maodian_content) values(:news_id,:orderlist,:maodian_name,:maodian_content)";
+					DbKit kit = new DbKit(sql);
+					kit.put("news_id", news_id);
+					kit.put("orderlist", orderlist);
+					kit.put("maodian_name", maodianNameInsert);
+					kit.put("maodian_content", maodianContentInsert);
+					dalClient.update(kit);
 				}
 			}
 		}
@@ -268,6 +322,22 @@ public class SecurityNewsController extends BaseController {
 			throws Exception {
 		String ids = getPara("ids");
 		securityNewsService.deleteByIDS(ids, SecurityNews.class);
+		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
+		renderJson(response, returnData);
+	}
+
+	@RequestMapping("/updateOrderlist")
+	public void updateOrderlist(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String orderlist_ids = getPara("orderlist_ids");
+		for (String s : orderlist_ids.split("~")) {
+			if (StringUtil.isNotBlank(s)) {
+				String id = s.split("-")[0];
+				String value = s.split("-")[1];
+				dalClient.update("update security_news set orderlist=" + value
+						+ " where id=" + id);
+			}
+		}
 		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
 		renderJson(response, returnData);
 	}
@@ -358,6 +428,7 @@ public class SecurityNewsController extends BaseController {
 			HttpServletResponse response) throws Exception {
 		String ids = getPara("ids");
 		String type = getPara("type");
+		setAttr("bannerMenuId", getPara("bannerMenuId"));
 		setAttr("type", type);
 		setAttr("ids", ids);
 		setAttr("id", getPara("id"));
@@ -434,11 +505,13 @@ public class SecurityNewsController extends BaseController {
 	@RequestMapping("/toViedoList")
 	public String toViedoList(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-
+		String bannerMenuId = getPara("bannerMenuId");
+		setAttr("bannerMenuId", bannerMenuId);
 		DbKit dbKit = new DbKit(
-				"select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 and t.news_type='VIDEO'");
+				"select t.*,a.realname,b.realname as reviewName from security_news t left join security_user a on t.userid=a.id   left join security_user b on t.review_userid=b.id where 1=1 and t.news_type='VIDEO' and menu_id="
+						+ bannerMenuId);
 		String searchSQL = "";
-		String orderSQL = " order by t.ctime desc";
+		String orderSQL = " order by t.orderlist asc";
 		String title = getPara("title");
 		if (title != null && !"".equals(title)) {
 			searchSQL = searchSQL + " and t.title LIKE :title";
@@ -466,6 +539,7 @@ public class SecurityNewsController extends BaseController {
 	@RequestMapping("/addVideo")
 	public String addVideo(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		setAttr("bannerMenuId", getPara("bannerMenuId"));
 		return "/com/jdk2010/base/security/video/securitynews_add";
 	}
 
@@ -473,6 +547,7 @@ public class SecurityNewsController extends BaseController {
 	public void addVideoaction(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		SecurityNews securityNews = getModel(SecurityNews.class);
+		Integer bannerMenuId = getParaToInt("bannerMenuId");
 		SecurityUser user = getSessionAttr("securityUser");
 		String indexStatus = getPara("indexStatus");
 		if (indexStatus != null) {
@@ -507,7 +582,7 @@ public class SecurityNewsController extends BaseController {
 		securityNews.setStatus(0);
 		securityNews.setReviewStatus("0");
 		securityNews.setNewsType("VIDEO");
-		securityNews.setMenuId(1054);
+		securityNews.setMenuId(bannerMenuId);
 		securityNewsService.save(securityNews);
 		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
 		renderJson(response, returnData);
@@ -516,10 +591,26 @@ public class SecurityNewsController extends BaseController {
 	@RequestMapping("/modifyVideo")
 	public String modifyVideo(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		String bannerMenuId = getPara("bannerMenuId");
+		setAttr("bannerMenuId", bannerMenuId);
 		String id = getPara("id");
 		SecurityNews securityNews = securityNewsService.findById(id,
 				SecurityNews.class);
 		setAttr("securityNews", securityNews);
+
+		Map<String, List<Map<String, Object>>> linkedMenuNameList = securityMenuService
+				.getBqList();
+
+		SecurityMenu menu = securityMenuService.findById(bannerMenuId,
+				SecurityMenu.class);
+		setAttr("menu", menu);
+		List<Map<String, Object>> bqList = linkedMenuNameList.get(menu
+				.getName());
+		setAttr("bqList", bqList);
+		Integer bq_id = dalClient.queryColumn(
+				"select bq_id from bq_news where news_id="
+						+ securityNews.getId(), "bq_id");
+		setAttr("old_bq_id", bq_id);
 
 		return "/com/jdk2010/base/security/video/securitynews_modify";
 	}
@@ -554,6 +645,12 @@ public class SecurityNewsController extends BaseController {
 		} else {
 			securityNews.setOutStatus("0");
 		}
+		String bq_id = getPara("bq_id");
+		dalClient.update("delete from bq_news where news_id="
+				+ securityNews.getId());
+		dalClient.update("insert into bq_news(bq_id,news_id) values (" + bq_id
+				+ "," + securityNews.getId() + ")");
+
 		securityNewsService.update(securityNews);
 		ReturnData returnData = new ReturnData(Constants.SUCCESS, "操作成功");
 		renderJson(response, returnData);

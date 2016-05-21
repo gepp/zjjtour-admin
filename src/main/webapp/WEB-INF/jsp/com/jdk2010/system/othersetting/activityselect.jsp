@@ -61,7 +61,7 @@
 		<br/>
 	 
 		<div class="formtitle1">
-			<span>通知公告</span>
+			<span>活动列表</span>
 		</div>
 		<table class="tablelist">
 			<thead>
