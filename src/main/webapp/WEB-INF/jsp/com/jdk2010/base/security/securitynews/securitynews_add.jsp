@@ -88,13 +88,13 @@
 							class="dfinput" id="smallimg" name="securityNews.smallimg"
 							placeholder="" />
 							<input type="button" id="smallimgBtn" value="图片上传" onclick="" class="btn"/>
-							<img id="smallimgShow" height="30" width="30" style="vertical-align:middle;"   src="${contextpath }/res/images/d05.png"/>
+							<img id="smallimgShow" height="30" width="30" style="vertical-align:middle;"   src="${contextpath }/res/images/d05.png"/><i>建议尺寸：400*280</i>
 							</li>
 						<li><label>首页图<b></b></label> <input type="text"
 							class="dfinput" id="indeximg" name="securityNews.indeximg"
 							placeholder="" />
 							<input type="button"   value="图片上传" id="indeximgBtn" class="btn"/>
-							<img id="indeximgShow" height="30" width="30" style="vertical-align:middle;"    src="${contextpath }/res/images/d05.png"/>
+							<img id="indeximgShow" height="30" width="30" style="vertical-align:middle;"    src="${contextpath }/res/images/d05.png"/><i>建议尺寸：400*280</i>
 							</li>
 						<li><label><b>&nbsp;</b></label>
 						<input type="checkbox" name="indexStatus"/>是否首页显示 &nbsp;&nbsp;<input type="checkbox" name="topStatus"/>是否置顶

@@ -64,7 +64,7 @@
 							class="dfinput" id="imgUrl" name="systemAdv.imgUrl" value="${systemAdv.imgUrl }"
 							placeholder="" />
 							<input type="button"   value="图片上传" id="indeximgBtn" class="btn"/>
-							<img id="indeximgShow" height="30" width="30" style="vertical-align:middle;"    src="${systemAdv.imgUrl }"/>
+							<img id="indeximgShow" height="30" width="30" style="vertical-align:middle;"    src="${systemAdv.imgUrl }"/><i>建议尺寸：1920*600</i> 
 						  </li> 
 						<li><label>排序号<b></b></label> <input type="text"
 							class="dfinput" id="orderlist" name="systemAdv.orderlist"

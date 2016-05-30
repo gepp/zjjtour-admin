@@ -63,13 +63,13 @@
 							class="dfinput" id="smallimg" name="securityNews.smallimg"
 							placeholder="" value="${securityNews.smallimg }"/>
 							<input type="button" id="smallimgBtn" value="图片上传" onclick="" class="btn"/>
-							<img id="smallimgShow" height="30" width="30" style="vertical-align:middle;"   src="${securityNews.smallimg }"/>
+							<img id="smallimgShow" height="30" width="30" style="vertical-align:middle;"   src="${securityNews.smallimg }"/><i>建议尺寸：400*280</i>
 							</li>
 						<li><label>首页图<b></b></label> <input type="text"
 							class="dfinput" id="indeximg" name="securityNews.indeximg"
 							placeholder="" value="${securityNews.indeximg }" />
 							<input type="button"   value="图片上传" id="indeximgBtn" class="btn"/>
-							<img id="indeximgShow" height="30" width="30" style="vertical-align:middle;"    src="${securityNews.indeximg }"/>
+							<img id="indeximgShow" height="30" width="30" style="vertical-align:middle;"    src="${securityNews.indeximg }"/><i>建议尺寸：400*280</i>
 							</li>
 						<li><label><b>&nbsp;</b></label>
 						<input type="checkbox" name="indexStatus"

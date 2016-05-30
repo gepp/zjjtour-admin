@@ -117,7 +117,13 @@
 						</c:if>
 						
 						</td>
-						<td>${ item.title}</td>
+						<td>
+						<c:if test="${fn:length(item.title)>34}">
+										${fn:substring(item.title,0,34)}...
+									</c:if>
+									<c:if test="${fn:length(item.title)<=34}">
+										${item.title }
+									</c:if></td>
 						<td>${ item.realname}</td>
 						<td>${ item.ctime}</td>
 						<td>${ item.reviewStatus=='0'?'未处理':(item.reviewStatus=='1'?'通过':'驳回')}</td>

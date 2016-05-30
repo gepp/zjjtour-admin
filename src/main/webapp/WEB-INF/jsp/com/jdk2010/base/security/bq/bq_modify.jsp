@@ -52,7 +52,7 @@
 						<li><label>标签上级<b></b></label>
 							<div class="vocation">
 								<select name="securityMenu.parentId" class="select1" >
-									<option value="">无</option>
+									<option value="0">无</option>
 									<c:forEach var="item" items="${firstMenuList }">
 										<option value="${item.id }" <c:if test="${securityMenu.parentId==item.id}">selected</c:if>>${item.name }</option>
 									</c:forEach>

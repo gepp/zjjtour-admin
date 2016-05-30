@@ -61,7 +61,7 @@
 							class="dfinput" id="smallimg" name="securityMenu.img"
 							placeholder="" />
 							<input type="button" id="smallimgBtn" value="图片上传" onclick="" class="btn"/>
-							<img id="smallimgShow" height="30" width="30" style="vertical-align:middle;"   src="${contextpath }/res/images/d05.png"/>
+							<img id="smallimgShow" height="30" width="30" style="vertical-align:middle;"   src="${contextpath }/res/images/d05.png"/><i>建议尺寸：1920*600</i>
 							</li>
 						<li><label>栏目描述<b></b></label> 
 						<textarea cols="60" rows="20" name="securityMenu.description"
@@ -95,7 +95,7 @@
 									<option value="0">模版</option>
 									<option value="1">导航</option>
  						</select>
-						</div>
+						</div><i>一级栏目：模板不展示在导航，导航则将展示在前台导航上；二级栏目：模板展示文字列表，导航展示图文列表</i>
 						</li>	
 						<li><label>排序号<b></b></label> <input type="text"
 							class="dfinput" id="orderlist" name="securityMenu.orderlist"
