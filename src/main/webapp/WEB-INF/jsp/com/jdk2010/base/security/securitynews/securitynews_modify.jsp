@@ -124,6 +124,12 @@
 							</div>
 						
 						</li>
+						<li><label>价格<b></b></label> <input type="text"
+							class="dfinput" id="price" name="securityNews.price"
+							placeholder="" value="${securityNews.price }"/></li>
+						<li><label>商城链接<b></b></label> <input type="text"
+							class="dfinput" id="goodUrl" name="securityNews.goodUrl"
+							placeholder="" value="${securityNews.goodUrl }"/></li>
 						<li><label>内容摘要<b></b></label> 
 							<textarea cols="60" rows="20" name="securityNews.abstractContent" id="abstractContent" style="padding: 1px;height:100px;line-height:16px" class="dfinput">${securityNews.abstractContent}</textarea>
 						
