@@ -137,8 +137,7 @@ public class SecurityNewsController extends BaseController {
 		} else {
 			securityNews.setIndexStatus("0");
 		}
-		securityNews.setGoodUrl(getPara("securityNews.goodUrl"));
-		securityNews.setPrice(new BigDecimal(getPara("securityNews.price")));
+	 
 		String topStatus = getPara("topStatus");
 		if (topStatus != null) {
 			securityNews.setTopStatus("1");
@@ -271,8 +270,7 @@ public class SecurityNewsController extends BaseController {
 		} else {
 			securityNews.setJumpType("0");
 		}
-		securityNews.setGoodUrl(getPara("securityNews.goodUrl"));
-		securityNews.setPrice(new BigDecimal(getPara("securityNews.price")));
+		 
 		securityNews
 				.setAbstractContent(getPara("securityNews.abstractContent"));
 		securityNews.setContent(getPara("securityNews.content"));
